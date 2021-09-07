@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags: []
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 1755608245
+    locked: 0
+  - name: TilemapBackground
+    uniqueID: 1684800813
+    locked: 0
+  - name: Terrain
+    uniqueID: 1454834737
+    locked: 0
+  - name: MapObjectBackground
+    uniqueID: 1783180795
+    locked: 0
+  - name: MapCursor
+    uniqueID: 4134839081
+    locked: 0
+  - name: MapObject
+    uniqueID: 507389653
+    locked: 0
+  - name: MapObjectForeground
+    uniqueID: 3117549591
+    locked: 0
+  - name: TilemapForeground
+    uniqueID: 1861083353
+    locked: 0
+  - name: UI
+    uniqueID: 2094737711
+    locked: 0
+  - name: UIForeground
+    uniqueID: 3509938421
+    locked: 0
