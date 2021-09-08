@@ -95,10 +95,10 @@ namespace Arycs_Fe.Maps
 
             Color old = Gizmos.color;
 
-            /// 获取鼠标世界坐标：
-            /// Event是从左上角(Left Up)开始，
-            /// 而Camera是从左下角(Left Down)，
-            /// 需要转换才能使用Camera的ScreenToWorldPoint方法。
+            // 获取鼠标世界坐标：
+            // Event是从左上角(Left Up)开始，
+            // 而Camera是从左下角(Left Down)，
+            // 需要转换才能使用Camera的ScreenToWorldPoint方法。
             Vector2 screenPosition = new Vector2(e.mousePosition.x, sceneView.camera.pixelHeight - e.mousePosition.y);
             Vector2 worldPosition = sceneView.camera.ScreenToWorldPoint(screenPosition);
 
@@ -107,9 +107,9 @@ namespace Arycs_Fe.Maps
             // 当前鼠标所在Cell的Center坐标
             Vector3 cellCenter = grid.GetCellCenterWorld(cellPosition);
 
-            /// 绘制当前鼠标下的Cell边框与Position
-            /// 如果包含Cell，正常绘制
-            /// 如果不包含Cell，改变颜色，并多绘制一个叉
+            // 绘制当前鼠标下的Cell边框与Position
+            // 如果包含Cell，正常绘制
+            // 如果不包含Cell，改变颜色，并多绘制一个叉
             if (Contains(cellPosition))
             {
                 GUIStyle textStyle = new GUIStyle();
@@ -310,7 +310,7 @@ namespace Arycs_Fe.Maps
                 ClearCellDatas();
             }
 
-            CreateCleeDatas();
+            CreateCellDatas();
 
             if (m_SearchPath == null)
             {
@@ -323,7 +323,7 @@ namespace Arycs_Fe.Maps
         /// <summary>
         /// 建立CellData
         /// </summary>
-        private void CreateCleeDatas()
+        private void CreateCellDatas()
         {
             if (m_DataDict.Count != 0)
             {

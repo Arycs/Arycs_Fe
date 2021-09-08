@@ -12,8 +12,17 @@ namespace Arycs_Fe.Maps
     {
         #region Common Field/Property
 
+        /// <summary>
+        /// 当前世界坐标
+        /// </summary>
         private Vector3Int m_Position;
+        /// <summary>
+        /// 是否有Tile
+        /// </summary>
         private bool m_HasTile;
+        /// <summary>
+        /// 有哪个地图对象在上面，比如角色，建筑等--
+        /// </summary>
         private MapObject m_MapObject;
 
         /// <summary>

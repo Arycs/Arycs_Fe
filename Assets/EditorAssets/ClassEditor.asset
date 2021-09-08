@@ -1,0 +1,96 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0237fd4dddfb5c24f83306d4b18a4cd7, type: 3}
+  m_Name: ClassEditor
+  m_EditorClassIdentifier: 
+  IsEditor: 0
+  FileName: Sys_Class
+  SaveFilePath: Assets/Config
+  ClassInfos:
+  - id: 1
+    prefab: 123
+    animator: 123
+    name: 123
+    classType: 0
+    movePoint: 1
+    fightProperties:
+      str: 0
+      mag: 0
+      skl: 0
+      spd: 0
+      def: 0
+      mdf: 0
+    maxFightProperties:
+      str: 0
+      mag: 0
+      skl: 0
+      spd: 0
+      def: 0
+      mdf: 0
+    availableWeapons:
+      sword: 0
+      lance: 0
+      axe: 0
+      bow: 0
+      staff: 0
+  - id: 2
+    prefab: 456
+    animator: 456
+    name: 456
+    classType: 0
+    movePoint: 0
+    fightProperties:
+      str: 0
+      mag: 0
+      skl: 0
+      spd: 0
+      def: 0
+      mdf: 0
+    maxFightProperties:
+      str: 0
+      mag: 0
+      skl: 0
+      spd: 0
+      def: 0
+      mdf: 0
+    availableWeapons:
+      sword: 0
+      lance: 0
+      axe: 0
+      bow: 0
+      staff: 0
+  - id: 0
+    prefab: PrefabName
+    animator: AnimatorName
+    name: "\u9886\u4E3B"
+    classType: 13
+    movePoint: 5
+    fightProperties:
+      str: 0
+      mag: 0
+      skl: 0
+      spd: 0
+      def: 0
+      mdf: 0
+    maxFightProperties:
+      str: 0
+      mag: 0
+      skl: 0
+      spd: 0
+      def: 0
+      mdf: 0
+    availableWeapons:
+      sword: 0
+      lance: 0
+      axe: 0
+      bow: 0
+      staff: 0

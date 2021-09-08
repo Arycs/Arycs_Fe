@@ -32,8 +32,17 @@ namespace Arycs_Fe.Maps
    public enum MapObjectType
    {
       MouseCursor,
+      /// <summary>
+      /// 光标
+      /// </summary>
       Cursor,
+      /// <summary>
+      /// 障碍物
+      /// </summary>
       Obstacle,
+      /// <summary>
+      /// 角色
+      /// </summary>
       Class
    }
 
@@ -64,22 +73,6 @@ namespace Arycs_Fe.Maps
 
 namespace Arycs_Fe.Models
 {
-   [System.Serializable]
-   public enum ClassType : int
-   {
-      /// <summary>
-      /// 骑兵1
-      /// </summary>
-      Knight1 = 0,
-      
-      /// <summary>
-      /// 步兵
-      /// </summary>
-      Foot
-      
-      //Other ClassType
-   }
-   
    [Serializable]
    public enum WeaponType : int
    {
