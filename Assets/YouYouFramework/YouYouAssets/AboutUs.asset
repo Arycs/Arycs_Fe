@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02ec5ae865606564b8bd4fa0c65ce522, type: 3}
+  m_Name: AboutUs
+  m_EditorClassIdentifier: 
+  Icon: {fileID: 2800000, guid: f5524c69e3639674ab415ea1be87745e, type: 3}
+  Name: YouYouFramework
+  Version: 1.1
+  Author: Arycs
+  Contact: 'QQ : 786859650'
+  MacroSettings: "\u5B8F\u8BBE\u7F6E\uFF0C\u80FD\u591F\u65B9\u4FBF\u8FDB\u884C\u5168\u5C40\u8BBE\u7F6E"
+  ParamsSetting: "\u5168\u5C40\u53C2\u6570"
