@@ -1,0 +1,14 @@
+Arycs_Fe.sln
+Assembly-CSharp.csproj
+Assembly-CSharp-Editor.csproj
+Assembly-CSharp-firstpass.csproj
+Sirenix.OdinInspector.CompatibilityLayer.csproj
+Sirenix.OdinInspector.CompatibilityLayer.Editor.csproj
+Unity.2D.Tilemap.Extras.csproj
+Unity.2D.Tilemap.Extras.Editor.csproj
+Unity.2D.Tilemap.Extras.Placeholder.EditorTests.csproj
+.idea/
+Library/
+Temp/
+obj/
+Logs/Packages-Update.log
