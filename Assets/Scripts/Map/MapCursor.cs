@@ -4,13 +4,27 @@ using UnityEngine;
 
 namespace Arycs_Fe.Maps
 {
+    
+    
     public class MapCursor : MapObject
     {
+    
+        /// <summary>
+        /// 光标类型
+        /// </summary>
+        public enum CursorType : int
+        {
+            Mouse = 0,
+            Move = 1,
+            Attack = 2,
+        }
+        
+    
         public Animator m_Animator;
         [SerializeField]
         public Sprite[] m_CursorSprites;
 
-        public virtual CursorType CursorType
+        public virtual CursorType cursorType
         {
             set
             {

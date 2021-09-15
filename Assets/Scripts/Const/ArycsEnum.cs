@@ -46,15 +46,7 @@ namespace Arycs_Fe.Maps
       Class
    }
 
-   /// <summary>
-   /// 光标类型
-   /// </summary>
-   public enum CursorType : int
-   {
-      Mouse = 0,
-      Move = 1,
-      Attack = 2,
-   }
+   
    
    /// <summary>
    /// 移动方向

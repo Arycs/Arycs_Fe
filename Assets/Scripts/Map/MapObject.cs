@@ -30,6 +30,14 @@ namespace Arycs_Fe.Maps
         public Vector3Int cellPosition
         {
             get { return m_CellPosition; }
+            set
+            {
+                m_CellPosition = value;
+                if (renderer != null)
+                {
+                    renderer.sortingOrder = MapObject.ClacSortingOrder(map, value);
+                }
+            }
         }
 
         /// <summary>
@@ -57,18 +65,17 @@ namespace Arycs_Fe.Maps
         /// <summary>
         /// 更新位置
         /// </summary>
-        /// <param name="cellPosition"></param>
         /// <param name="world"></param>
         /// <param name="center"></param>
-        public void UpdatePosition(Vector3Int cellPosition, bool world = true, bool center = false)
+        public void UpdatePosition(bool world = true, bool center = false)
         {
-            if (m_Map == null)
+            if (map == null)
             {
-                Debug.LogError(name + "Map is null.");
+                Debug.LogError(name + " Map is null");
                 return;
             }
 
-            Vector3 pos = m_Map.GetCellPosition(cellPosition, world, center);
+            Vector3 pos = map.GetCellPosition(cellPosition, world, center);
             if (world)
             {
                 transform.position = pos;
@@ -77,9 +84,50 @@ namespace Arycs_Fe.Maps
             {
                 transform.localPosition = pos;
             }
-
-            m_CellPosition = cellPosition;
         }
+
+        /// <summary>
+        /// 更新位置
+        /// </summary>
+        /// <param name="cellPosition"></param>
+        /// <param name="world"></param>
+        /// <param name="center"></param>
+        public void UpdatePosition(Vector3Int cellPosition ,bool world = true, bool center = false)
+        {
+            this.cellPosition = cellPosition;
+            UpdatePosition(world, center);
+        }
+
         #endregion
+
+        /// <summary>
+        /// 计算sortingOrder，防止遮挡
+        /// </summary>
+        /// <param name="map"></param>
+        /// <param name="cellPosition"></param>
+        /// <returns></returns>
+        public static int ClacSortingOrder(MapGraph map, Vector3Int cellPosition)
+        {
+            if (map == null)
+            {
+                return 0;
+            }
+            
+            //相对零点坐标
+            Vector3Int relative = cellPosition - map.leftDownPosition;
+            // 计算从右到左，从下到上渲染顺序， (sortingOrder越大越后渲染)
+            // 前y行的格子总数 = map.width * relative.y
+            // 当前行(第 y+1 行) 从右向左的格子数 = map.width - relative.x
+            // 这样计算后是递增， 范围[1, map.width * map.height]
+            // 加上负号后 是递减，范围[-(map.width * map.height), -1]
+            // 举例 ： 地图尺寸 20 * 20
+            // 右下角相对坐标，第20列第1行：
+            //          cellPosition = (19,0,0), sortingOrder = -(20 * 0 + (20 - 19)) = -1
+            // 左上角相对坐标, 第1列第10行：
+            //          cellPosition = (0,9,0), sortingOrder = -(20 * 9 + (20 - 0)) = -200
+            //测试相对坐标 第12列第6行：
+            //          cellPosition = (11,5,0), sortingOrder = -(20 * 5 + (20 - 11)) = -109
+            return -(map.width * relative.y + (map.width - relative.x));
+        }
     }
 }

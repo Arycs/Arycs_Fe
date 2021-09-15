@@ -11,20 +11,11 @@ namespace Arycs_Fe.Maps
     public class CellData : IDisposable
     {
         #region Common Field/Property
-
-        /// <summary>
-        /// 当前世界坐标
-        /// </summary>
+        
         private Vector3Int m_Position;
-        /// <summary>
-        /// 是否有Tile
-        /// </summary>
-        private bool m_HasTile;
-        /// <summary>
-        /// 有哪个地图对象在上面，比如角色，建筑等--
-        /// </summary>
         private MapObject m_MapObject;
-
+        private CellStatus m_Status = CellStatus.None;
+        
         /// <summary>
         /// 坐标位置
         /// </summary>
@@ -38,8 +29,34 @@ namespace Arycs_Fe.Maps
         /// </summary>
         public bool hasTile
         {
-            get { return m_HasTile; }
-            set { m_HasTile = value; }
+            get { return CheckStatus(CellStatus.TerrainTile,false); }
+            set { SwitchStatus(CellStatus.TerrainTile, value); }
+        }
+
+        /// <summary>
+        /// 是否有Cursor
+        /// </summary>
+        public bool hasCursor
+        {
+            get { return CheckStatus(CellStatus.MoveCursor | CellStatus.AttackCursor, false); }
+            set { SwitchStatus(CellStatus.MoveCursor| CellStatus.AttackCursor,value);}
+        }
+        
+        /// <summary>
+        /// 是否移动范围光标
+        /// </summary>
+        public bool hasMoveCursor
+        {
+            get { return CheckStatus(CellStatus.MoveCursor, false); }
+            set { SwitchStatus(CellStatus.MoveCursor, value); }
+        }
+        /// <summary>
+        /// 是否有攻击范围光标
+        /// </summary>
+        public bool hasAttackCursor
+        {
+            get { return CheckStatus(CellStatus.MoveCursor, false); }
+            set { SwitchStatus(CellStatus.MoveCursor, value); }
         }
 
         /// <summary>
@@ -48,7 +65,11 @@ namespace Arycs_Fe.Maps
         public MapObject mapObject
         {
             get { return m_MapObject; }
-            set { m_MapObject = value; }
+            set
+            {
+                m_MapObject = value;
+                SwitchStatus(CellStatus.MapObject,value != null);
+            }
         }
 
         /// <summary>
@@ -58,6 +79,24 @@ namespace Arycs_Fe.Maps
         {
             get { return m_MapObject != null; }
         }
+
+        /// <summary>
+        /// 是否可移动
+        /// </summary>
+        public bool canMove
+        {
+            get { return hasTile && !hasMapObject; }
+        }
+
+        /// <summary>
+        /// 获取状态开关
+        /// </summary>
+        /// <returns></returns>
+        public CellStatus GetStatus()
+        {
+            return m_Status;
+        }
+
         #endregion
 
         #region Constructor
@@ -77,7 +116,7 @@ namespace Arycs_Fe.Maps
         private List<CellData> m_Adjacents = new List<CellData>();
         private CellData m_Previous;
         private Vector2 m_AStarGH;
-
+        
         /// <summary>
         /// 邻居CellData
         /// </summary>
@@ -132,7 +171,40 @@ namespace Arycs_Fe.Maps
         }
 
         #endregion
-        
+
+        /// <summary>
+        /// 设置状态开关
+        /// </summary>
+        /// <param name="status"></param>
+        /// <param name="isOn"></param>
+        public void SwitchStatus(CellStatus status, bool isOn)
+        {
+            if (isOn)
+            {
+                //打开开关， 二进制的 | 直接就可以达成
+                m_Status |= status;
+            }
+            else
+            {
+                //关闭开关， 先对当前状态取反，然后在与运算即可
+                m_Status &= ~status;
+            }
+        }
+
+        /// <summary>
+        /// 检查开关
+        /// </summary>
+        /// <param name="status"></param>
+        /// <param name="any">
+        ///     true :判断在status中是否存在开启项
+        ///     false :判断status中是否全部开启
+        /// </param>
+        /// <returns></returns>
+        public bool CheckStatus(CellStatus status, bool any)
+        {
+            return any ? (m_Status & status) != 0 :(m_Status & status) == status;
+        } 
+
         public void Dispose()
         {
             m_Position = Vector3Int.zero;

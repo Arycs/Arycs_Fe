@@ -34,7 +34,7 @@ public class EditorTestPathFinding : MonoBehaviour
     public float m_MovePoint = 9f;
 
     /// <summary>
-    /// 攻击范围
+    /// 攻击范围，X为最小攻击距离，Y为最大攻击距离
     /// </summary>
     public Vector2Int m_AttackRange = new Vector2Int(2, 3);
 

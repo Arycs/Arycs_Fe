@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace Arycs_Fe.FindPath
 {
+    /// <summary>
+    /// 无视移动力，直接寻找路径
+    /// </summary>
     [CreateAssetMenu(fileName = "FindPathDirect.asset", menuName = "SRPG/How To Find Path")]
     public class FindPathDirect : FindMoveRange
     {
@@ -42,13 +45,8 @@ namespace Arycs_Fe.FindPath
 
         public override bool CanAddAdjacentToReachable(PathFinding search, CellData adjacent)
         {
-            //没有Tile
-            if (!adjacent.hasTile)
-            {
-                return false;
-            }
-            //已经有对象了
-            if (adjacent.hasMapObject)
+            //是否可移动
+            if (!adjacent.canMove)
             {
                 return false;
             }

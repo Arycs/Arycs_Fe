@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Arycs_Fe.FindPath;
 using Arycs_Fe.Models;
 using UnityEngine;
@@ -158,6 +159,155 @@ namespace Arycs_Fe.Maps
 
         #endregion
 
+        #region Map Object Field
+
+        [Header("Map Object Setting")] [SerializeField]
+        private MapMouseCursor m_MouseCursorPrefab;
+
+        [SerializeField] private MapCursor m_CursorPrefab;
+
+        /// <summary>
+        /// 生成的MapMouseCursor
+        /// </summary>
+        private MapMouseCursor m_MouseCursor;
+
+        /// <summary>
+        /// 运行时，MapCursor的预制体
+        /// </summary>
+        private MapCursor m_RuntimeCursorPrefab;
+
+        /// <summary>
+        /// 光标集合
+        /// </summary>
+        private HashSet<MapCursor> m_Cursors = new HashSet<MapCursor>();
+
+        /// <summary>
+        /// 职业集合
+        /// </summary>
+        private List<MapClass> m_Classes = new List<MapClass>();
+
+        private CellPositionEqualityComparer m_CellPositionEqualityComparer = new CellPositionEqualityComparer();
+
+        public CellPositionEqualityComparer CellPositionEqualityComparer
+        {
+            get
+            {
+                if (m_CellPositionEqualityComparer == null)
+                {
+                    m_CellPositionEqualityComparer = new CellPositionEqualityComparer();
+                }
+
+                return m_CellPositionEqualityComparer;
+            }
+        }
+
+        #endregion
+
+        #region Map Object Property
+
+        /// <summary>
+        /// 默认 Mouse Cursor 的Prefab
+        /// </summary>
+        public MapMouseCursor mouseCursorPrefab
+        {
+            get { return m_MouseCursorPrefab; }
+            set { m_MouseCursorPrefab = value; }
+        }
+
+        /// <summary>
+        /// 默认Cursor的Prefab
+        /// </summary>
+        public MapCursor cursorPrefab
+        {
+            get { return m_CursorPrefab; }
+            set { m_CursorPrefab = value; }
+        }
+
+        /// <summary>
+        /// 用户光标
+        /// </summary>
+        public MapMouseCursor mouseCursor
+        {
+            get
+            {
+                //只有在测试时，才会使用默认Prefab
+                //正是游戏，这里不会为null， 在初始化地图时回加载预制体
+                //如果无法加载，则说明代码可能出现问题
+                if (m_MouseCursor == null)
+                {
+                    m_MouseCursor = CreateMapObject(mouseCursorPrefab) as MapMouseCursor;
+                }
+                return m_MouseCursor;
+            }
+        }
+    
+        /// <summary>
+        /// 运行时，MapCursor的预制体
+        /// </summary>
+        public MapCursor runtimeCurSorPrefab
+        {
+            get
+            {
+                //只有在测试时，才会使用默认Prefab
+                //正是游戏，这里不会为null， 在初始化地图时回加载预制体
+                //如果无法加载，则说明代码可能出现问题
+                if (m_RuntimeCursorPrefab == null)
+                {
+                    m_RuntimeCursorPrefab = cursorPrefab;
+                }
+                return m_RuntimeCursorPrefab;
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// 显示Cursor
+        /// </summary>
+        /// <param name="cells"></param>
+        /// <param name="type"></param>
+        public void ShowRangeCursors(IEnumerable<CellData> cells, MapCursor.CursorType type)
+        {
+            if (type == MapCursor.CursorType.Mouse)
+            {
+                return;
+            }
+
+            foreach (CellData cell in cells)
+            {
+                MapCursor cursor = CreateMapObject(runtimeCurSorPrefab,cell.position) as MapCursor;
+                if (cursor != null)
+                {
+                    cursor.name = string.Format("{0} Cursor {1}", type.ToString(), cell.position.ToString());
+                    cursor.cursorType = type;
+                    if (type == MapCursor.CursorType.Move)
+                    {
+                        cell.hasMoveCursor = true;
+                    }else if (type == MapCursor.CursorType.Attack)
+                    {
+                        cell.hasAttackCursor = true;
+                    }
+
+                    m_Cursors.Add(cursor);
+                }
+            } 
+        }
+
+        /// <summary>
+        /// 隐藏cursor
+        /// </summary>
+        public void HideRangeCursors()
+        {
+            if (m_Cursors.Count > 0)
+            {
+                foreach (MapCursor cursor in m_Cursors)
+                {
+                    //TODO 利用对象池回收
+                }
+                m_Cursors.Clear();
+            }
+        }
+
         #region Property
 
         /// <summary>
@@ -251,6 +401,11 @@ namespace Arycs_Fe.Maps
         /// </summary>
         private Dictionary<Vector3Int, CellData> m_DataDict = new Dictionary<Vector3Int, CellData>();
 
+        /// <summary>
+        /// 静态地图对象列表
+        /// </summary>
+        public GameObject mapObjectPool;
+        
         #endregion
 
         #region Path Finding Field
@@ -260,8 +415,8 @@ namespace Arycs_Fe.Maps
         /// </summary>
         private PathFinding m_SearchPath;
 
-        [Header("Path Finding")] [SerializeField]
-        private FindRange m_FindAttackRange;
+        [Header("Path Finding")]
+        [SerializeField] private FindRange m_FindAttackRange;
 
         [SerializeField] private FindRange m_FindMoveRange;
 
@@ -318,6 +473,56 @@ namespace Arycs_Fe.Maps
             }
 
             //TODO Other Init
+            InitMapObjectsInMap();
+        }
+    
+        /// <summary>
+        /// 初始化地图静态对象。
+        /// </summary>
+        private void InitMapObjectsInMap()
+        {
+            if (mapObjectPool == null)
+            {
+                Debug.LogError("MapGraph -> MapObject Pool(这里的Pool 是指静态地图上的父物体列表) is null");
+                return;
+            }
+
+            MapObject[] mapObjects = mapObjectPool.gameObject.GetComponentsInChildren<MapObject>();
+            if (mapObjects != null)
+            {
+                foreach (MapObject mapObject in mapObjects)
+                {
+                    //我们的地图对象不应包含Cursor相关物体
+                    if (mapObject.mapObjectType == MapObjectType.MouseCursor || mapObject.mapObjectType == MapObjectType.Cursor)
+                    {
+                        GameObject.Destroy(mapObject.gameObject);
+                        continue;
+                    }
+                    //初始化
+                    mapObject.InitMapObject(this);
+                    
+                    //更新坐标
+                    Vector3 world = mapObject.transform.position;
+                    Vector3Int cellPosition = grid.WorldToCell(world);
+                    mapObject.cellPosition = cellPosition;
+                    //设置 cellData
+                    CellData cellData = GetCellData(cellPosition);
+                    if (cellData != null)
+                    {
+                        if (cellData.hasMapObject)
+                        {
+                            Debug.LogErrorFormat("MapObject in cell {0} already exists.",cellPosition.ToString());
+                            continue;
+                        }
+
+                        cellData.mapObject = mapObject;
+                    }
+                    //如果是class,
+                    //可选项(可忽略): 如果地图上杂兵过多（一般 > 20）， 并且在消灭之后会由于事件触发再次生成大量此Prefab的实例
+                    //可考虑将prefab 直接绘制在地图上，
+                    //个人 使用直接读配置的生成方式。
+                }
+            }
         }
 
         /// <summary>
@@ -417,6 +622,82 @@ namespace Arycs_Fe.Maps
         }
 
         /// <summary>
+        /// 搜寻和显示范围
+        /// </summary>
+        /// <param name="cls"></param>
+        /// <param name="nAtk">包含攻击范围</param>
+        /// <returns></returns>
+        public bool SearchAndShowMoveRange(MapClass cls, bool nAtk)
+        {
+            IEnumerable<CellData> moveCells, atkCells;
+            if (!SearchMoveRange(cls,nAtk,out moveCells,out atkCells))
+            {
+                return false;
+            }
+
+            if (moveCells != null)
+            {
+                ShowRangeCursors(moveCells,MapCursor.CursorType.Move);
+            }
+
+            if (atkCells != null)
+            {
+                ShowRangeCursors(atkCells,MapCursor.CursorType.Attack);
+            }
+
+            return true;
+        }
+
+        public bool SearchMoveRange(MapClass cls, bool nAtk, out IEnumerable<CellData> moveCells,
+            out IEnumerable<CellData> atkCells)
+        {
+            moveCells = null;
+            atkCells = null;
+            if (cls == null)
+            {
+                Debug.LogError("MapGraph -> SearchMoveRange: 'cls' is null");
+                return false;
+            }
+
+            CellData cell = GetCellData(cls.cellPosition);
+            if (cell == null)
+            {
+                Debug.LogErrorFormat("MapGraph -> SearchMoveRange: 'cls.cellPosition is out of range'");
+                return false;
+            }
+            //TODO 搜索移动范围，从MapClass中读取数据
+            float movePoint = 0;
+            MoveConsumption consumption = null;
+
+            List<CellData> rangeCells = SearchMoveRange(cell, movePoint, consumption);
+            if (rangeCells == null)
+            {
+                return false;
+            }
+            moveCells = rangeCells.ToArray();
+
+            if (nAtk /*TODO && 是否有武器*/)
+            {
+                //Todo 搜索攻击范围， 从MapClass中读取数据
+                Vector2Int atkRange = Vector2Int.one;
+
+                HashSet<CellData> atkRangeCells = new HashSet<CellData>(CellPositionEqualityComparer);
+                foreach (CellData moveCell in moveCells)
+                {
+                    rangeCells = SearchAttackRange(moveCell, atkRange.x, atkRange.y, true);
+                    if (rangeCells != null && rangeCells.Count > 0)
+                    {
+                        atkRangeCells.UnionWith(rangeCells.Where(c => !c.hasCursor));
+                    }
+                }
+
+                atkCells = atkRangeCells;
+            }
+            
+            return true;
+        }
+
+        /// <summary>
         /// 搜寻移动范围
         /// </summary>
         /// <param name="cell"></param>
@@ -441,9 +722,9 @@ namespace Arycs_Fe.Maps
         /// <summary>
         /// 搜寻攻击范围
         /// </summary>
-        /// <param name="cell"></param>
-        /// <param name="minRange"></param>
-        /// <param name="maxRange"></param>
+        /// <param name="cell">当前Cell信息</param>
+        /// <param name="minRange">最小攻击距离</param>
+        /// <param name="maxRange">最大攻击距离</param>
         /// <returns></returns>
         public List<CellData> SearchAttackRange(CellData cell, int minRange, int maxRange,bool useEndCell = false)
         {
@@ -486,6 +767,88 @@ namespace Arycs_Fe.Maps
 
 
         #endregion
+
+        /// <summary>
+        /// 创建地图对象
+        /// </summary>
+        /// <param name="prefab">对象</param>
+        /// <returns></returns>
+        public MapObject CreateMapObject(MapObject prefab)
+        {
+            if (prefab == null)
+            {
+                Debug.LogErrorFormat("MapGraph -> CreateMapObject ERROR !! {0}","Prefab is null");
+                return null;
+            }
+
+            MapObjectType type = prefab.mapObjectType;
+            //用户光标在整个地图中只能有且只有一个
+            if (type == MapObjectType.MouseCursor && m_MouseCursor != null)
+            {
+                //TODO 销毁 旧的光标 ，使用对象池
+            }
+            
+            //TODO 实例化Map object ， 利用对象池实例化一个新的
+            GameObject instance;
+            if (type == MapObjectType.Cursor || type == MapObjectType.MouseCursor)
+            {
+                //Todo 利用CursorPool Object 来进行实例化
+                instance = new GameObject("CursorPool Object");
+            }
+            else
+            {
+                //Todo 利用ClassPool Object 来进行实例化
+                instance = new GameObject("ClassPool Object");
+            }
+
+            MapObject mapObject = instance.GetComponent<MapObject>();
+            mapObject.InitMapObject(this);
+            
+            if (type == MapObjectType.MouseCursor)
+            {
+                m_MouseCursor = mapObject as MapMouseCursor;
+            }
+
+            return mapObject;
+        }
+
+        /// <summary>
+        /// 创建地图对象
+        /// </summary>
+        /// <param name="prefab">对象</param>
+        /// <param name="cellPosition">位置</param>
+        /// <returns></returns>
+        public MapObject CreateMapObject(MapObject prefab, Vector3Int cellPosition)
+        {
+            MapObject mapObject = CreateMapObject(prefab);
+            if (mapObject != null)
+            {
+                mapObject.UpdatePosition(cellPosition);
+            }
+
+            return mapObject;
+        }
+
+        public MapObject CreateMapObject(string prefabName)
+        {
+            //TODO Load 加载资源，利用框架的方式
+            MapObject prefab = new MapClass();
+            return CreateMapObject(prefab);
+        }
+
+        public MapObject CreateMapObject(string prefabName, Vector3Int cellPositoin)
+        {
+            //TODO Load 加载资源，利用框架的方式
+            MapObject prefab = new MapClass();
+            MapObject mapObject = CreateMapObject(prefab);
+            if (mapObject != null)
+            {
+                mapObject.UpdatePosition(cellPositoin);
+            }
+
+            return mapObject;
+        }
+
 
         #region Helper Method
 

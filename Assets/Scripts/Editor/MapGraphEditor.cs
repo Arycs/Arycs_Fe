@@ -40,6 +40,72 @@ namespace Arycs_Fe.Maps
                 fix.height = Mathf.Max(map.mapRect.height, 2);
                 map.mapRect = fix;
             }
+
+            if (GUILayout.Button("Update MapObject SortingLayer"))
+            {
+                UpdateMapObjectSortingLayer();
+            }
+
+            if (GUILayout.Button("Clear MapObject"))
+            {
+                ClearMapObjects();
+            }
+        }
+
+        /// <summary>
+        /// 删除MapObjects
+        /// </summary>
+        private void ClearMapObjects()
+        {
+            if (map.mapObjectPool == null)
+            {
+                return;
+            }
+
+            MapObject[] mapObjects = map.mapObjectPool.gameObject.GetComponentsInChildren<MapObject>();
+            if (mapObjects != null)
+            {
+                foreach (MapObject mapObject in mapObjects)
+                {
+                    if (mapObject.mapObjectType == MapObjectType.MouseCursor || mapObject.mapObjectType == MapObjectType.Cursor)
+                    {
+                        continue;
+                    }
+                    Undo.DestroyObjectImmediate(mapObject.gameObject);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 更新地图对象的sortingLayer
+        /// </summary>
+        private void UpdateMapObjectSortingLayer()
+        {
+            if (map.mapObjectPool == null)
+            {
+                Debug.LogError("MapGraph -> MapObject Pool is null");
+                return;
+            }
+            
+            MapObject[] mapObjects = map.mapObjectPool.gameObject.GetComponentsInChildren<MapObject>();
+            if (mapObjects != null)
+            {
+                foreach (MapObject mapObject in mapObjects)
+                {
+                    if (mapObject.mapObjectType == MapObjectType.MouseCursor || mapObject.mapObjectType == MapObjectType.Cursor)
+                    {
+                        continue;
+                    }
+
+                    if (mapObject.renderer != null)
+                    {
+                        //更新坐标
+                        Vector3 world = mapObject.transform.position;
+                        Vector3Int cellPosition = map.grid.WorldToCell(world);
+                        mapObject.renderer.sortingOrder = MapObject.ClacSortingOrder(map, cellPosition);
+                    }
+                }
+            }
         }
 
         protected virtual void OnSceneGUI()
@@ -58,7 +124,6 @@ namespace Arycs_Fe.Maps
                 Rect areaRect = new Rect(50, 50, 200, 200);
                 GUILayout.BeginArea(areaRect);
                 {
-                    // 你的GUILayout代码
                     DrawHorizontalLabel("Object Name:", map.gameObject.name, textStyle);
                     DrawHorizontalLabel("Map Name:", map.mapName, textStyle);
                     DrawHorizontalLabel("Map Size:", map.width + "x" + map.height, textStyle);

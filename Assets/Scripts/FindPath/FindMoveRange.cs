@@ -16,14 +16,14 @@ namespace Arycs_Fe.FindPath
             }
 
             //取得F最小的节点（因为我们没有计算H，这里就是G）
-            //当你在寻找路径有卡顿是，请一定使用更好的查找方式，
+            //当你在寻找路径有卡顿时，请一定使用更好的查找方式，
             //例如可以改用二叉树的方式
             //也可以将PathFinding里面reachable.Add(Adjacent)的方法改成边排序边加入的方法
             search.reachable.Sort((cell1, cell2) => -cell1.f.CompareTo(cell2.f));
             int index = search.reachable.Count - 1;
             CellData chose = search.reachable[index];
             search.reachable.RemoveAt(index);
-            
+
             return chose;
         }
 
@@ -33,29 +33,25 @@ namespace Arycs_Fe.FindPath
             SrpgTile tile = search.map.GetTile(adjacent.position);
 
             return search.GetMoveConsumption(tile.terrainType);
-            return base.CalcGPerCell(search, adjacent);
         }
 
         public override bool CanAddAdjacentToReachable(PathFinding search, CellData adjacent)
         {
-            //没有Tile
-            if (!adjacent.hasTile)
+            //是否可移动
+            if (!adjacent.canMove)
             {
                 return false;
             }
-            //已经有对象了
-            if (adjacent.hasMapObject)
-            {
-                return false;
-            }
+
             //如果已经在关闭集
             if (search.IsCellInExplored(adjacent))
             {
                 return false;
             }
+
             //计算消耗 = 当前cell的消耗 + 邻居cell的消耗
             float g = search.currentCell.g + CalcGPerCell(search, adjacent);
-            
+
             //已经加入过开放集
             if (search.IsCellInReachable(adjacent))
             {
@@ -68,16 +64,16 @@ namespace Arycs_Fe.FindPath
 
                 return false;
             }
-            
+
             //不在范围内
-            if (g< 0f || g > search.range.y)
+            if (g < 0f || g > search.range.y)
             {
                 return false;
             }
 
             adjacent.g = g;
             adjacent.previous = search.currentCell;
-            
+
             return true;
         }
     }

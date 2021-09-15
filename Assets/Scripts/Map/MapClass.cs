@@ -115,6 +115,12 @@ namespace Arycs_Fe.Maps
             Direction direction = getMovingDirection(current, next);
             animatorController.SetMoveDirection(direction);
 
+            //计算 sortingOrder
+            if (renderer != null)
+            {
+                renderer.sortingOrder = MapObject.ClacSortingOrder(map, next.position);
+            }
+            
             if (m_MoveTimePerCell <= 0f)
             {
                 Debug.LogError(name + "Move time can not be less equal zero");

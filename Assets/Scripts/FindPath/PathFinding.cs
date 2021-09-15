@@ -22,32 +22,30 @@ namespace Arycs_Fe.FindPath
         {
             get { return m_Map; }
         }
-
+        
+        private List<CellData> m_Reachable = new List<CellData>();
         /// <summary>
         /// 开放列表
         /// </summary>
-        private List<CellData> m_Reachable = new List<CellData>();
-
         public List<CellData> reachable
         {
             get { return m_Reachable; }
         }
+        private List<CellData> m_Explored = new List<CellData>();
 
         /// <summary>
         /// 关闭列表
         /// </summary>
-        private List<CellData> m_Explored = new List<CellData>();
-
         public List<CellData> explored
         {
             get { return m_Explored; }
         }
 
+        private List<CellData> m_Result = new List<CellData>();
+
         /// <summary>
         /// 结果
         /// </summary>
-        private List<CellData> m_Result = new List<CellData>();
-
         public List<CellData> result
         {
             get { return m_Result; }
@@ -66,8 +64,8 @@ namespace Arycs_Fe.FindPath
         {
             get { return m_EndCell; }
         }
+        
         private CellData m_CurrentCell;
-
         public CellData currentCell
         {
             get { return m_CurrentCell; }
@@ -75,7 +73,9 @@ namespace Arycs_Fe.FindPath
 
         private bool m_Finished;
         private int m_SearchCount = 0;
-
+        /// <summary>
+        /// 迭代次数
+        /// </summary>
         public int searchCount
         {
             get { return m_SearchCount; }
@@ -160,9 +160,9 @@ namespace Arycs_Fe.FindPath
         /// <summary>
         /// 寻找移动范围
         /// </summary>
-        /// <param name="howToFind"></param>
-        /// <param name="start"></param>
-        /// <param name="movePoint"></param>
+        /// <param name="howToFind">FindRange</param>
+        /// <param name="start">起始位置</param>
+        /// <param name="movePoint">移动点数</param>
         /// <returns></returns>
         public bool SearchMoveRange(IHowToFind howToFind, CellData start, float movePoint, MoveConsumption consumption)
         {
@@ -188,10 +188,10 @@ namespace Arycs_Fe.FindPath
         /// <summary>
         /// 搜寻攻击范围
         /// </summary>
-        /// <param name="howToFind"></param>
-        /// <param name="start"></param>
-        /// <param name="minRange"></param>
-        /// <param name="maxRange"></param>
+        /// <param name="howToFind">寻路方法</param>
+        /// <param name="start">开始Cell信息</param>
+        /// <param name="minRange">最小攻击距离</param>
+        /// <param name="maxRange">最大攻击距离</param>
         /// <returns></returns>
         public bool SearchAttackRange(IHowToFind howToFind, CellData start, int minRange, int maxRange,
             bool useEndCell = false)

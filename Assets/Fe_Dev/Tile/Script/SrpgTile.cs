@@ -10,8 +10,10 @@ namespace Arycs_Fe.Maps
     public class SrpgTile : RuleTile
     {
         [Header("地形")]
+        [SerializeField]
         private TerrainType m_TerrainType = TerrainType.Plain;
         [Header("回避率")]
+        [SerializeField]
         private int m_AvoidRate = 0;
 
         /// <summary>
