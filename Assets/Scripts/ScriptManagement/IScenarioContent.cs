@@ -20,6 +20,27 @@ namespace Arycs_Fe.ScriptManagement
         Flag,
     }
 
+    /// <summary>
+    /// 格式化结果
+    /// </summary>
+    public enum FormatContentResult
+    {
+        /// <summary>
+        /// 成功
+        /// </summary>
+        Succeed,
+        
+        /// <summary>
+        /// 失败
+        /// </summary>
+        Failure,
+        
+        /// <summary>
+        /// 只有注释
+        /// </summary>
+        Commenting
+    }
+
     public interface IScenarioContent 
     {
         /// <summary>
