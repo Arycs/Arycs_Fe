@@ -8,11 +8,12 @@ using System.Text.RegularExpressions;
 namespace Arycs_Fe.ScriptManagement
 {
     /// <summary>
-    /// 剧本(脚本)
+    /// 剧本(脚本)，格式为Txt, 如果想解析其他类型脚本，则可以继续继承 Iscenario 并自行编写解析方法
     /// </summary>
     public class TxtScript : Iscenario
     {
-        #region Conste/Static
+        
+        #region Conste/Static 定义好那些字符是特殊字符，遇到会进行特殊处理，比如 ; 代表命令分隔符，后续不够会进行添加
 
         /// <summary>
         /// 用于命令的分隔符
@@ -49,7 +50,7 @@ namespace Arycs_Fe.ScriptManagement
         /// <summary>
         /// 剧本的一条命令
         /// </summary>
-        public class Command : IScenarioContent
+        protected class Command : IScenarioContent
         {
             //TODO 命令
 
@@ -66,43 +67,28 @@ namespace Arycs_Fe.ScriptManagement
             /// <summary>
             /// 行号，若命令在脚本中是多行，这里指最后一行的行号
             /// </summary>
-            public int lineNo
-            {
-                get { return m_LineNo; }
-            }
+            public int lineNo => m_LineNo;
 
             /// <summary>
             /// 类型
             /// </summary>
-            public ScenarioContentType type
-            {
-                get { return m_Type; }
-            }
+            public ScenarioContentType type => m_Type;
 
             /// <summary>
             /// 参数数量
             /// </summary>
-            public int length
-            {
-                get { return m_Arguments.Length; }
-            }
+            public int length => m_Arguments.Length;
 
             /// <summary>
             /// 索引器
             /// </summary>
             /// <param name="index"></param>
-            public string this[int index]
-            {
-                get { return m_Arguments[index]; }
-            }
+            public string this[int index] => m_Arguments[index];
 
             /// <summary>
             /// 关键字或剧情标识
             /// </summary>
-            public string code
-            {
-                get { return m_Arguments[0]; }
-            }
+            public string code => m_Arguments[0];
 
             #endregion
 
@@ -129,11 +115,9 @@ namespace Arycs_Fe.ScriptManagement
 
         #region Fields
 
-        private string m_Name;
-        private string m_Buffer;
-        private string m_FlagMark = k_DefaultFlagMark;
-        private string m_CommentingPrefix = k_CommentingPrefix;
-        private string m_Error = string.Empty;
+        /// <summary>
+        /// 存储当前 脚本所有命令的列表
+        /// </summary>
         private readonly List<Command> m_Commands = new List<Command>();
 
         #endregion
@@ -143,72 +127,48 @@ namespace Arycs_Fe.ScriptManagement
         /// <summary>
         /// 剧本名(可能为null)
         /// </summary>
-        public string name
-        {
-            get { return m_Name; }
-            private set { m_Name = value; }
-        }
+        public string name { get; private set; }
 
         /// <summary>
         /// 剧本的原始副本
         /// </summary>
-        public string buffer
-        {
-            get { return m_Buffer; }
-            private set { m_Buffer = value; }
-        }
+        public string buffer { get; private set; }
 
         /// <summary>
         /// 用作剧本标识的符号
         /// </summary>
-        public string flagMark
-        {
-            get { return m_FlagMark; }
-            set { m_FlagMark = value; }
-        }
+        public string flagMark { get; set; } = k_DefaultFlagMark;
 
         /// <summary>
         /// 注释
         /// </summary>
-        public string commentingPrefix
-        {
-            get { return m_CommentingPrefix; }
-            set { m_CommentingPrefix = value; }
-        }
+        public string commentingPrefix { get; set; } = k_CommentingPrefix;
 
         /// <summary>
         /// 错误
         /// </summary>
-        public string formatError
-        {
-            get { return m_Error; }
-            protected set { m_Error = value; }
-        }
+        public string formatError { get; private set; } = string.Empty;
 
         /// <summary>
         /// 是否读取过剧本文本
         /// </summary>
-        public bool isLoaded
-        {
-            get { return !string.IsNullOrEmpty(m_Buffer); }
-        }
+        public bool isLoaded => !string.IsNullOrEmpty(buffer);
 
         /// <summary>
         /// 内容 (动作)
         /// </summary>
-        protected List<Command> commands
-        {
-            get { return m_Commands; }
-        }
+        protected List<Command> commands => m_Commands;
 
         /// <summary>
         /// 命令数量
         /// </summary>
-        public int contentCount
-        {
-            get { return m_Commands.Count; }
-        }
+        public int contentCount => m_Commands.Count;
 
+        /// <summary>
+        /// 获取剧本的一条命令
+        /// </summary>
+        /// <param name="index">命令索引</param>
+        /// <returns></returns>
         public IScenarioContent GetContent(int index)
         {
             return m_Commands[index];
@@ -216,6 +176,10 @@ namespace Arycs_Fe.ScriptManagement
 
         #endregion
 
+        /// <summary>
+        /// 重写 ToString ，如果加载过了，则返回buffer
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             if (!isLoaded)
@@ -232,6 +196,11 @@ namespace Arycs_Fe.ScriptManagement
         {
         }
 
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        /// <param name="flagMark">初始化剧情标识</param>
+        /// <param name="commentingPrefix">初始化注释标识</param>
         public TxtScript(string flagMark, string commentingPrefix)
         {
             //防止flagMark有空格
@@ -254,12 +223,12 @@ namespace Arycs_Fe.ScriptManagement
 
             if (!string.IsNullOrEmpty(flagMark))
             {
-                m_FlagMark = flagMark;
+                this.flagMark = flagMark;
             }
 
             if (!string.IsNullOrEmpty(commentingPrefix))
             {
-                m_CommentingPrefix = commentingPrefix;
+                this.commentingPrefix = commentingPrefix;
             }
         }
 
@@ -267,11 +236,13 @@ namespace Arycs_Fe.ScriptManagement
 
         public bool Load(string fileName, string scriptText)
         {
+            // Regex.Unescape 转换输入字符串中的任意转义字符
             string script = Regex.Unescape(scriptText).Trim();
 
             if (string.IsNullOrEmpty(script))
             {
-                formatError = "TxtScript Load -> 'ScriptText' is null or empty";
+                //formatError = "TxtScript Load -> 'ScriptText' is null or empty";
+                formatError = $"剧本加载 -> {fileName} 剧情文本为空";
                 return false;
             }
 
@@ -290,15 +261,20 @@ namespace Arycs_Fe.ScriptManagement
             return loaded;
         }
 
+        /// <summary>
+        /// 解析脚本到命令
+        /// </summary>
+        /// <param name="script">文本内容</param>
+        /// <returns></returns>
         protected virtual bool FormatScriptCommands(string script)
         {
             //1.以[";"] 分割文本，并删除空白
-            string[] commandTexts = script.Split(new string[] {k_CommandSeparator},
+            string[] commandTexts = script.Split(new[] {k_CommandSeparator},
                 StringSplitOptions.RemoveEmptyEntries);
             //2.在生成命令之前，我们来准备命令分隔符
             //分割剧本每个动作的分隔符：[" ","\t","\n"]
-            string[] separators = new string[] {k_Space, k_Separator};
-            string[] newLineSeparator = new string[] {k_NewLine};
+            string[] separators = {k_Space, k_Separator};
+            string[] newLineSeparator = {k_NewLine};
             for (int i = 0; i < commandTexts.Length; i++)
             {
                 //删除左右空格和左右各种特殊转义符
@@ -328,15 +304,19 @@ namespace Arycs_Fe.ScriptManagement
                 {
                     return false;
                 }
-                else
-                {
-                    continue;
-                }
             }
-
             return true;
         }
 
+        /// <summary>
+        /// 格式化命令
+        /// </summary>
+        /// <param name="index">索引，不是行号，是第N条命令的索引</param>
+        /// <param name="commandText">命令的文本</param>
+        /// <param name="separators">每行命令的分割符，一般为 "\t"," " 来分割当前行内容</param>
+        /// <param name="newLineSeparator">根据换行符来进行 区分不同行</param>
+        /// <param name="command">返回的命令</param>
+        /// <returns></returns>
         protected virtual FormatContentResult FormatCommand(
             int index,
             string commandText,
@@ -347,15 +327,14 @@ namespace Arycs_Fe.ScriptManagement
             ScenarioContentType type = ScenarioContentType.Action;
             List<string> arguments = new List<string>();
 
-            //TODO 具体实现
             // 1. 按["\n"]分割每一条内容
             string[] lines = commandText.Split(newLineSeparator, StringSplitOptions.RemoveEmptyEntries);
-            for (int li = 0; li < lines.Length; li++)
+            foreach (string t1 in lines)
             {
-                string line = lines[li].Trim();
+                string line = t1.Trim();
 
                 //删除每行注释
-                int commentingIndex = line.IndexOf(commentingPrefix);
+                int commentingIndex = line.IndexOf(commentingPrefix, StringComparison.Ordinal);
                 if (commentingIndex != -1)
                 {
                     line = line.Substring(0, commentingIndex).TrimEnd();
@@ -376,34 +355,30 @@ namespace Arycs_Fe.ScriptManagement
                 }
 
                 //添加内容
-                for (int vi = 0; vi < lineValues.Length; vi++)
+                foreach (string t in lineValues)
                 {
-                    string value = lineValues[vi].Trim();
+                    string value = t.Trim();
                     if (!string.IsNullOrEmpty(value))
                     {
                         arguments.Add(value);
                     }
                 }
-
-                //只有注释
-                if (arguments.Count == 0)
-                {
-                    command = null;
-                    return FormatContentResult.Commenting;
-                }
-
-                //如果标识符参数大于1，则语法错误，检查语法
-                if (type == ScenarioContentType.Flag && arguments.Count > 1)
-                {
-                    command = null;
-                    formatError = string.Format("TxtScript FormatError -> syntactic error: {0}", commandText);
-                    return FormatContentResult.Failure;
-                }
-
-                command = new Command(index, type, arguments.ToArray());
-                return FormatContentResult.Succeed;
+            }
+            //只有注释
+            if (arguments.Count == 0)
+            {
+                command = null;
+                return FormatContentResult.Commenting;
             }
 
+            //如果标识符参数大于1，则语法错误，检查语法
+            if (type == ScenarioContentType.Flag && arguments.Count > 1)
+            {
+                command = null;
+                //formatError = string.Format("TxtScript FormatError -> syntactic error: {0}", commandText);
+                formatError = $"剧本错误 -> 语法错误: {commandText}";
+                return FormatContentResult.Failure;
+            }
             command = new Command(index, type, arguments.ToArray());
             return FormatContentResult.Succeed;
         }

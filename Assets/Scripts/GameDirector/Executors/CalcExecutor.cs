@@ -19,7 +19,13 @@ namespace Arycs_Fe.ScriptManagement
         {
             get { return "calc"; }
         }
-
+        /// <summary>
+        /// 匹配运算符
+        /// </summary>
+        /// <param name="opStr">待匹配运算符</param>
+        /// <param name="binaryOp">返回的运算符</param>
+        /// <param name="error">错误信息</param>
+        /// <returns></returns>
         protected bool IsMatchBinaryOperator(string opStr, ref string binaryOp, out string error)
         {
             switch (opStr)
@@ -41,6 +47,13 @@ namespace Arycs_Fe.ScriptManagement
             }
         }
 
+        /// <summary>
+        /// 匹配运算符
+        /// </summary>
+        /// <param name="opStr">待匹配的运算符</param>
+        /// <param name="equalOp">返回的运算符</param>
+        /// <param name="error">错误信息</param>
+        /// <returns></returns>
         protected bool IsMatchEqualOperator(string opStr, ref string equalOp, out string error)
         {
             if (opStr == "=")
@@ -64,6 +77,7 @@ namespace Arycs_Fe.ScriptManagement
 
         public override bool ParseArgs(IScenarioContent content, ref CalcArgs args, out string error)
         {
+            // 基准格式 为一下两种
             //calc var += 10;
             //calc var = var + 10;
             if (content.length != 4 && content.length != 6)
@@ -78,12 +92,11 @@ namespace Arycs_Fe.ScriptManagement
             {
                 return false;
             }
-
+            //处理符号
             if (!IsMatchEqualOperator(content[2], ref args.equalOp, out error))
             {
                 return false;
             }
-
             // 处理等号右值
             if (!ParseOrGetVarValue(content[3], ref args.value1, out error))
             {

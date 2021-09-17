@@ -46,15 +46,7 @@ namespace Arycs_Fe.ScriptManagement
         
         public virtual void Abort(params object[] abortParams)
         {
-            InvokeOnAbort(abortParams);
-        }
-
-        protected void InvokeOnAbort(params object[] abortParams)
-        {
-            if (onAbort != null)
-            {
-                onAbort(this, abortParams);
-            }
+            onAbort?.Invoke(this, abortParams);
         }
 
         public virtual void OnMouseMove(Vector3 mousePosition)

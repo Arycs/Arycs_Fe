@@ -41,6 +41,9 @@ namespace Arycs_Fe.ScriptManagement
         Commenting
     }
 
+    /// <summary>
+    /// 剧本中的一条内容相关信息
+    /// </summary>
     public interface IScenarioContent 
     {
         /// <summary>

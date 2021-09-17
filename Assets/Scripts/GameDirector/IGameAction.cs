@@ -50,7 +50,7 @@ namespace Arycs_Fe.ScriptManagement
         void Resume();
 
         /// <summary>
-        /// 美珍运行 ： true 继续运行，false终止运行
+        /// 每帧运行 ： true 继续运行，false终止运行
         /// </summary>
         /// <returns></returns>
         bool Update();

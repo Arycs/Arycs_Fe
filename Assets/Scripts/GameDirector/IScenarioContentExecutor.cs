@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Arycs_Fe.ScriptManagement
 {
+    /// <summary>
+    /// 剧情内容解析器接口
+    /// </summary>
     public interface IScenarioContentExecutor
     {
         /// <summary>

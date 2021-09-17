@@ -19,15 +19,18 @@ namespace Arycs_Fe.ScriptManagement
         // a-z,A-Z : 小/大写字母
         // _ : 下划线
         // \u4e00 - \u9fa5 : 中文Unicode字符开始与结束
-        public const string k_Variable = @"^[a-zA-Z_\u4e00-\u9fa5)][\w]*$";
+        
+        // 匹配 以a-z A-Z 中文字符 开始，以任意结尾的字符串
+        private const string k_Variable = @"^[a-zA-Z_\u4e00-\u9fa5)][\w]*$";
 
+        /// <summary>
+        /// 匹配 以a-z A-Z 中文字符 开始，以任意结尾的字符串
+        /// </summary>
+        /// <param name="variable"></param>
+        /// <returns></returns>
         public static bool IsMatchVariable(string variable)
         {
             return Regex.IsMatch(variable, k_Variable);
         }
-
-        
-
-        
     }
 }

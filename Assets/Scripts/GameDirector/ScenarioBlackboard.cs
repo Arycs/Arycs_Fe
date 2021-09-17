@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace Arycs_Fe.ScriptManagement
 {
+    /// <summary>
+    ///  新定义的数据结构，用来记录已经执行过的命令
+    /// </summary>
     public static class ScenarioBlackboard  
     {
         [Serializable]
@@ -21,10 +24,8 @@ namespace Arycs_Fe.ScriptManagement
             }
         }
 
-        private readonly static Dictionary<string, VarValuePair> s_VarValues = new Dictionary<string, VarValuePair>();
+        private static readonly Dictionary<string, VarValuePair> s_VarValues = new Dictionary<string, VarValuePair>();
         
-        //省略 字典操作 具体实现
-        //应该包含 Contains ,Set ,Get, TryGet, ToArray
         public static bool Contains(string name)
         {
             return s_VarValues.ContainsKey(name);
