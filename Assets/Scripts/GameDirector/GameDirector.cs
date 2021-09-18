@@ -1,55 +1,51 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using YouYou;
 
 namespace Arycs_Fe.ScriptManagement
 {
-    public class GameDirector : MonoBehaviour
+    /// <summary>
+    /// 游戏剧情管理器
+    /// </summary>
+    public class GameDirectorManager : ManagerBase, IDisposable
     {
-        #region Fields
+        private IGameAction m_GameAction;
 
-        [SerializeField] private bool m_DebugInfo = true;
-
-        [SerializeField] private string m_FirstScenario = "main";
-
-        [SerializeField] private bool m_FirstScenarioIsTxt = true;
-
-        private IGameAction m_GameAction = null;
-        private Coroutine m_Coroutine = null;
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// 是否输出日志
-        /// </summary>
-        public bool debugInfo
+        public IGameAction CurrentAction
         {
-            get => m_DebugInfo;
-            set => m_DebugInfo = value;
+            get { return m_GameAction; }
+            protected set { m_GameAction = value; }
         }
-        
-        /// <summary>
-        /// 第一个剧本
-        /// </summary>
-        public string firstScenario
+
+        public override void Init()
         {
-            get => m_FirstScenario;
-            set => m_FirstScenario = value;
+            ScenarioAction action = new ScenarioAction(m_GameAction);
+            Type[] executorTypes = GameAction.GetDefaultExecutorTypesForScenarioAction().ToArray();
+            action.LoadExecutors(executorTypes);
+            CurrentAction = action;
         }
 
         /// <summary>
-        /// 是否是Txt
+        /// 读取剧本
         /// </summary>
-        public bool firstScenarioIsTxt
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public virtual bool LoadScenario(string name)
         {
-            get => m_FirstScenarioIsTxt;
-            set => m_FirstScenarioIsTxt = value;
+            TxtScript txt = new TxtScript();
+            return true;
         }
 
-        #endregion
-        
-        
+        public void Dispose()
+        {
+            m_GameAction?.Dispose();
+        }
+
+        public bool LoadMap(string argsSceneName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -164,13 +164,13 @@ namespace Arycs_Fe.ScriptManagement
             return true;
         }
 
-        protected override ScenarioActionStatus Run(IGameAction gameAction, IScenarioContent content, CalcArgs args,
+        protected override ActionStatus Run(IGameAction gameAction, IScenarioContent content, CalcArgs args,
             out string error)
         {
             int binaryResult;
             if (!CalculateBinaryResult(args.binaryOp,args.value1,args.value2,out binaryResult, out error))
             {
-                return ScenarioActionStatus.Error;
+                return ActionStatus.Error;
             }
 
             int equalResult = 0;
@@ -183,11 +183,11 @@ namespace Arycs_Fe.ScriptManagement
                 int oldValue = ScenarioBlackboard.Get(args.name);
                 if (!CalculateBinaryResult(args.equalOp,oldValue,binaryResult,out binaryResult,out error))
                 {
-                    return ScenarioActionStatus.Error;
+                    return ActionStatus.Error;
                 }
             }
             ScenarioBlackboard.Set(args.name,equalResult);
-            return ScenarioActionStatus.Continue;
+            return ActionStatus.Continue;
         }
     }
 }

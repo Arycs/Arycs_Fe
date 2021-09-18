@@ -6,29 +6,29 @@ using UnityEngine;
 namespace YouYou
 {
     /// <summary>
-    /// ÈÕÖ¾¹ÜÀíÆ÷
+    /// æ—¥å¿—ç®¡ç†å™¨
     /// </summary>
     public class LoggerManager : ManagerBase, IDisposable
     {
         private List<string> m_LogArray;
 
         /// <summary>
-        /// ¼ÇÂ¼ÈÕÖ¾µÄÂ·¾¶
+        /// è®°å½•æ—¥å¿—çš„è·¯å¾„
         /// </summary>
         private string m_LogPath = null;
 
         /// <summary>
-        /// µ¥¸öÈÕÖ¾ÎÄ¼ş×î´óÈÕÖ¾ÊıÁ¿
+        /// å•ä¸ªæ—¥å¿—æ–‡ä»¶æœ€å¤§æ—¥å¿—æ•°é‡
         /// </summary>
         private int m_LogMaxCapacity = 500;
 
         /// <summary>
-        /// µ±Ç°ÈÕÖ¾ÊıÁ¿
+        /// å½“å‰æ—¥å¿—æ•°é‡
         /// </summary>
         private int m_CurrLogCount = 0;
 
         /// <summary>
-        /// ÈÕÖ¾»º´æµÄÊıÁ¿
+        /// æ—¥å¿—ç¼“å­˜çš„æ•°é‡
         /// </summary>
         private int m_LogBufferMaxNumber = 10;
 

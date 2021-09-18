@@ -2,6 +2,7 @@ using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Arycs_Fe.ScriptManagement;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -229,6 +230,10 @@ namespace YouYou
             get;private set;
         }
 
+        public static GameDirectorManager GameDirector
+        {
+            get; private set;
+        }
 
         #endregion
 
@@ -358,7 +363,8 @@ namespace YouYou
             UI = new YouYouUIManager();
             Audio = new AudioManager();
             Logger = new LoggerManager();
-
+            GameDirector = new GameDirectorManager();
+            
             Logger.Init();
             Event.Init();
             Time.Init();
@@ -376,7 +382,7 @@ namespace YouYou
             UI.Init();
             //Lua.Init();
             Audio.Init();
-
+            GameDirector.Init();
             Procedure.ChangeState(ProcedureState.Launch);
         }
         #endregion

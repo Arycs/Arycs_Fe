@@ -20,7 +20,7 @@ namespace Arycs_Fe.ScriptManagement
         /// <param name="gameAction"></param>
         /// <param name="content"></param>
         /// <returns></returns>
-        ScenarioActionStatus Execute(IGameAction gameAction, IScenarioContent content,out string error);
+        ActionStatus Execute(IGameAction gameAction, IScenarioContent content,out string error);
         
         
     }

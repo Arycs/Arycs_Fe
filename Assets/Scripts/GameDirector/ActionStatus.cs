@@ -7,7 +7,7 @@ namespace Arycs_Fe.ScriptManagement
     /// <summary>
     /// 剧本动作状态
     /// </summary>
-    public enum ScenarioActionStatus : int
+    public enum ActionStatus : int
     {
         /// <summary>
         /// 错误
@@ -44,6 +44,52 @@ namespace Arycs_Fe.ScriptManagement
         /// </summary>
         WaitMenuOption,
         
+        /// <summary>
+        /// 等待地图加载
+        /// </summary>
+        WaitMapDone,
+        
         //Others
+    }
+
+    /// <summary>
+    /// 地图状态
+    /// </summary>
+    public enum MapStatus
+    {
+        /// <summary>
+        /// 正常输入
+        /// </summary>
+        Normal,
+        
+        /// <summary>
+        /// 菜单
+        /// </summary>
+        Menu,
+        
+        /// <summary>
+        /// 移动后菜单
+        /// </summary>
+        SubMenu,
+        
+        /// <summary>
+        /// 显示移动范围
+        /// </summary>
+        MoveCursor,
+        
+        /// <summary>
+        /// 显示攻击范围
+        /// </summary>
+        AttackCursor,
+        
+        /// <summary>
+        /// 动画
+        /// </summary>
+        Animation,
+        
+        /// <summary>
+        /// 事件
+        /// </summary>
+        Event,
     }
 }

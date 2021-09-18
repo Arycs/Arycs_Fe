@@ -24,6 +24,9 @@ namespace Arycs_Fe.ScriptManagement
             }
         }
 
+        public static string battleMapScene { get; set; }
+        public static string mapScript { get; set; }
+        
         private static readonly Dictionary<string, VarValuePair> s_VarValues = new Dictionary<string, VarValuePair>();
         
         public static bool Contains(string name)

@@ -40,6 +40,17 @@ namespace Arycs_Fe.ScriptManagement
             set { m_Error = value; }
         }
 
+        public static List<Type> GetDefaultExecutorTypesForScenarioAction()
+        {
+            return new List<Type>()
+            {
+                typeof(VarExecutor),
+                typeof(GotoExecutor),
+                typeof(CalcExecutor),
+                typeof(IfGotoExecutor),
+            };
+        }
+
         public delegate void OnGameActionDelegate(IGameAction action, params object[] actionParams);
 
         public event OnGameActionDelegate onAbort;

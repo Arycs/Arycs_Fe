@@ -55,11 +55,11 @@ public class VarExecutor : ScenarioContentExecutor<VarExecutor.VarArgs>
         return true;
     }
 
-    protected override ScenarioActionStatus Run(IGameAction gameAction, IScenarioContent content, VarArgs args, out string error)
+    protected override ActionStatus Run(IGameAction gameAction, IScenarioContent content, VarArgs args, out string error)
     {
         ScenarioBlackboard.Set(args.name,args.value);
         error = null;
-        return ScenarioActionStatus.Continue;
+        return ActionStatus.Continue;
     }
 }
 }

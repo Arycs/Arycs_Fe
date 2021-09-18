@@ -32,12 +32,12 @@ namespace Arycs_Fe.ScriptManagement
             return true;
         }
 
-        protected override ScenarioActionStatus Run(IGameAction gameAction, IScenarioContent content, SetFlagArgs args, out string error)
+        protected override ActionStatus Run(IGameAction gameAction, IScenarioContent content, SetFlagArgs args, out string error)
         {
             ScenarioAction action;
             if (!ParseAction<ScenarioAction>(gameAction,out action,out error))
             {
-                return ScenarioActionStatus.Error;
+                return ActionStatus.Error;
             }
 
             return action.SetFlagCommand(args.flag, out error);

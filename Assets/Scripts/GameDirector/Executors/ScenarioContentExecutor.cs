@@ -15,7 +15,7 @@ namespace Arycs_Fe.ScriptManagement
         
         public abstract string code { get; }
 
-        public abstract ScenarioActionStatus Execute(IGameAction gameAction, IScenarioContent content, out string error);
+        public abstract ActionStatus Execute(IGameAction gameAction, IScenarioContent content, out string error);
 
         #region Methods
         /// <summary>
@@ -190,19 +190,19 @@ namespace Arycs_Fe.ScriptManagement
     {
         public abstract bool ParseArgs(IScenarioContent content, ref T args, out string error);
 
-        public sealed override ScenarioActionStatus Execute(IGameAction gameAction, IScenarioContent content,
+        public sealed override ActionStatus Execute(IGameAction gameAction, IScenarioContent content,
             out string error)
         {
             T args = default(T);
             if (!ParseArgs(content,ref args,out error))
             {
-                return ScenarioActionStatus.Error;
+                return ActionStatus.Error;
             }
 
             return Run(gameAction, content, args, out error);
         }
 
-        protected abstract ScenarioActionStatus Run(IGameAction gameAction, IScenarioContent content, T args,
+        protected abstract ActionStatus Run(IGameAction gameAction, IScenarioContent content, T args,
             out string error);
     }
 }

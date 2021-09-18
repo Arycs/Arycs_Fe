@@ -85,12 +85,12 @@ namespace Arycs_Fe.ScriptManagement
             return true;
         }
 
-        protected override ScenarioActionStatus Run(IGameAction gameAction, IScenarioContent content, IfGotoArgs args, out string error)
+        protected override ActionStatus Run(IGameAction gameAction, IScenarioContent content, IfGotoArgs args, out string error)
         {
             ScenarioAction action;
             if (!ParseAction<ScenarioAction>(gameAction,out action,out error))
             {
-                return ScenarioActionStatus.Error;
+                return ActionStatus.Error;
             }
 
             if (CompareResult(args.condition,args.left,args.right))
@@ -99,7 +99,7 @@ namespace Arycs_Fe.ScriptManagement
             }
 
             error = null;
-            return ScenarioActionStatus.Continue;
+            return ActionStatus.Continue;
         }
         
         protected bool IsMatchConditionOperator(string opStr, ref string condition, out string error)

@@ -14,7 +14,7 @@ namespace Arycs_Fe.ScriptManagement
     {
         private Iscenario m_Scenario = null;
         private int m_Token = 0;
-        private ScenarioActionStatus m_Status = ScenarioActionStatus.Error;
+        private ActionStatus m_Status = ActionStatus.Error;
 
         public Iscenario scenario
         {
@@ -34,7 +34,7 @@ namespace Arycs_Fe.ScriptManagement
         /// <summary>
         /// 当前剧本状态
         /// </summary>
-        public ScenarioActionStatus status
+        public ActionStatus status
         {
             get { return m_Status; }
             set { m_Status = value; }
@@ -119,7 +119,7 @@ namespace Arycs_Fe.ScriptManagement
             }
 
             this.scenario = scenario;
-            this.status = ScenarioActionStatus.Continue;
+            this.status = ActionStatus.Continue;
             this.token = 0;
             this.m_FlagDict.Clear();
             return true;
@@ -129,12 +129,12 @@ namespace Arycs_Fe.ScriptManagement
         /// 执行每一步命令
         /// </summary>
         /// <returns></returns>
-        private ScenarioActionStatus Step()
+        private ActionStatus Step()
         {
             if (token >= scenario.contentCount)
             {
                 error = $"{GetType().Name} -> 执行步骤 : 剧本执行完毕";
-                return ScenarioActionStatus.Error;
+                return ActionStatus.Error;
             }
 
             IScenarioContent content = scenario.GetContent(token);
@@ -154,33 +154,33 @@ namespace Arycs_Fe.ScriptManagement
                 {
                     //error = $"{GetType().Name} -> Step : executor '{content.code}' was not fount";
                     error = $"{GetType().Name} -> 执行步骤 : 解析器 '{content.code}' 未被找到";
-                    return ScenarioActionStatus.Error;
+                    return ActionStatus.Error;
                 }
             }
 
             token++;
-            ScenarioActionStatus result = executor.Execute(this, content, out m_Error);
+            ActionStatus result = executor.Execute(this, content, out m_Error);
 
             return result;
         }
 
         public override bool Update()
         {
-            while (status == ScenarioActionStatus.Continue)
+            while (status == ActionStatus.Continue)
             {
                 status = Step();
             }
 
             //如果出错了，就中断
-            if (status == ScenarioActionStatus.Error)
+            if (status == ActionStatus.Error)
             {
                 Abort();
                 return false;
             }
             //等待下一帧
-            else if (status == ScenarioActionStatus.NextFrame)
+            else if (status == ActionStatus.NextFrame)
             {
-                status = ScenarioActionStatus.Continue;
+                status = ActionStatus.Continue;
             }
 
             return true;
@@ -192,7 +192,7 @@ namespace Arycs_Fe.ScriptManagement
         /// <param name="flag">标识符</param>
         /// <param name="cmdError">错误日志</param>
         /// <returns></returns>
-        public ScenarioActionStatus SetFlagCommand(string flag, out string cmdError)
+        public ActionStatus SetFlagCommand(string flag, out string cmdError)
         {
             if (m_FlagDict.TryGetValue(flag, out int index))
             {
@@ -201,7 +201,7 @@ namespace Arycs_Fe.ScriptManagement
                 {
                     // cmdError = $"{GetType().Name} -> SetFlagCommand:flag '{flag}' is already exist";
                     cmdError = $"{GetType().Name} -> 设置剧情标识符:标识符 '{flag}' 已经存在";
-                    return ScenarioActionStatus.Error;
+                    return ActionStatus.Error;
                 }
             }
             else
@@ -210,7 +210,7 @@ namespace Arycs_Fe.ScriptManagement
             }
 
             cmdError = null;
-            return ScenarioActionStatus.Continue;
+            return ActionStatus.Continue;
         }
 
         /// <summary>
@@ -219,7 +219,7 @@ namespace Arycs_Fe.ScriptManagement
         /// <param name="flag"></param>
         /// <param name="cmdError"></param>
         /// <returns></returns>
-        public ScenarioActionStatus GotoCommand(string flag, out string cmdError)
+        public ActionStatus GotoCommand(string flag, out string cmdError)
         {
             if (!m_FlagDict.TryGetValue(flag, out int index))
             {
@@ -234,34 +234,34 @@ namespace Arycs_Fe.ScriptManagement
                     }
 
                     //向后查找时,将新的剧情标识符加入到字典中
-                    if (setFlagExecutor.Execute(this, content, out cmdError) == ScenarioActionStatus.Error)
+                    if (setFlagExecutor.Execute(this, content, out cmdError) == ActionStatus.Error)
                     {
-                        return ScenarioActionStatus.Error;
+                        return ActionStatus.Error;
                     }
 
                     // 是我们需要的剧情标识符
                     if (flag == content.code)
                     {
-                        return ScenarioActionStatus.Continue;
+                        return ActionStatus.Continue;
                     }
                 }
 
                 //没有搜索到
                 //cmdError = string.Format("{0} GotoCommand error:flag '{1}' was not found", GetType().Name, flag);
                 cmdError = $"{GetType().Name} 跳转指令 错误:标识符 '{flag}' 未被找到";
-                return ScenarioActionStatus.Error;
+                return ActionStatus.Error;
             }
 
             token = index;
             cmdError = null;
-            return ScenarioActionStatus.Continue;
+            return ActionStatus.Continue;
         }
 
         public override void Dispose()
         {
             base.Dispose();
             m_Scenario = null;
-            m_Status = ScenarioActionStatus.Error;
+            m_Status = ActionStatus.Error;
             m_Token = 0;
             m_ExecutorDict.Clear();
             m_FlagDict.Clear();
