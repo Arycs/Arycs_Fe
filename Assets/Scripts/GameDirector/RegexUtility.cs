@@ -32,5 +32,10 @@ namespace Arycs_Fe.ScriptManagement
         {
             return Regex.IsMatch(variable, k_Variable);
         }
+
+        public static int GetRichTextFormatString(string text, out Dictionary<int, int> richLengthDict, out Dictionary<int, KeyValuePair<string, string>> richTextDict)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

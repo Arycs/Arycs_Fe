@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,6 +29,14 @@ namespace Arycs_Fe.Maps
         public void OnSpawn()
         {
             Debug.LogError("MapMouseCursor 使用框架对象池内容处理。");
+        }
+
+        public void DisPlayCursor(bool show)
+        {
+            if (renderer != null)
+            {
+                renderer.enabled = show;
+            }
         }
     }
 }

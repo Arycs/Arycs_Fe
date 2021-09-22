@@ -12,6 +12,12 @@ namespace Arycs_Fe.ScriptManagement
             
         }
 
-       
+        protected override void BackAction()
+        {
+            MapAction action = previous as MapAction;
+            action.ScenarioDone();
+        }
+
+        
     }
 }

@@ -49,6 +49,16 @@ namespace Arycs_Fe.ScriptManagement
         /// </summary>
         WaitMapDone,
         
+        /// <summary>
+        /// 返回上一个Action
+        /// </summary>
+        BackAction,
+        
+        /// <summary>
+        /// 在地图中等待剧情
+        /// </summary>
+        WaitScenarioDone,
+        
         //Others
     }
 

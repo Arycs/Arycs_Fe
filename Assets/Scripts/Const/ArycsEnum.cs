@@ -97,4 +97,30 @@ namespace Arycs_Fe.Models
       [Obsolete("No animation", true)]
       Staff = 4,
    }
+   
+}
+
+namespace Arycs_Fe.ScriptManagement
+{
+   public enum MenuTextID
+   {
+      //Main 
+      Unit = 100,
+      Item = 101,
+      Data = 102,
+      Skill = 103,
+      Config = 104,
+      Save = 105,
+      TurnEnd = 106,
+      
+      //Common
+      Close = 110,
+      
+      //Player
+      Move = 120,
+      Holding = 121,
+      Talk = 122,
+      Attack = 123,
+      Status = 124,
+   }
 }

@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using Arycs_Fe.ScriptManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Arycs_Fe.ScriptManagement
 {
@@ -36,8 +38,45 @@ namespace Arycs_Fe.ScriptManagement
             }
 
             args.position = position;
+            StringBuilder builder = new StringBuilder();
 
-            args.text = "AAA";
+            int index = 2;
+            while (index < content.length)
+            {
+                string line;
+                if (content[index].StartsWith("\""))
+                {
+                    if (!ScenarioUtility.ParseContentString(content,ref index,out line ,out error))
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    // 可能是个变量
+                    int id = -1;
+                    if (!ParseOrGetVarValue(content[index],ref id ,out error))
+                    {
+                        return false;
+                    }
+                    //TODO  这里根据ID 获取语言包
+                    line = "AAA";
+                    if (string.IsNullOrEmpty(line))
+                    {
+                        error = $"{typeName} ParseArgs error : text id '{content[index]}' was not fount";
+                        return false;
+                    }
+
+                    index++;
+                }
+
+                builder.AppendLine(line);
+            }
+
+            args.text = builder.ToString();
+            
+            //从游戏设置中读取
+            // 最常见的就是类似J-AVG快进的形式
             args.async = true;
             error = null;
             return true;
@@ -45,7 +84,12 @@ namespace Arycs_Fe.ScriptManagement
 
         protected override ActionStatus Run(IGameAction gameAction, IScenarioContent content, TextArgs args, out string error)
         {
-            throw new System.NotImplementedException();
+            //TODO 打开UI窗口，写入内容
+            error = null;
+            
+            //如果是快进模式，要等待一帧，防止看不到界面，闪屏都没有
+            return args.async ? ActionStatus.WaitWriteTextDone : ActionStatus.NextFrame;
+
         }
     }
 }

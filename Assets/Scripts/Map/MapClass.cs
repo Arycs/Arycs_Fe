@@ -23,7 +23,13 @@ namespace Arycs_Fe.Maps
             get { return MapObjectType.Class; }
         }
 
-        //TODO
+        //TODO Role 地图对象上保存的人物
+        private Role m_Role;
+
+        public Role role
+        {
+            get { return m_Role; }
+        }
 
 
         private ClassAnimatorController m_AnimatorController;
@@ -64,8 +70,6 @@ namespace Arycs_Fe.Maps
         {
             get { return m_Moving; }
         }
-
-        private object m_Role; //TODO 没有写数据，先使用object代替
 
         /// <summary>
         /// 获取移动中的方向

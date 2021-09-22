@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Arycs_Fe.ScriptManagement;
 using UnityEngine;
+using YouYou;
 
 namespace Arycs_Fe.ScriptManagement
 {
@@ -183,7 +184,17 @@ namespace Arycs_Fe.ScriptManagement
                 status = ActionStatus.Continue;
             }
 
+            else if (status == ActionStatus.BackAction)
+            {
+                BackAction();
+                status = ActionStatus.NextFrame;
+            }
             return true;
+        }
+
+        protected virtual void BackAction()
+        {
+            GameEntry.GameDirector.BackGameAction();
         }
 
         /// <summary>
@@ -255,6 +266,14 @@ namespace Arycs_Fe.ScriptManagement
             token = index;
             cmdError = null;
             return ActionStatus.Continue;
+        }
+
+        public void MenuDone()
+        {
+            if (status == ActionStatus.WaitMenuOption)
+            {
+                status = ActionStatus.NextFrame;
+            }
         }
 
         public override void Dispose()

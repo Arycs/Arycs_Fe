@@ -50,6 +50,42 @@ namespace Arycs_Fe.ScriptManagement
                 typeof(IfGotoExecutor),
             };
         }
+    
+        /// <summary>
+        /// 获取所有主菜单的按钮文本
+        /// </summary>
+        /// <returns></returns>
+        public static HashSet<MenuTextID> GetDefaultMainMenuTextIds()
+        {
+            return new HashSet<MenuTextID>()
+            {
+                MenuTextID.Unit,
+                MenuTextID.Item,
+                MenuTextID.Data,
+                MenuTextID.Skill,
+                MenuTextID.Config,
+                MenuTextID.Save,
+                MenuTextID.TurnEnd,
+                MenuTextID.Close,
+            };
+        }
+
+        /// <summary>
+        /// 获取所有角色菜单按钮文本
+        /// </summary>
+        /// <returns></returns>
+        public static HashSet<MenuTextID> GetDefaultUnitMenuTextIds()
+        {
+            return new HashSet<MenuTextID>()
+            {
+                MenuTextID.Move,
+                MenuTextID.Attack,
+                MenuTextID.Holding,
+                MenuTextID.Talk,
+                MenuTextID.Status,
+                MenuTextID.Close,
+            };
+        }
 
         public delegate void OnGameActionDelegate(IGameAction action, params object[] actionParams);
 
