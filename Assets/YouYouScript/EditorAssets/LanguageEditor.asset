@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea9d5f196c9b9334cb96387a99433164, type: 3}
+  m_Name: LanguageEditor
+  m_EditorClassIdentifier: 
+  IsEditor: 0
+  FileName: Sys_Language
+  SaveTxtFilePath: Assets/Download/DataTable/Txt
+  SaveByteFilePath: Assets/Download/DataTable/Bytes
+  SaveCSFilePath: Assets/YouYouScript/Data/DataTable/Create
+  LanguageInfos:
+  - languageId: 1
+    chineseStr: Arycs_Fe

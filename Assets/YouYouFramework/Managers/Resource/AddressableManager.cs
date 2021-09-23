@@ -13,7 +13,7 @@ namespace YouYou
         /// <summary>
         /// 本地文件路径
         /// </summary>
-        public string LocalFilePath ;
+        public string LocalFilePath;
 
         /// <summary>
         /// 资源管理器

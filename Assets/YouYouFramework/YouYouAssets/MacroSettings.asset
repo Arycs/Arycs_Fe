@@ -13,19 +13,19 @@ MonoBehaviour:
   m_Name: MacroSettings
   m_EditorClassIdentifier: 
   Settings:
-  - Enable: 1
+  - Enable: 0
     Name: "\u6253\u5370\u9519\u8BEF\u65E5\u5FD7"
     Macro: DEBUG_LOG_ERROR
-  - Enable: 1
+  - Enable: 0
     Name: "\u6253\u5370\u666E\u901A\u65E5\u5FD7"
     Macro: DEBUG_LOG_NORMAL
-  - Enable: 1
+  - Enable: 0
     Name: "\u6253\u5370\u6D41\u7A0B\u65E5\u5FD7"
     Macro: DEBUG_LOG_PROCEDURE
-  - Enable: 1
+  - Enable: 0
     Name: "\u6253\u5370\u8D44\u6E90\u65E5\u5FD7"
     Macro: DEBUG_LOG_RESOURCE
-  - Enable: 1
+  - Enable: 0
     Name: "\u6253\u5370\u901A\u8BAF\u65E5\u5FD7"
     Macro: DEBUG_LOG_PROTO
   - Enable: 1

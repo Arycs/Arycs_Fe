@@ -259,7 +259,6 @@ namespace YouYou
                         assetPath = entity.AssetPath_Chinese;
                         break;
                     case YouYouLanguage.English:
-                        assetPath = entity.AssetPath_English;
                         break;
                 }
 
@@ -275,7 +274,7 @@ namespace YouYou
                     uiObj.transform.localScale = Vector3.one;
 
                     formBase = uiObj.GetComponent<UIFormBase>();
-                    formBase.Init(uiFormId, entity.UIGroupId, entity.DisableUILayer == 1, entity.IsLock == 1, userData);
+                    formBase.Init(uiFormId, entity.UIGroupId, entity.DisableUILayer, entity.IsLock, userData);
                     m_OpenUIFormList.AddLast(formBase);
 
                     OpenUI(entity, formBase, onOpen);

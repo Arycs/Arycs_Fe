@@ -32,11 +32,6 @@ namespace YouYou
         /// </summary>
         protected abstract void LoadList(MMO_MemoryStream ms);
 
-        public void LoadAA(MMO_MemoryStream ms)
-        {
-            LoadList(ms);
-        }
-
         #endregion
 
         #region 加载数据表数据

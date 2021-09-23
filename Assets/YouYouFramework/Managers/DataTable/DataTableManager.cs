@@ -24,16 +24,6 @@ namespace YouYou
         public int CurrLoadTableCount = 0;
         
         /// <summary>
-        /// 
-        /// </summary>
-        public Sys_CodeDBModel Sys_CodeDBModel { get; private set; }
-
-        /// <summary>
-        /// 系统特效表
-        /// </summary>
-        public Sys_EffectDBModel Sys_EffectDBModel { get; private set; }
-
-        /// <summary>
         /// 系统预置体表
         /// </summary>
         public Sys_PrefabDBModel Sys_PrefabDBModel { get; private set; }
@@ -69,9 +59,24 @@ namespace YouYou
         public Sys_SceneDetailDBModel Sys_SceneDetailDBModel { get; private set; }
 
         /// <summary>
-        /// 音效表
+        /// 道具表
         /// </summary>
-        public Sys_AudioDBModel Sys_AudioDBModel { get; private set; }
+        public Sys_ItemDBModel Sys_ItemDBModel { get; private set; }
+
+        /// <summary>
+        /// 语言包表
+        /// </summary>
+        public Sys_LanguageDBModel Sys_LanguageDBModel { get; private set; }
+
+        /// <summary>
+        /// 职业表
+        /// </summary>
+        public Sys_ClassDBModel Sys_ClassDBModel { get; private set; }
+
+        /// <summary>
+        /// 角色表
+        /// </summary>
+        public Sys_CharacterDBModel Sys_CharacterDBModel { get; private set; }
 
         /// <summary>
         /// 初始化DBModel
@@ -79,8 +84,6 @@ namespace YouYou
         private void InitDBModel()
         {
             //每个表都需要new一下
-            Sys_CodeDBModel = new Sys_CodeDBModel();
-            Sys_EffectDBModel = new Sys_EffectDBModel();
             LocalizationDBModel = new LocalizationDBModel();
             Sys_PrefabDBModel = new Sys_PrefabDBModel();
             Sys_SoundDBModel = new Sys_SoundDBModel();
@@ -88,7 +91,11 @@ namespace YouYou
             Sys_UIFormDBModel = new Sys_UIFormDBModel();
             Sys_SceneDBModel = new Sys_SceneDBModel();
             Sys_SceneDetailDBModel = new Sys_SceneDetailDBModel();
-            Sys_AudioDBModel = new Sys_AudioDBModel();
+            // New
+            Sys_ItemDBModel = new Sys_ItemDBModel();
+            Sys_LanguageDBModel = new Sys_LanguageDBModel();
+            Sys_ClassDBModel = new Sys_ClassDBModel();
+            Sys_ItemDBModel = new Sys_ItemDBModel();
         }
 
        
@@ -99,8 +106,6 @@ namespace YouYou
         public void LoadDataTable()
         {
             //每个表都需要LoadData
-            Sys_CodeDBModel.LoadData();
-            Sys_EffectDBModel.LoadData();
             LocalizationDBModel.LoadData();
             Sys_PrefabDBModel.LoadData();
             Sys_SoundDBModel.LoadData();
@@ -108,7 +113,11 @@ namespace YouYou
             Sys_UIFormDBModel.LoadData();
             Sys_SceneDBModel.LoadData();
             Sys_SceneDetailDBModel.LoadData();
-            Sys_AudioDBModel.LoadData();
+            //New
+            Sys_ItemDBModel.LoadData();
+            Sys_LanguageDBModel.LoadData();
+            Sys_ClassDBModel.LoadData();
+            Sys_ItemDBModel.LoadData();
         }
 
         /// <summary>
@@ -168,8 +177,6 @@ namespace YouYou
         public void Clear()
         {
             //每个表都Clear
-            Sys_CodeDBModel.Clear();
-            Sys_EffectDBModel.Clear();
             LocalizationDBModel.Clear();
             Sys_PrefabDBModel.Clear();
             Sys_SoundDBModel.Clear();

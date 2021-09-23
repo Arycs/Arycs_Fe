@@ -260,7 +260,7 @@ public class EditorTestPathFinding : MonoBehaviour
     {
         // TODO 在构造函数内部用的Random初始化，
         // 有了数据后，这个地方将进行修改
-        m_MoveConsumption = new MoveConsumption(ClassType.Knight1);
+        //m_MoveConsumption = new MoveConsumption();
 
         Debug.LogFormat("{0}={1}, {2}={3}",
             TerrainType.Plain.ToString(),

@@ -9,7 +9,7 @@ namespace Arycs_Fe.ScriptManagement
     /// <summary>
     /// 游戏剧情管理器
     /// </summary>
-    public class GameDirectorManager : MonoBehaviour, IDisposable
+    public class GameDirectorManager : ManagerBase, IDisposable
     {
         private IGameAction m_GameAction;
 
@@ -21,12 +21,7 @@ namespace Arycs_Fe.ScriptManagement
         }
 
         private Coroutine m_Coroutine = null;
-        private void Awake()
-        {
-            Init();
-        }
-
-        public void Init()
+        public override void Init()
         {
             ScenarioAction action = new ScenarioAction(m_GameAction);
             Type[] executorTypes = GameAction.GetDefaultExecutorTypesForScenarioAction().ToArray();
@@ -49,7 +44,7 @@ namespace Arycs_Fe.ScriptManagement
             return true;
         }
 
-        private void Update()
+        public void Update()
         {
             if (isLoaded)
             {
@@ -66,7 +61,7 @@ namespace Arycs_Fe.ScriptManagement
         /// </summary>
         public void RunGameAction()
         {
-            m_Coroutine = StartCoroutine(RunningGameAction());
+            m_Coroutine = GameEntry.Instance.StartCoroutine(RunningGameAction());
         }
 
         /// <summary>
@@ -133,7 +128,7 @@ namespace Arycs_Fe.ScriptManagement
             {
                 return;
             }
-            StopCoroutine(m_Coroutine);
+            GameEntry.Instance.StopCoroutine(m_Coroutine);
             m_Coroutine = null;
         }
 

@@ -299,41 +299,6 @@ namespace YouYou
 
         #endregion
 
-        #region 更新组件管理
-
-        /// <summary>
-        /// 更新组件的列表
-        /// </summary>
-        private static readonly LinkedList<IUpdateComponent> m_UpdateComponent = new LinkedList<IUpdateComponent>();
-
-        #region RegisterUpdateComponent 注册更新组件
-
-        /// <summary>
-        /// 注册更新组件
-        /// </summary>
-        /// <param name="component"></param>
-        public static void RegisterUpdateComponent(IUpdateComponent component)
-        {
-            m_UpdateComponent.AddLast(component);
-        }
-
-        #endregion
-
-        #region RemoveUpdateComponent 移除更新组件
-
-        /// <summary>
-        /// 移除更新组件
-        /// </summary>
-        /// <param name="component"></param>
-        public static void RemoveUpdateComponent(IUpdateComponent component)
-        {
-            m_UpdateComponent.Remove(component);
-        }
-
-        #endregion
-
-        #endregion
-
         private void Awake()
         {
             Instance = this;
@@ -380,7 +345,6 @@ namespace YouYou
             Resource.Init();
             Download.Init();
             UI.Init();
-            //Lua.Init();
             Audio.Init();
             GameDirector.Init();
             Procedure.ChangeState(ProcedureState.Launch);
@@ -394,12 +358,6 @@ namespace YouYou
 
         void Update()
         {
-            //循环更新组件
-            //for (LinkedListNode<IUpdateComponent> curr = m_UpdateComponent.First; curr != null; curr = curr.Next)
-            //{
-            //    curr.Value.OnUpdate();
-            //}
-
             Time.OnUpdate();
             Procedure.OnUpdate();
             Socket.OnUpdate();
@@ -415,12 +373,6 @@ namespace YouYou
         /// </summary>
         private void OnDestroy()
         {
-            ////关闭所有的基础组件
-            //for (LinkedListNode<YouYouBaseComponent> curr = m_BaseComponent.First; curr != null; curr = curr.Next)
-            //{
-            //    curr.Value.Shutdown();
-            //}
-
             Event.Dispose();
             Time.Dispose();
             Fsm.Dispose();

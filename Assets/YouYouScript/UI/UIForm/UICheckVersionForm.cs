@@ -24,11 +24,6 @@ public class UICheckVersionForm : UIFormBase
     protected override void OnInit(object userData)
     {
         base.OnInit(userData);
-        GameEntry.Event.CommonEvent.AddEventListener(SysEventId.CheckVersionBeginDownload, OnCheckVersionBeginDownload);
-        GameEntry.Event.CommonEvent.AddEventListener(SysEventId.CheckVersionDownloadUpdate,
-            OnCheckVersionDownloadUpdate);
-        GameEntry.Event.CommonEvent.AddEventListener(SysEventId.CheckVersionDownloadComplete,
-            OnCheckVersionDownloadComolete);
 
         GameEntry.Event.CommonEvent.AddEventListener(SysEventId.PreloadBegin, OnPreloadBegin);
         GameEntry.Event.CommonEvent.AddEventListener(SysEventId.PreloadUpdate, OnPreloadUpdate);
@@ -40,35 +35,6 @@ public class UICheckVersionForm : UIFormBase
         txtSize.gameObject.SetActive(false);
         scrollbar.gameObject.SetActive(false);
     }
-
-    #region 检查更新事件
-
-    private void OnCheckVersionBeginDownload(object userData)
-    {
-        txtTip.gameObject.SetActive(true);
-        txtSize.gameObject.SetActive(true);
-        scrollbar.gameObject.SetActive(true);
-
-        txtResourceVersion.text = string.Format("资源版本号 {0}", GameEntry.Resource.ResourceManager.CDNVersion);
-    }
-
-    private void OnCheckVersionDownloadUpdate(object userData)
-    {
-        BaseParams args = userData as BaseParams;
-
-        txtTip.text = string.Format("正在下载{0}/{1}", args.IntParam1, args.IntParam2);
-        scrollbar.size = (float) args.IntParam1 / args.IntParam2;
-
-        txtSize.text = string.Format("{0:f2}M/{1:f2}M", (float) args.ULongParam1 / (1024 * 1024),
-            (float) args.ULongParam2 / (1024 * 1024));
-    }
-
-    private void OnCheckVersionDownloadComolete(object userData)
-    {
-    }
-
-    #endregion
-
     #region 预加载事件
 
     private void OnPreloadBegin(object userData)
@@ -103,12 +69,6 @@ public class UICheckVersionForm : UIFormBase
     protected override void OnBeforDestroy()
     {
         base.OnBeforDestroy();
-        GameEntry.Event.CommonEvent.RemoveEventListener(SysEventId.CheckVersionBeginDownload,
-            OnCheckVersionBeginDownload);
-        GameEntry.Event.CommonEvent.RemoveEventListener(SysEventId.CheckVersionDownloadUpdate,
-            OnCheckVersionDownloadUpdate);
-        GameEntry.Event.CommonEvent.RemoveEventListener(SysEventId.CheckVersionDownloadComplete,
-            OnCheckVersionDownloadComolete);
 
         GameEntry.Event.CommonEvent.RemoveEventListener(SysEventId.PreloadBegin, OnPreloadBegin);
         GameEntry.Event.CommonEvent.RemoveEventListener(SysEventId.PreloadUpdate, OnPreloadUpdate);

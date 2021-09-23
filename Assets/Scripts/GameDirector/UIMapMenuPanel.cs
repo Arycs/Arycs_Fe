@@ -19,5 +19,4 @@ public class UIMapMenuPanel : MonoBehaviour
             m_OnItemClickAction(menuTextID);
         }
     }
-
 }

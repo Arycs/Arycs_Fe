@@ -4,10 +4,10 @@ using UnityEngine;
 
 public interface IEditorToBytes
 {
-   byte[] ToBytes();
+    byte[] ToBytes();
 
     void CreateByteFile();
-    
+
     bool CheckFile();
 
     void CreateTextFile();

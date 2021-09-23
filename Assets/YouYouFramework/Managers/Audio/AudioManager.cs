@@ -33,20 +33,20 @@ namespace YouYou
         /// <param name="onComplete"></param>
         public void LoadBanks(BaseAction onComplete) {
 #if DISABLE_ASSETBUNDLE && UNITY_EDITOR
-           string[] arr = Directory.GetFiles(Application.dataPath + "./Download/Audio/", "*.bytes");
-            int len = arr.Length;
-            for (int i = 0; i < len; i++)
-            {
-                FileInfo file = new FileInfo(arr[i]);
-                TextAsset asset =
-                    UnityEditor.AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Download/Audio/" + file.Name);
-                RuntimeManager.LoadBank(asset);
-            }
-
-            if (onComplete != null)
-            {
-                onComplete();
-            }
+            // string[] arr = Directory.GetFiles(Application.dataPath + "./Download/Audio/", "*.bytes");
+            // int len = arr.Length;
+            // for (int i = 0; i < len; i++)
+            // {
+            //     FileInfo file = new FileInfo(arr[i]);
+            //     TextAsset asset =
+            //         UnityEditor.AssetDatabase.LoadAssetAtPath<TextAsset>("Assets/Download/Audio/" + file.Name);
+            //     RuntimeManager.LoadBank(asset);
+            // }
+            //
+            // if (onComplete != null)
+            // {
+            //     onComplete();
+            // }
 #else
             GameEntry.Resource.ResourceLoaderManager.LoadAssetBundle(ConstDefine.AudioAssetBundlePath, onComplete: (AssetBundle bundle) =>
             {
@@ -97,15 +97,15 @@ namespace YouYou
         /// <param name="audioId"></param>
         public void PlayBGM(int audioId)
         {
-            Sys_AudioEntity entity = GameEntry.DataTable.Sys_AudioDBModel.Get(audioId);
-            if (entity != null)
-            {
-                PlayBGM(entity.AssetPath, entity.volume);
-            }
-            else
-            {
-                GameEntry.LogError("BGM不存在ID={0}", audioId);
-            }
+            // Sys_AudioEntity entity = GameEntry.DataTable.Sys_AudioDBModel.Get(audioId);
+            // if (entity != null)
+            // {
+            //     PlayBGM(entity.AssetPath, entity.volume);
+            // }
+            // else
+            // {
+            //     GameEntry.LogError("BGM不存在ID={0}", audioId);
+            // }
         }
 
         /// <summary>
@@ -274,16 +274,17 @@ namespace YouYou
         public int PlayAudio(int audioId, string parameterName = null, float value = 0,
             Vector3 pos3D = default(Vector3))
         {
-            Sys_AudioEntity entity = GameEntry.DataTable.Sys_AudioDBModel.Get(audioId);
-            if (entity != null)
-            {
-                return PlayAudio(entity.AssetPath, entity.volume, parameterName, value, entity.Is3D == 1, pos3D);
-            }
-            else
-            {
-                GameEntry.LogError("Audio不存在ID={0}", audioId);
-                return -1;
-            }
+            // Sys_AudioEntity entity = GameEntry.DataTable.Sys_AudioDBModel.Get(audioId);
+            // if (entity != null)
+            // {
+            //     return PlayAudio(entity.AssetPath, entity.volume, parameterName, value, entity.Is3D == 1, pos3D);
+            // }
+            // else
+            // {
+            //     GameEntry.LogError("Audio不存在ID={0}", audioId);
+            //     return -1;
+            // }
+            return -1;
         }
 
         /// <summary>

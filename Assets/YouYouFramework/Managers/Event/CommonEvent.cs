@@ -68,7 +68,6 @@ namespace YouYou
 
             if (lstHandler != null)
             {
-                int lstCount = lstHandler.Count; //获取集合数量 只调用一次, 针对for循环优化,如果用lstHandler.Count效果一样,但是每次访问都需要有额外开销
                 for (LinkedListNode<OnActionHandler> curr = lstHandler.First; curr != null; curr = curr.Next)
                 {
                     //获取索引数据 只调用一次

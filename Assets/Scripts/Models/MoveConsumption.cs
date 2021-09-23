@@ -10,8 +10,13 @@ namespace Arycs_Fe.Models
     /// </summary>
     public class MoveConsumption
     {
-        private MoveConsumptionInfo m_MoveConsumptionInfo;
+        private MoveConsumptionInfo m_Info;
 
+        public ClassType ClassType
+        {
+            get { return m_Info.type; }
+        }
+        
         public float this[TerrainType terrainType]
         {
             get
@@ -22,22 +27,13 @@ namespace Arycs_Fe.Models
                     return 0;
                 }
 
-                return m_MoveConsumptionInfo.consumptions[terrainType.ToInteger()];
+                return m_Info.consumptions[terrainType.ToInteger()];
             }
         }
 
-        public MoveConsumption(ClassType classType)
+        public MoveConsumption(MoveConsumptionInfo info)
         {
-            //TODO Load from config file
-            m_MoveConsumptionInfo = new MoveConsumptionInfo
-            {
-                type =  classType,
-                consumptions =  new float[TerrainType.MaxLength.ToInteger()]
-            };
-            for (int i = 0; i < m_MoveConsumptionInfo.consumptions.Length; i++)
-            {
-                m_MoveConsumptionInfo.consumptions[i] = UnityEngine.Random.Range(0.5f, 3f);
-            }
+            this.m_Info = info;
         }
     }
 }
