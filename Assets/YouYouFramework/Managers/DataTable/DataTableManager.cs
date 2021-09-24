@@ -79,6 +79,11 @@ namespace YouYou
         public Sys_CharacterDBModel Sys_CharacterDBModel { get; private set; }
 
         /// <summary>
+        /// 移动力消耗表
+        /// </summary>
+        public Sys_MoveConsumptionDBModel Sys_MoveConsumptionDBModel { get; private set; }
+
+        /// <summary>
         /// 初始化DBModel
         /// </summary>
         private void InitDBModel()
@@ -94,8 +99,10 @@ namespace YouYou
             // New
             Sys_ItemDBModel = new Sys_ItemDBModel();
             Sys_LanguageDBModel = new Sys_LanguageDBModel();
+            Sys_CharacterDBModel = new Sys_CharacterDBModel();
             Sys_ClassDBModel = new Sys_ClassDBModel();
             Sys_ItemDBModel = new Sys_ItemDBModel();
+            Sys_MoveConsumptionDBModel = new Sys_MoveConsumptionDBModel();
         }
 
        
@@ -106,18 +113,20 @@ namespace YouYou
         public void LoadDataTable()
         {
             //每个表都需要LoadData
-            LocalizationDBModel.LoadData();
-            Sys_PrefabDBModel.LoadData();
-            Sys_SoundDBModel.LoadData();
-            Sys_StorySoundDBModel.LoadData();
-            Sys_UIFormDBModel.LoadData();
-            Sys_SceneDBModel.LoadData();
-            Sys_SceneDetailDBModel.LoadData();
+            //LocalizationDBModel.LoadData();
+            //Sys_PrefabDBModel.LoadData();
+            //Sys_SoundDBModel.LoadData();
+            //Sys_StorySoundDBModel.LoadData();
+            //Sys_UIFormDBModel.LoadData();
+            //Sys_SceneDBModel.LoadData();
+            //Sys_SceneDetailDBModel.LoadData();
             //New
+            Sys_CharacterDBModel.LoadData();
             Sys_ItemDBModel.LoadData();
             Sys_LanguageDBModel.LoadData();
             Sys_ClassDBModel.LoadData();
             Sys_ItemDBModel.LoadData();
+            Sys_MoveConsumptionDBModel.LoadData();
         }
 
         /// <summary>
@@ -152,7 +161,7 @@ namespace YouYou
 #if DISABLE_ASSETBUNDLE
             GameEntry.Time.Yield(() =>
             {
-                byte[] buffer = IOUtil.GetFileBuffer(string.Format("{0}/download/DataTable/{1}.bytes",
+                byte[] buffer = IOUtil.GetFileBuffer(string.Format("{0}/download/DataTable/Bytes/{1}.bytes",
                     GameEntry.Resource.LocalFilePath, tableName));
                 if (onComplete != null)
                 {
@@ -182,6 +191,12 @@ namespace YouYou
             Sys_SoundDBModel.Clear();
             Sys_StorySoundDBModel.Clear();
             Sys_UIFormDBModel.Clear();
+            //New
+            Sys_ItemDBModel.Clear();
+            Sys_LanguageDBModel.Clear();
+            Sys_ClassDBModel.Clear();
+            Sys_ItemDBModel.Clear();
+            Sys_MoveConsumptionDBModel.Clear();
         }
 
         public void Dispose()

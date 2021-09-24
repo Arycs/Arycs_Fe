@@ -144,6 +144,20 @@ public struct FightProperties
         }
     }
 
+    public static FightProperties Clamp(FightProperties a,FightProperties b)
+    {
+        FightProperties fight = new FightProperties()
+        {
+            str = Mathf.Clamp(a.str, 0, b.str),
+            mag = Mathf.Clamp(a.mag, 0, b.mag),
+            skl = Mathf.Clamp(a.skl, 0, b.skl),
+            spd = Mathf.Clamp(a.spd, 0, b.spd),
+            def = Mathf.Clamp(a.def, 0, b.def),
+            mdf = Mathf.Clamp(a.mdf, 0, b.mdf),
+        };
+        return fight;
+    }
+
     public static FightProperties operator +(FightProperties lhs, FightProperties rhs)
     {
         FightProperties fight = new FightProperties

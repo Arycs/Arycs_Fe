@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ba730078e491f24ba07eea65bf6e83d, type: 3}
   m_Name: UIFormEditor
   m_EditorClassIdentifier: 
-  IsEditor: 1
+  IsEditor: 0
   FileName: Sys_UIForm
   SaveTxtFilePath: Assets/Download/DataTable/Txt
   SaveByteFilePath: Assets/Download/DataTable/Bytes

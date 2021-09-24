@@ -41,7 +41,7 @@ public partial class Sys_CharacterDBModel : DataTableDBModelBase<Sys_CharacterDB
             }
 
             m_List.Add(entity);
-            m_Dic[entity.Id] = entity;
+            m_Dic[entity.CharacterId] = entity;
         }
     }
 }

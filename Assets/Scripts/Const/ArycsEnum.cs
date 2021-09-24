@@ -63,43 +63,6 @@ namespace Arycs_Fe.Maps
    }
 }
 
-namespace Arycs_Fe.Models
-{
-   [Serializable]
-   public enum WeaponType : int
-   {
-      /// <summary>
-      /// 剑
-      /// </summary>
-      Sword = 0,
-
-      /// <summary>
-      /// 枪
-      /// </summary>
-      [Obsolete("No animation", true)]
-      Lance = 1,
-
-      /// <summary>
-      /// 斧
-      /// </summary>
-      [Obsolete("No animation", true)]
-      Axe = 2,
-
-      /// <summary>
-      /// 弓
-      /// </summary>
-      [Obsolete("No animation", true)]
-      Bow = 3,
-
-      /// <summary>
-      /// 杖
-      /// </summary>
-      [Obsolete("No animation", true)]
-      Staff = 4,
-   }
-   
-}
-
 namespace Arycs_Fe.ScriptManagement
 {
    public enum MenuTextID

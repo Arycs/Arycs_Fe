@@ -15,41 +15,44 @@
 
 using System;
 
-/// <summary>
-/// 武器类型
-/// </summary>
-[Serializable]
-public enum WeaponType : int
+namespace Arycs_Fe.Models
 {
-    Unknow = -1,
+    /// <summary>
+    /// 武器类型
+    /// </summary>
+    [Serializable]
+    public enum WeaponType : int
+    {
+        Unknow = -1,
 
-    /// <summary>
-    /// 剑
-    /// </summary>
-    Sword = 0,
+        /// <summary>
+        /// 剑
+        /// </summary>
+        Sword = 0,
 
-    /// <summary>
-    /// 枪
-    /// </summary>
-    [Obsolete("No animation", false)] Lance = 1,
+        /// <summary>
+        /// 枪
+        /// </summary>
+        [Obsolete("No animation", false)] Lance = 1,
 
-    /// <summary>
-    /// 斧
-    /// </summary>
-    [Obsolete("No animation", false)] Axe = 2,
+        /// <summary>
+        /// 斧
+        /// </summary>
+        [Obsolete("No animation", false)] Axe = 2,
 
-    /// <summary>
-    /// 弓
-    /// </summary>
-    [Obsolete("No animation", false)] Bow = 3,
+        /// <summary>
+        /// 弓
+        /// </summary>
+        [Obsolete("No animation", false)] Bow = 3,
 
-    /// <summary>
-    /// 杖
-    /// </summary>
-    [Obsolete("No animation", false)] Staff = 4,
-    
-    /// <summary>
-    /// 最大长度
-    /// </summary>
-    MaxLength = 5,
+        /// <summary>
+        /// 杖
+        /// </summary>
+        [Obsolete("No animation", false)] Staff = 4,
+
+        /// <summary>
+        /// 最大长度
+        /// </summary>
+        MaxLength = 5,
+    }
 }

@@ -39,7 +39,7 @@ public class ItemEditor : ScriptableObject, IEditorToBytes
     public void CreateByteFile()
     {
         byte[] buffer = ToBytes();
-        FileStream fs = new FileStream(string.Format("{0}/{1}", SaveTxtFilePath, FileName + ".bytes"), FileMode.Create);
+        FileStream fs = new FileStream(string.Format("{0}/{1}", SaveByteFilePath, FileName + ".bytes"), FileMode.Create);
         fs.Write(buffer, 0, buffer.Length);
         fs.Close();
         Debug.LogErrorFormat("客户端 ==> {0}.bytes 文件生成完毕", FileName);

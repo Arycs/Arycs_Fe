@@ -159,5 +159,15 @@ namespace Arycs_Fe.Models
         }
 
         #endregion
+
+        public float GetDamageAnimationLength(Direction dir)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public float GetEvadeAnimationLength(Direction dir)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

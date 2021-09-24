@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Arycs_Fe.Maps;
 using Arycs_Fe.Models;
 using UnityEngine;
+using YouYou;
 
 namespace Arycs_Fe.Maps
 {
@@ -23,9 +24,7 @@ namespace Arycs_Fe.Maps
             get { return MapObjectType.Class; }
         }
 
-        //TODO Role 地图对象上保存的人物
         private Role m_Role;
-
         public Role role
         {
             get { return m_Role; }
@@ -223,10 +222,25 @@ namespace Arycs_Fe.Maps
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public virtual bool Load(int id)
+        public virtual bool Load(int id,RoleType roleType)
         {
-            //TODO 
-            return true;
+            m_Role = GameEntry.Data.RoleDataManager.GetOrCreateRole(id, roleType);
+            return m_Role != null;
+        }
+
+        /// <summary>
+        /// 战斗结束
+        /// </summary>
+        /// <param name="hp"></param>
+        /// <param name="mp"></param>
+        /// <param name="durablity"></param>
+        public void OnBattleEnd(int hp, int mp, int durablity)
+        {
+            role.OnBattleEnd(hp, mp, durablity);
+            if (role.isDead)
+            {
+                //TODO 死亡
+            }
         }
 
         //TODO 对象池 ，回池调用

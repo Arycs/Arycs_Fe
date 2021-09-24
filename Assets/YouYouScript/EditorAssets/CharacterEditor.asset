@@ -18,18 +18,33 @@ MonoBehaviour:
   SaveByteFilePath: Assets/Download/DataTable/Bytes
   SaveCSFilePath: Assets/YouYouScript/Data/DataTable/Create
   CharacterInfos:
-  - characterId: 0
-    characterName: "\u4EBA\u7269\u540D\u79F0"
+  - characterId: 1
+    characterName: Eric
     characterProfile: "\u4EBA\u7269\u5934\u50CF"
-    classId: 0
-    characterLevel: 0
-    characterHp: 0
-    characterMp: 0
+    classId: 1
+    characterLevel: 1
+    characterHp: 20
+    characterMp: 15
+    characterLuk: 20
+    characterFightProperties:
+      str: 1
+      mag: 1
+      skl: 1
+      spd: 2
+      def: 1
+      mdf: 5
+  - characterId: 2
+    characterName: "\u6742\u5175"
+    characterProfile: "\u4EBA\u7269\u5934\u50CF"
+    classId: 2
+    characterLevel: 1
+    characterHp: 10
+    characterMp: 10
     characterLuk: 0
     characterFightProperties:
-      str: 0
-      mag: 0
-      skl: 0
-      spd: 0
-      def: 0
-      mdf: 0
+      str: 1
+      mag: 1
+      skl: 1
+      spd: 1
+      def: 1
+      mdf: 1

@@ -666,26 +666,43 @@ namespace Arycs_Fe.Maps
                 return false;
             }
             //TODO 搜索移动范围，从MapClass中读取数据
-            float movePoint = 0;
-            MoveConsumption consumption = null;
+            Role role = cls.role;
+            if (role == null)
+            {
+                Debug.LogErrorFormat(
+                    "MapGraph -> SearchMoveRange: `cls.role` is null. Pos: {0}", 
+                    cell.position.ToString());
+                return false;
+            }
 
+            float movePoint = role.movePoint;
+            MoveConsumption consumption = role.cls.moveConsumption;
             List<CellData> rangeCells = SearchMoveRange(cell, movePoint, consumption);
             if (rangeCells == null)
             {
                 return false;
             }
-            moveCells = rangeCells.ToArray();
 
-            if (nAtk /*TODO && 是否有武器*/)
+            HashSet<CellData> moveRangeCells = new HashSet<CellData>(rangeCells, CellPositionEqualityComparer);
+            moveCells = moveRangeCells;
+
+            if (nAtk && role.equipedWeapon != null)
             {
-                //Todo 搜索攻击范围， 从MapClass中读取数据
-                Vector2Int atkRange = Vector2Int.one;
+                //搜索攻击范围， 从MapClass中读取数据
+                Vector2Int atkRange = new Vector2Int(
+                    role.equipedWeapon.minRange,
+                    role.equipedWeapon.maxRange);
 
                 HashSet<CellData> atkRangeCells = new HashSet<CellData>(CellPositionEqualityComparer);
                 foreach (CellData moveCell in moveCells)
                 {
                     rangeCells = SearchAttackRange(moveCell, atkRange.x, atkRange.y, true);
-                    if (rangeCells != null && rangeCells.Count > 0)
+                    if (rangeCells == null)
+                    {
+                        return false;
+                    }
+                    
+                    if (rangeCells.Count > 0)
                     {
                         atkRangeCells.UnionWith(rangeCells.Where(c => !c.hasCursor));
                     }

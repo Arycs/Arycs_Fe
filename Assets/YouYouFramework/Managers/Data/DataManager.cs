@@ -33,11 +33,32 @@ namespace YouYou
             get; private set;
         }
 
+        /// <summary>
+        /// 角色数据控制器
+        /// </summary>
+        public RoleDataManager RoleDataManager
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 物品数据控制器
+        /// </summary>
+        public ItemDataManager ItemDataManager
+        {
+            get;
+            private set;
+        }
+
+
         public DataManager()
         {
             CacheDataManager = new CacheDataManager();
             SysDataManager = new SysDataManager();
             PVEMapDataManaer = new PVEMapDataManager();
+            RoleDataManager = new RoleDataManager();
+            ItemDataManager = new ItemDataManager();
         }
 
         public void Dispose()
@@ -45,11 +66,13 @@ namespace YouYou
             CacheDataManager.Dispose();
             SysDataManager.Dispose();
             PVEMapDataManaer.Dispose();
+            RoleDataManager.Dispose();
+            ItemDataManager.Dispose();
         }
 
         public override void Init()
         {
-            
+            RoleDataManager.Init();
         }
     }
 }

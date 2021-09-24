@@ -100,12 +100,17 @@ public class Weapon : Item
 
     public int minRange;
 
-    public int maxRang;
+    public int maxRange;
 
-    public int weigth;
+    public int weight;
 
-    public int durability;
+    public int hit;
     
+    public int durability;
+
+    public int luk;
+
+    public FightProperties fightProperties;
     public Weapon(Sys_ItemEntity info, ulong guid) : base(info, guid)
     {
     }

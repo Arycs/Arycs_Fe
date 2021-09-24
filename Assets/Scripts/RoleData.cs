@@ -60,6 +60,8 @@ namespace Arycs_Fe.Models
 
         public float movePoint;
 
+        public bool holding;
+        
         public override void CopyTo(RoleData data)
         {
             if (data == null)

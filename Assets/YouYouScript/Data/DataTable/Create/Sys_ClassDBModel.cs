@@ -6,6 +6,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using Arycs_Fe.Models;
 using YouYou;
 
 /// <summary>
@@ -41,7 +42,7 @@ public partial class Sys_ClassDBModel : DataTableDBModelBase<Sys_ClassDBModel, S
             {
                 entity.MaxFightProperties[j] = ms.ReadInt();
             }
-            for (int j = 0; j < (int) FightPropertyType.MaxLength; j++)
+            for (int j = 0; j < (int) WeaponType.MaxLength; j++)
             {
                 entity.AvailableWeapons[j] = ms.ReadInt();
             }

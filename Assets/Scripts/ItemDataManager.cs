@@ -148,4 +148,8 @@ public class ItemDataManager
       m_Items = null;
       m_ItemTempLates = null;
    }
+
+   public void Dispose()
+   {
+   }
 }

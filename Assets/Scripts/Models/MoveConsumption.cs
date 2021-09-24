@@ -10,11 +10,11 @@ namespace Arycs_Fe.Models
     /// </summary>
     public class MoveConsumption
     {
-        private MoveConsumptionInfo m_Info;
+        private Sys_MoveConsumptionEntity m_Info;
 
         public ClassType ClassType
         {
-            get { return m_Info.type; }
+            get { return m_Info.classType; }
         }
         
         public float this[TerrainType terrainType]
@@ -31,7 +31,7 @@ namespace Arycs_Fe.Models
             }
         }
 
-        public MoveConsumption(MoveConsumptionInfo info)
+        public MoveConsumption(Sys_MoveConsumptionEntity info)
         {
             this.m_Info = info;
         }

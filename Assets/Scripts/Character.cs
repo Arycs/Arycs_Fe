@@ -6,6 +6,11 @@ namespace Arycs_Fe.Models
 {
     public class Character
     {
-        private CharacterInfo m_Info;
+        public Sys_CharacterEntity info { get; private set; }
+
+        public Character(Sys_CharacterEntity info)
+        {
+            this.info = info;
+        }
     }
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0237fd4dddfb5c24f83306d4b18a4cd7, type: 3}
   m_Name: ClassEditor
   m_EditorClassIdentifier: 
-  IsEditor: 0
+  IsEditor: 1
   FileName: Sys_Class
   SaveTxtFilePath: Assets/Download/DataTable/Txt
   SaveByteFilePath: Assets/Download/DataTable/Bytes
@@ -23,76 +23,50 @@ MonoBehaviour:
     animator: 123
     name: 123
     classType: 0
-    movePoint: 1
+    movePoint: 5
     fightProperties:
-      str: 0
-      mag: 0
-      skl: 0
-      spd: 0
-      def: 0
-      mdf: 0
+      str: 5
+      mag: 5
+      skl: 5
+      spd: 5
+      def: 5
+      mdf: 5
     maxFightProperties:
-      str: 0
-      mag: 0
-      skl: 0
-      spd: 0
-      def: 0
-      mdf: 0
+      str: 3
+      mag: 10
+      skl: 10
+      spd: 10
+      def: 10
+      mdf: 3
     availableWeapons:
-      sword: 0
-      lance: 0
-      axe: 0
-      bow: 0
-      staff: 0
+      sword: 3
+      lance: 3
+      axe: 3
+      bow: 3
+      staff: 3
   - id: 2
     prefab: 456
     animator: 456
     name: 456
-    classType: 0
-    movePoint: 0
+    classType: 1
+    movePoint: 10
     fightProperties:
-      str: 0
-      mag: 0
-      skl: 0
-      spd: 0
-      def: 0
-      mdf: 0
+      str: 3
+      mag: 3
+      skl: 3
+      spd: 3
+      def: 3
+      mdf: 3
     maxFightProperties:
-      str: 0
-      mag: 0
-      skl: 0
-      spd: 0
-      def: 0
-      mdf: 0
+      str: 10
+      mag: 10
+      skl: 10
+      spd: 10
+      def: 10
+      mdf: 10
     availableWeapons:
-      sword: 0
-      lance: 0
-      axe: 0
-      bow: 0
-      staff: 0
-  - id: 0
-    prefab: PrefabName
-    animator: AnimatorName
-    name: "\u9886\u4E3B"
-    classType: 13
-    movePoint: 5
-    fightProperties:
-      str: 0
-      mag: 0
-      skl: 0
-      spd: 0
-      def: 0
-      mdf: 0
-    maxFightProperties:
-      str: 0
-      mag: 0
-      skl: 0
-      spd: 0
-      def: 0
-      mdf: 0
-    availableWeapons:
-      sword: 0
-      lance: 0
-      axe: 0
-      bow: 0
-      staff: 0
+      sword: 2
+      lance: 2
+      axe: 2
+      bow: 2
+      staff: 2
