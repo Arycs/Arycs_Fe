@@ -7,8 +7,17 @@ namespace Arycs_Fe.CombatManagement
 
     public enum BattleActionType
     {
+        /// <summary>
+        /// 无动作
+        /// </summary>
         Unknow,
+        /// <summary>
+        /// 前置
+        /// </summary>
         Prepare,
+        /// <summary>
+        /// 攻击
+        /// </summary>
         Attack,
         MageAttack,
         Heal,

@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace Arycs_Fe.CombatManagement
 {
+    /// <summary>
+    /// 战斗实体
+    /// </summary>
     public class CombatUnit :IDisposable
     {
         public MapClass mapClass { get; private set; }

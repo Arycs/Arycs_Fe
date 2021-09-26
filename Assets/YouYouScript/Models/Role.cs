@@ -8,8 +8,14 @@ namespace Arycs_Fe.Models
 {
     public abstract class Role
     {
+        /// <summary>
+        /// 角色武器
+        /// </summary>
         protected Weapon m_EquipedWeapon = null;
 
+        /// <summary>
+        /// 角色背包
+        /// </summary>
         protected readonly Item[] m_Items = new Item[SettingVars.k_RoleItemCount];
 
         protected RoleData self { get; set; }
@@ -19,54 +25,50 @@ namespace Arycs_Fe.Models
             get { return self.guid; }
         }
 
-        public abstract RoleType RoleType { get; }
+        public abstract RoleType roleType { get; }
+
         public int characterId
         {
             get { return self.characterId; }
         }
-        
+
         public Character character
         {
-            get
-            {
-                return GameEntry.Data.RoleDataManager.GetOrCreateCharacter(self.characterId);
-            }
+            get { return GameEntry.Data.RoleDataManager.GetOrCreateCharacter(self.characterId); }
         }
-        
+
         public int classId
         {
             get { return self.classId; }
         }
-        
+
         public Class cls
         {
-            get
-            {
-                return GameEntry.Data.RoleDataManager.GetOrCreateClass(self.classId);
-            }
+            get { return GameEntry.Data.RoleDataManager.GetOrCreateClass(self.classId); }
         }
-        
+
         public MoveConsumption moveConsumption
         {
             get { return cls.moveConsumption; }
         }
-        
+
         public AttitudeTowards attitudeTowards
         {
             get { return self.attitudeTowards; }
             set { self.attitudeTowards = value; }
         }
-        
+
         public int level
         {
             get { return self.level; }
             set { self.level = value; }
         }
-        
+
         public virtual FightProperties fightProperties
         {
             get { return self.fightProperties; }
         }
+
         public virtual int maxHp
         {
             get { return self.hp; }
@@ -126,13 +128,14 @@ namespace Arycs_Fe.Models
                 return atk;
             }
         }
-        
+
         /// <summary>
         /// 魔法攻击力
         /// </summary>
         public int mageAttack
         {
-            get {
+            get
+            {
                 if (equipedWeapon == null)
                 {
                     return 0;
@@ -170,7 +173,7 @@ namespace Arycs_Fe.Models
                 return mdf;
             }
         }
-        
+
         /// <summary>
         /// 攻速
         /// </summary>
@@ -237,20 +240,24 @@ namespace Arycs_Fe.Models
         {
             get { return self.hp <= 0; }
         }
+
         protected Role()
         {
             self = new RoleData();
         }
+
         protected Role(ulong guid) : this()
         {
             self.guid = guid;
         }
+
         public virtual bool Load(RoleData data)
         {
             if (data == null)
             {
                 return false;
             }
+
             data.CopyTo(self);
             return true;
         }
@@ -283,7 +290,7 @@ namespace Arycs_Fe.Models
         {
             if (item == null)
             {
-                return - 1;
+                return -1;
             }
 
             int index = GetNullItemIndex();
@@ -314,7 +321,7 @@ namespace Arycs_Fe.Models
 
             Item item = m_Items[index];
             m_Items[index] = null;
-            
+
             //如果是装备的武器
             if (item.ItemType == ItemType.Weapon && m_EquipedWeapon == item)
             {
@@ -351,10 +358,11 @@ namespace Arycs_Fe.Models
             {
                 value += equipedWeapon.fightProperties[type];
             }
+
             //叠加所有饰品的属性
             foreach (Item item in items)
             {
-                if (item!= null && item.ItemType == ItemType.Ornament)
+                if (item != null && item.ItemType == ItemType.Ornament)
                 {
                     value += ((Ornament) item).fightProperties[type];
                 }
@@ -375,12 +383,13 @@ namespace Arycs_Fe.Models
             {
                 value += equipedWeapon.luk;
             }
+
             //叠加所有饰品幸运
             foreach (Item item in items)
             {
                 if (item != null && item.ItemType == ItemType.Ornament)
                 {
-                    value += ((Ornament)item).luk;
+                    value += ((Ornament) item).luk;
                 }
             }
 
@@ -403,29 +412,33 @@ namespace Arycs_Fe.Models
         }
     }
 
+    /// <summary>
+    /// 特有角色
+    /// </summary>
     public class UniqueRole : Role
     {
-        public override RoleType RoleType
+        public override RoleType roleType
         {
             get { return RoleType.Unique; }
         }
 
         public UniqueRole() : base()
         {
-            
         }
     }
 
+    /// <summary>
+    /// 从属角色
+    /// </summary>
     public class FollowingRole : Role
     {
-        public override RoleType RoleType
+        public override RoleType roleType
         {
             get { return RoleType.Following; }
         }
 
         public FollowingRole(ulong guid) : base(guid)
         {
-            
         }
     }
 }

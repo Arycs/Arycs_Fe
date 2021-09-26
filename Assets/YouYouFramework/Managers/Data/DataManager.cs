@@ -10,25 +10,9 @@ namespace YouYou
     public class DataManager : ManagerBase, IDisposable
     {
         /// <summary>
-        /// 游戏缓存数据
-        /// </summary>
-        public CacheDataManager CacheDataManager
-        {
-            get; private set;
-        }
-
-        /// <summary>
         /// 系统数据
         /// </summary>
         public SysDataManager SysDataManager
-        {
-            get; private set;
-        }
-
-        /// <summary>
-        /// PVE地图数据
-        /// </summary>
-        public PVEMapDataManager PVEMapDataManaer
         {
             get; private set;
         }
@@ -54,18 +38,14 @@ namespace YouYou
 
         public DataManager()
         {
-            CacheDataManager = new CacheDataManager();
             SysDataManager = new SysDataManager();
-            PVEMapDataManaer = new PVEMapDataManager();
             RoleDataManager = new RoleDataManager();
             ItemDataManager = new ItemDataManager();
         }
 
         public void Dispose()
         {
-            CacheDataManager.Dispose();
             SysDataManager.Dispose();
-            PVEMapDataManaer.Dispose();
             RoleDataManager.Dispose();
             ItemDataManager.Dispose();
         }

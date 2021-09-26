@@ -195,10 +195,6 @@ namespace Arycs_Fe.CombatManagement
                     
                 }
             }
-            
-            
-
-            
         }
 
         /// <summary>

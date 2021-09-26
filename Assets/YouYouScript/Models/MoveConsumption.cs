@@ -23,7 +23,7 @@ namespace Arycs_Fe.Models
             {
                 if (terrainType == TerrainType.MaxLength)
                 {
-                    Debug.LogError("MoveConsuption -> TerrainType can not be MaxLength.");
+                    Debug.LogError("MoveConsumption -> TerrainType can not be MaxLength.");
                     return 0;
                 }
 

@@ -110,7 +110,7 @@ public class RoleDataManager : IDisposable
             else
             {
                 character = new Character(entity);
-                m_Characters .Add(characterId,character);
+                m_Characters.Add(characterId,character);
             }
         }
 
@@ -135,8 +135,7 @@ public class RoleDataManager : IDisposable
         RoleData data;
         if (!m_FollowingTemplates.TryGetValue(info.Id,out data))
         {
-            data = new RoleData();
-            data.classId = info.Id;
+            data = new RoleData {classId = info.Id};
             //TODO 计算公式， 计算NPC出生数据
             
             m_FollowingTemplates.Add(data.classId,data);
@@ -218,17 +217,19 @@ public class RoleDataManager : IDisposable
             return null;
         }
 
-        RoleData self = new RoleData();
-        self.characterId = characterId;
-        self.classId = character.info.CharacterClassId;
-        self.level = Mathf.Clamp(character.info.CharacterLevel, 0, SettingVars.maxLevel);
-        self.exp = 0;
-        self.fightProperties = FightProperties.Clamp(character.info.CharacterFightProperties + cls.info.FightProperties,
-            cls.info.MaxFightProperties);
-        self.hp = character.info.CharacterHp;
-        self.mp = character.info.CharacterMp;
-        self.luk = Mathf.Clamp(character.info.CharacterLuk, 0, SettingVars.maxLuk);
-        self.movePoint = cls.info.MovePoint;
+        RoleData self = new RoleData
+        {
+            characterId = characterId,
+            classId = character.info.CharacterClassId,
+            level = Mathf.Clamp(character.info.CharacterLevel, 0, SettingVars.maxLevel),
+            exp = 0,
+            fightProperties = FightProperties.Clamp(character.info.CharacterFightProperties + cls.info.FightProperties,
+                cls.info.MaxFightProperties),
+            hp = character.info.CharacterHp,
+            mp = character.info.CharacterMp,
+            luk = Mathf.Clamp(character.info.CharacterLuk, 0, SettingVars.maxLuk),
+            movePoint = cls.info.MovePoint
+        };
 
         return self;
     }
