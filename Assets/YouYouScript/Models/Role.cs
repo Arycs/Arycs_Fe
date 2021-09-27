@@ -107,7 +107,6 @@ namespace Arycs_Fe.Models
         public bool holding
         {
             get { return self.holding; }
-            set { self.holding = value; }
         }
 
         /// <summary>
@@ -409,6 +408,16 @@ namespace Arycs_Fe.Models
         public void ResetMovePoint()
         {
             throw new System.NotImplementedException();
+        }
+
+        public void OnMoveEnd(float consume)
+        {
+            self.movePoint -= consume;
+        }
+
+        public void Holding(bool holding)
+        {
+            self.holding = holding;
         }
     }
 

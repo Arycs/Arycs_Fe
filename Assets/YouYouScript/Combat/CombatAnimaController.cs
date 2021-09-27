@@ -89,8 +89,6 @@ namespace Arycs_Fe.CombatManagement
 
         #endregion
 
-
-
         private Combat m_Combat;
         public Combat combat
         {
@@ -118,7 +116,7 @@ namespace Arycs_Fe.CombatManagement
 
         private Coroutine m_AnimaCoroutine;
 
-        public bool isAnimaRuning
+        public bool isAnimaRunning
         {
             get { return m_AnimaCoroutine != null; }
         }
@@ -149,7 +147,7 @@ namespace Arycs_Fe.CombatManagement
         /// <param name="isMap"></param>
         public void PlayAnimas(bool inMap)
         {
-            if (combat == null || !isCombatLoaded || isAnimaRuning)
+            if (combat == null || !isCombatLoaded || isAnimaRunning)
             {
                 return;
             }

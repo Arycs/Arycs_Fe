@@ -218,5 +218,10 @@ namespace Arycs_Fe.CombatManagement
             unit0.ClearMapClass();
             unit1.ClearMapClass();
         }
+
+        public static CombatAnimaController GetOrAdd(GameObject mapGameObject)
+        {
+            return mapGameObject.GetComponent<CombatAnimaController>();
+        }
     }
 }

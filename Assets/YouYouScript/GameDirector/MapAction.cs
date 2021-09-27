@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Arycs_Fe.CombatManagement;
 using Arycs_Fe.Maps;
 using Arycs_Fe.Models;
 using Arycs_Fe.ScriptManagement;
@@ -16,18 +17,21 @@ namespace Arycs_Fe.ScriptManagement
     {
         private MapGraph map { get; set; }
         private string nextScene { get; set; } = string.Empty;
-        private ActionStatus status { get; set; } = ActionStatus.Error;
-        private MapScenarioAction scenarioAction = null;
+        public ActionStatus status { get; set; } = ActionStatus.Error;
+        public MapScenarioAction scenarioAction = null;
 
-        private MapStatus mapStatus { get; set; } = MapStatus.Normal;
+        public MapStatus mapStatus { get; set; } = MapStatus.Normal;
 
-        private AttitudeTowards turn { get; set; } = AttitudeTowards.Player;
-        private int m_TurnToken = 0;
+        public AttitudeTowards turn { get; set; } = AttitudeTowards.Player;
+        public int turnToken { get; set; } = 0;
 
         private CellData selectedCell { get; set; } = null;
-        private MapClass selectedUnit { get; set; } = null;
-        private MapClass targetUnit { get; set; } = null;
+        public MapClass selectedUnit { get; set; } = null;
+        public MapClass targetUnit { get; set; } = null;
         private CellData movingEndCell { get; set; } = null;
+
+        protected readonly Dictionary<AttitudeTowards, List<MapClass>> m_UnitDict =
+            new Dictionary<AttitudeTowards, List<MapClass>>();
 
         public MapAction() : base()
         {
@@ -273,7 +277,132 @@ namespace Arycs_Fe.ScriptManagement
         /// <param name="sub"></param>
         protected void ShowMapMenu(bool sub)
         {
-            //TODO
+            //TODO 打开MapMenu 界面
+            HashSet<MenuTextID> showButtons;
+
+            // 如果点击的不是角色，那么显示主菜单
+            if (selectedUnit == null)
+            {
+                showButtons = GetDefaultMainMenuTextIds();
+                //如果角色移动过，就不能存档
+                foreach (MapClass mapClass in m_UnitDict[AttitudeTowards.Player])
+                {
+                    if (mapClass.role.holding)
+                    {
+                        showButtons.Remove(MenuTextID.Save);
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                showButtons = GetDefaultUnitMenuTextIds();
+                //如果是玩家
+                if (selectedUnit.role.attitudeTowards == AttitudeTowards.Player)
+                {
+                    //如果是移动后的菜单
+                    if (sub)
+                    {
+                        showButtons.Remove(MenuTextID.Move);
+                        showButtons.Remove(MenuTextID.Status);
+                        //如果物品栏里没有武器， 或所有武器不可用
+                        bool canAtk = false;
+                        for (int i = 0; i < selectedUnit.role.items.Length; i++)
+                        {
+                            Item item = selectedUnit.role.items[i];
+                            if (item == null || item.ItemType != ItemType.Weapon)
+                            {
+                                continue;
+                            }
+
+                            //有武器，但是职业不能装备此武器
+                            if ((item as Weapon).level >
+                                selectedUnit.role.cls.info.AvailableWeapons[(item as Weapon).weaponType])
+                            {
+                                continue;
+                            }
+
+                            canAtk = true;
+                            break;
+                        }
+
+                        if (!canAtk)
+                        {
+                            showButtons.Remove(MenuTextID.Attack);
+                        }
+
+                        if (true /*TODO 检测 是否有对话*/)
+                        {
+                            showButtons.Remove(MenuTextID.Talk);
+                        }
+                    }
+                    else //移动后菜单
+                    {
+                        //移动前不能待机
+                        showButtons.Remove(MenuTextID.Holding);
+
+                        //如果目标已经待机，不可移动
+                        if (selectedUnit.role.holding)
+                        {
+                            showButtons.Remove(MenuTextID.Move);
+                        }
+
+                        // 移动之后不能攻击和谈话
+                        showButtons.Remove(MenuTextID.Attack);
+                        showButtons.Remove(MenuTextID.Talk);
+                    }
+                }
+                else //如果不是玩家，则只能显示移动范围和查看状态
+                {
+                    showButtons.Remove(MenuTextID.Holding);
+                    showButtons.Remove(MenuTextID.Talk);
+                    showButtons.Remove(MenuTextID.Attack);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 菜单按钮点击事件
+        /// </summary>
+        /// <param name="menuTextID"></param>
+        private void MapMenu_OnButtonClick(MenuTextID menuTextID)
+        {
+            switch (menuTextID)
+            {
+                case MenuTextID.Unit:
+                    // TODO
+                    break;
+                case MenuTextID.Close:
+                    ResetSelected();
+                    break;
+                case MenuTextID.Move:
+                    if (map.SearchAndShowMoveRange(selectedUnit, true))
+                    {
+                        mapStatus = MapStatus.MoveCursor;
+                        DisplayMouseCursor(true);
+                    }
+                    else
+                    {
+                        mapStatus = MapStatus.Normal;
+                        error = "MapAction -> Search Move Range error";
+                        status = ActionStatus.Error;
+                    }
+
+                    break;
+                case MenuTextID.Attack:
+                    //TODO 这里应该显示选择武器面板，后续修改
+                    Weapon roleWeapon = selectedUnit.role.equipedWeapon;
+                    List<CellData> atkCells =
+                        map.SearchAttackRange(movingEndCell, roleWeapon.minRange, roleWeapon.maxRange, true);
+                    map.ShowRangeCursors(atkCells, MapCursor.CursorType.Attack);
+                    mapStatus = MapStatus.AttackCursor;
+                    DisplayMouseCursor(true);
+                    break;
+                case MenuTextID.Holding:
+                    HoldingMapClass(selectedUnit);
+                    break;
+                // 省略其它case
+            }
         }
 
         /// <summary>
@@ -283,8 +412,31 @@ namespace Arycs_Fe.ScriptManagement
         /// <param name="moveTo"></param>
         protected void MoveMapClass(MapClass mapClass, CellData moveTo)
         {
-            //TODO 
+            //隐藏光标
+            map.HideRangeCursors();
+            DisplayMouseCursor(false);
+            // 开始移动动画
+            Stack<CellData> path = map.searchPath.BuildPath(moveTo);
+            mapClass.onMovingEnd += MapClass_OnMovingEnd;
+            mapStatus = MapStatus.Animation;
+            mapClass.animatorController.PlayMove();
+            mapClass.StartMove(path);
         }
+
+        private void MapClass_OnMovingEnd(CellData endCell)
+        {
+            selectedUnit.onMovingEnd -= MapClass_OnMovingEnd;
+
+            //设置坐标
+            selectedCell.mapObject = null;
+            movingEndCell = endCell;
+            movingEndCell.mapObject = selectedUnit;
+            selectedUnit.UpdatePosition(movingEndCell.position);
+            map.mouseCursor.UpdatePosition(movingEndCell.position);
+            selectedUnit.role.OnMoveEnd(endCell.g); //减去移动消耗
+            ShowMapMenu(true);
+        }
+
 
         /// <summary>
         /// 攻击
@@ -293,7 +445,161 @@ namespace Arycs_Fe.ScriptManagement
         /// <param name="target"></param>
         protected void AttackMapClass(MapClass mapClass, MapClass target)
         {
-            //TODO
+            //停止移动动画 ，并隐藏光标
+            mapClass.animatorController.StopMove();
+            map.HideRangeCursors();
+            DisplayMouseCursor(false);
+            // 计算战斗并开始战斗动画
+            CombatAnimaController combatAnim = Combat.GetOrAdd(map.gameObject);
+            combatAnim.LoadCombatUnit(mapClass, target);
+            combatAnim.onPlay.AddListener(MapClass_OnCombatAnimaPlay);
+            combatAnim.onStep.AddListener(MapClass_OnCombatAnimaStep);
+            combatAnim.onStop.AddListener(MapClass_OnCombatAnimaStop);
+            mapStatus = MapStatus.Animation;
+            combatAnim.PlayAnimas(true);
+        }
+
+        private void MapClass_OnCombatAnimaPlay(CombatAnimaController combatAnima, bool inMap)
+        {
+            // TODO 打开UI面板，进行初步设置
+        }
+
+        private void MapClass_OnCombatAnimaStop(CombatAnimaController combatAnima, bool inMap)
+        {
+            combatAnima.onPlay.RemoveListener(MapClass_OnCombatAnimaPlay);
+            combatAnima.onStep.RemoveListener(MapClass_OnCombatAnimaStep);
+            combatAnima.onStop.RemoveListener(MapClass_OnCombatAnimaStop);
+
+            MapClass unit0 = combatAnima.combat.GetCombatUnit(0).mapClass;
+            MapClass unit1 = combatAnima.combat.GetCombatUnit(1).mapClass;
+            unit0.animatorController.StopPrepareAttack();
+            unit1.animatorController.StopPrepareAttack();
+            combatAnima.combat.BattleEnd();
+
+            if (unit0.role.isDead)
+            {
+                ClearSelected();
+                OnMapClassDead(unit0);
+                //TODO 关闭界面
+            }
+            else if (unit1.role.isDead)
+            {
+                HoldingMapClass(unit0);
+                OnMapClassDead(unit1);
+                //TODO 关闭界面
+            }
+            else
+            {
+                HoldingMapClass(unit0);
+                //TODO 关闭界面
+            }
+        }
+
+        protected virtual void ClearSelected()
+        {
+            if (selectedUnit != null)
+            {
+                selectedUnit.animatorController.StopMove();
+                selectedUnit.animatorController.StopPrepareAttack();
+            }
+
+            if (targetUnit != null)
+            {
+                targetUnit.animatorController.StopMove();
+                targetUnit.animatorController.StopPrepareAttack();
+            }
+
+            selectedCell = null;
+            selectedUnit = null;
+            movingEndCell = null;
+            targetUnit = null;
+            mapStatus = MapStatus.Normal;
+            DisplayMouseCursor(true);
+        }
+
+        private void OnMapClassDead(MapClass mapClass)
+        {
+            CellData cellData = map.GetCellData(mapClass.cellPosition);
+            cellData.mapObject = null;
+            m_UnitDict[mapClass.role.attitudeTowards].Remove(mapClass);
+            if (m_UnitDict[mapClass.role.attitudeTowards].Count == 0)
+            {
+                m_UnitDict.Remove(mapClass.role.attitudeTowards);
+            }
+            //TODO 回池 mapClass.gameObject
+        }
+
+        /// <summary>
+        /// 获取非待机颜色
+        /// </summary>
+        /// <param name="attitudeTowards"></param>
+        /// <returns></returns>
+        public string GetSwapperColorName(AttitudeTowards attitudeTowards)
+        {
+            switch (attitudeTowards)
+            {
+                case AttitudeTowards.Player:
+                    return "ClassBlue";
+                case AttitudeTowards.Enemy:
+                    return "ClassRed";
+                case AttitudeTowards.Ally:
+                    return "ClassGreen";
+                case AttitudeTowards.Neutral:
+                    return "ClassYellow";
+                default:
+                    return "ClassRed";
+            }
+        }
+
+        /// <summary>
+        /// 获取待机颜色
+        /// </summary>
+        /// <returns></returns>
+        public string GetSwapperHoldingColorName()
+        {
+            return "ClassGray";
+        }
+
+        protected void HoldingMapClass(MapClass mapClass)
+        {
+            //只有玩家才会设置待机状态和颜色
+            if (mapClass.role.attitudeTowards == AttitudeTowards.Player)
+            {
+                mapClass.role.Holding(true);
+                mapClass.swapper.SwapColors(GetSwapperHoldingColorName());
+            }
+
+            ClearSelected();
+        }
+
+        private void MapClass_OnCombatAnimaStep(CombatAnimaController combatAnima, int index, float wait, bool end)
+        {
+            // 每一步更新生命等属性
+            if (end)
+            {
+                return;
+            }
+
+            CombatStep step = combatAnima.combat.steps[index];
+            //如果是准备阶段，打开面板中的战斗传酷狗，否则刷新血量数据
+            if (step.atkVal.animaType == CombatAnimaType.Prepare)
+            {
+                MapClass leftUnit = combatAnima.combat.GetCombatUnit(0).mapClass;
+                MapClass rightUnit = combatAnima.combat.GetCombatUnit(1).mapClass;
+                UIBattleUnitInMap.RoleArg left = new UIBattleUnitInMap.RoleArg()
+                {
+                    roleType = leftUnit.role.roleType,
+                    id = rightUnit.role.characterId,
+                    guid = rightUnit.role.guid
+                };
+                //TODO 打开界面 UIBattleInMapPanel
+                // panel.OpenBattleWindow(left,right,wait)
+            }
+            else
+            {
+                //TODO 更新界面血量
+                // panel.UpdateHp(step.GetCombatVariable(0).hp, step.GetCombatVariable(1).hp)
+            }
         }
 
         /// <summary>
@@ -413,7 +719,8 @@ namespace Arycs_Fe.ScriptManagement
                 {
                     map.mouseCursor.DisPlayCursor(true);
                 }
-            }else
+            }
+            else
             {
                 map.mouseCursor.DisPlayCursor(false);
             }
@@ -436,7 +743,7 @@ namespace Arycs_Fe.ScriptManagement
                     //重置角色位置和移动力
                     selectedUnit.UpdatePosition(selectedCell.position);
                     selectedUnit.role.ResetMovePoint();
-                    
+
                     //停止动画
                     selectedUnit.animatorController.StopMove();
                     selectedUnit.animatorController.StopPrepareAttack();

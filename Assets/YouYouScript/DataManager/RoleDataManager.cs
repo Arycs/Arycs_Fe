@@ -16,7 +16,7 @@ public class RoleDataManager : IDisposable
     /// <summary>
     /// 独有角色
     /// </summary>
-    private Dictionary<int, UniqueRole> m_UniqueRoles;
+    public Dictionary<int, UniqueRole> m_UniqueRoles;
 
     /// <summary>
     /// 部下杂兵模板
@@ -26,7 +26,7 @@ public class RoleDataManager : IDisposable
     /// <summary>
     /// 部下杂兵角色
     /// </summary>
-    private Dictionary<ulong, FollowingRole> m_FollowingRoles;
+    public Dictionary<ulong, FollowingRole> m_FollowingRoles;
 
     public void Init()
     {

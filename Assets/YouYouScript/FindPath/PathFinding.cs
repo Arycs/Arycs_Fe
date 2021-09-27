@@ -212,13 +212,13 @@ namespace Arycs_Fe.FindPath
             if (useEndCell)
             {
                 m_EndCell = start;
-                m_CurrentCell.g = 0f;
+                m_CurrentCell.h = 0f;
                 m_Reachable.Add(m_EndCell);
             }
             else
             {
                 m_StartCell = start;
-                m_StartCell.g = 0f;
+                m_StartCell.h = 0f;
                 m_Reachable.Add(m_StartCell);
             }
 

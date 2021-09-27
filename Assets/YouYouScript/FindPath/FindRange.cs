@@ -62,15 +62,15 @@ namespace Arycs_Fe.FindPath
             }
 
             //计算消耗
-            float g = search.currentCell.g + CalcGPerCell(search, adjacent);
+            float h = search.currentCell.g + CalcGPerCell(search, adjacent);
 
             //不在范围内
-            if (g < 0f || g > search.range.y)
+            if (h < 0f || h > search.range.y)
             {
                 return false;
             }
 
-            adjacent.g = g;
+            adjacent.h = h;
             return true;
         }
 
@@ -79,7 +79,7 @@ namespace Arycs_Fe.FindPath
             for (int i = 0; i < search.explored.Count; i++)
             {
                 CellData cell = search.explored[i];
-                if (cell.g >= search.range.x && cell.g <= search.range.y)
+                if (cell.h >= search.range.x && cell.h <= search.range.y)
                 {
                     search.result.Add(cell);
                 }
