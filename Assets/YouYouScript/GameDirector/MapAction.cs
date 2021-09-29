@@ -6,6 +6,7 @@ using Arycs_Fe.Maps;
 using Arycs_Fe.Models;
 using Arycs_Fe.ScriptManagement;
 using UnityEngine;
+using UnityEngine.UIElements;
 using YouYou;
 
 namespace Arycs_Fe.ScriptManagement
@@ -33,6 +34,7 @@ namespace Arycs_Fe.ScriptManagement
         protected readonly Dictionary<AttitudeTowards, List<MapClass>> m_UnitDict =
             new Dictionary<AttitudeTowards, List<MapClass>>();
 
+        protected readonly HashSet<MapObstacle> m_Obstacles = new HashSet<MapObstacle>();
         public MapAction() : base()
         {
         }
@@ -182,6 +184,175 @@ namespace Arycs_Fe.ScriptManagement
         }
 
 
+        /// <summary>
+        /// 创建Obstacle
+        /// </summary>
+        /// <param name="prefab"></param>
+        /// <param name="position"></param>
+        /// <param name="cmdError"></param>
+        /// <returns></returns>
+        public ActionStatus ObjectCommandCreateObstacle(string prefab, Vector3Int position,out string cmdError)
+        {
+            CellData cellData = map.GetCellData(position);
+            if (cellData == null)
+            {
+                cmdError =
+                    $"{"ObjectExecutor"} Create Obstacle -> position '{position.ToString()}' is out of range, prefab : {prefab} ";
+                return ActionStatus.Error;
+            }
+
+            if (cellData.hasMapObject)
+            {
+                cmdError =
+                    $"{"ObjectExecutor"} Create Obstacle -> the object in position '{position.ToString()}' is already, prefab :{prefab}";
+                return ActionStatus.Error;
+            }
+
+            MapObject mapObject = map.CreateMapObject(prefab, position);
+            if (mapObject == null || mapObject.mapObjectType != MapObjectType.Obstacle)
+            {
+                cmdError = $"{"ObjectExecutor"} Create Obstacle -> create map object error. prefab :{prefab} ";
+                if (mapObject != null)
+                {
+                    //TODO 回池
+                    //ObjectPool.DespawnUnsafe(mapObject.gameObject,true);
+                }
+                return ActionStatus.Error;
+            }
+
+            m_Obstacles.Add(mapObject as MapObstacle);
+            cellData.mapObject = mapObject;
+            cmdError = null;
+            return ActionStatus.Continue;
+        }
+
+        public ActionStatus ObjectCommandCreateClass(AttitudeTowards attitudeTowards, RoleType roleType, int id,
+            Vector3Int position, int level, int[] items, out string cmdError)
+        {
+            if (roleType == RoleType.Following && attitudeTowards == AttitudeTowards.Player)
+            {
+                cmdError = $"{"ObjectExecutor"} Create Class -> role type of player can only be 'Unique'";
+                return ActionStatus.Error;
+            }
+
+            CellData cellData = map.GetCellData(position);
+            if (cellData == null)
+            {
+                cmdError =
+                    $"{"ObjectExecutor"} Create Class -> position '{position.ToString()}',id :{id.ToString()}";
+                return ActionStatus.Error;
+            }
+
+            if (cellData.hasMapObject)
+            {
+                cmdError =
+                    $"{"ObjectExecutor"} Create Class -> the object in position '{position.ToString()}' is already exist. id :{id.ToString()}";
+                return ActionStatus.Error;
+            }
+
+            string prefab;
+            if (roleType == RoleType.Unique)
+            {
+                Character character = GameEntry.Data.RoleDataManager.GetOrCreateCharacter(id);
+                prefab = GameEntry.Data.RoleDataManager.GetOrCreateClass(character.info.CharacterClassId).info.Prefab;
+            }
+            else
+            {
+                prefab = GameEntry.Data.RoleDataManager.GetOrCreateClass(id).info.Prefab;
+            }
+            
+
+            MapObject mapObject = map.CreateMapObject(prefab, position);
+            if (mapObject == null)
+            {
+                cmdError = $"{"ObjectExecutor"} Create Class -> create map object error";
+                return ActionStatus.Error;
+            }
+
+            if (mapObject.mapObjectType != MapObjectType.Class)
+            {
+                cmdError =
+                    $"{"ObjectExecutor"} Create Class -> Create map object error, type error, id:{id.ToString()}";
+                //TODO 回池
+                //ObjectPool.DespawnUnsafe(mapObject.gameObject, true);
+                return ActionStatus.Error;
+            }
+            MapClass mapCls = mapObject as MapClass;
+            if (!mapCls.Load(id,roleType))
+            {
+                cmdError =
+                    $"{"ObjectExecutor"} Run -> load role error. id :{id.ToString()}, role type :{roleType.ToString()}";
+                return ActionStatus.Error;
+            }
+
+            mapCls.role.attitudeTowards = attitudeTowards;
+            mapCls.swapper.SwapColors(GetSwapperColorName(attitudeTowards));
+            if (roleType == RoleType.Following)
+            {
+                mapCls.role.level = Mathf.Max(1, level);
+                if (items != null && items.Length > 0)
+                {
+                    for (int i = 0; i < items.Length; i++)
+                    {
+                        mapCls.role.AddItem(GameEntry.Data.ItemDataManager.CreateItem(items[i]));
+                    }
+                }
+            }
+
+            List<MapClass> classes;
+            if (!m_UnitDict.TryGetValue(attitudeTowards,out classes))
+            {
+                classes = new List<MapClass>();
+                m_UnitDict.Add(attitudeTowards,classes);
+            }
+            classes.Add(mapCls);
+            cellData.mapObject = mapCls;
+            cmdError = null;
+            return ActionStatus.Continue;
+        }
+
+        /// <summary>
+        /// 为独有角色创建MapClass
+        /// </summary>
+        /// <param name="attitudeTowards"></param>
+        /// <param name="id"></param>
+        /// <param name="position"></param>
+        /// <param name="cmdError"></param>
+        /// <returns></returns>
+        public ActionStatus ObjectCommandCreateClassUnique(AttitudeTowards attitudeTowards, int id, Vector3Int position,
+            out string cmdError)
+        {
+            return ObjectCommandCreateClass(attitudeTowards, RoleType.Unique, id, position, 0, null, out cmdError);
+        }
+
+        /// <summary>
+        /// 为部下创建MapClass
+        /// </summary>
+        /// <param name="attitudeTowards"></param>
+        /// <param name="id"></param>
+        /// <param name="position"></param>
+        /// <param name="level"></param>
+        /// <param name="items"></param>
+        /// <param name="cmdError"></param>
+        /// <returns></returns>
+        public ActionStatus ObjectCommandCreateClassFollowing(
+            AttitudeTowards attitudeTowards,
+            int id,
+            Vector3Int position,
+            int level,
+            int[] items,
+            out string cmdError)
+        {
+            return ObjectCommandCreateClass(
+                attitudeTowards,
+                RoleType.Following,
+                id,
+                position,
+                level,
+                items,
+                out cmdError);
+        }
+        
         public override void OnMouseLButtonDown(Vector3 mousePosition)
         {
             if (status == ActionStatus.WaitScenarioDone)
