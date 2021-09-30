@@ -419,6 +419,11 @@ namespace Arycs_Fe.Models
         {
             self.holding = holding;
         }
+
+        public void AddFightProperty(FightPropertyType propertyType, int value)
+        {
+            self.fightProperties[propertyType] += value;
+        }
     }
 
     /// <summary>

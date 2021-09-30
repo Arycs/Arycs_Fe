@@ -16,7 +16,7 @@ namespace Arycs_Fe.ScriptManagement
     /// </summary>
     public class MapAction : GameAction
     {
-        private MapGraph map { get; set; }
+        public MapGraph map { get; set; }
         private string nextScene { get; set; } = string.Empty;
         public ActionStatus status { get; set; } = ActionStatus.Error;
         public MapScenarioAction scenarioAction = null;
@@ -26,7 +26,7 @@ namespace Arycs_Fe.ScriptManagement
         public AttitudeTowards turn { get; set; } = AttitudeTowards.Player;
         public int turnToken { get; set; } = 0;
 
-        private CellData selectedCell { get; set; } = null;
+        public CellData selectedCell { get; set; } = null;
         public MapClass selectedUnit { get; set; } = null;
         public MapClass targetUnit { get; set; } = null;
         private CellData movingEndCell { get; set; } = null;
@@ -35,6 +35,7 @@ namespace Arycs_Fe.ScriptManagement
             new Dictionary<AttitudeTowards, List<MapClass>>();
 
         protected readonly HashSet<MapObstacle> m_Obstacles = new HashSet<MapObstacle>();
+
         public MapAction() : base()
         {
         }
@@ -191,7 +192,7 @@ namespace Arycs_Fe.ScriptManagement
         /// <param name="position"></param>
         /// <param name="cmdError"></param>
         /// <returns></returns>
-        public ActionStatus ObjectCommandCreateObstacle(string prefab, Vector3Int position,out string cmdError)
+        public ActionStatus ObjectCommandCreateObstacle(string prefab, Vector3Int position, out string cmdError)
         {
             CellData cellData = map.GetCellData(position);
             if (cellData == null)
@@ -217,6 +218,7 @@ namespace Arycs_Fe.ScriptManagement
                     //TODO 回池
                     //ObjectPool.DespawnUnsafe(mapObject.gameObject,true);
                 }
+
                 return ActionStatus.Error;
             }
 
@@ -260,7 +262,7 @@ namespace Arycs_Fe.ScriptManagement
             {
                 prefab = GameEntry.Data.RoleDataManager.GetOrCreateClass(id).info.Prefab;
             }
-            
+
 
             MapObject mapObject = map.CreateMapObject(prefab, position);
             if (mapObject == null)
@@ -277,8 +279,9 @@ namespace Arycs_Fe.ScriptManagement
                 //ObjectPool.DespawnUnsafe(mapObject.gameObject, true);
                 return ActionStatus.Error;
             }
+
             MapClass mapCls = mapObject as MapClass;
-            if (!mapCls.Load(id,roleType))
+            if (!mapCls.Load(id, roleType))
             {
                 cmdError =
                     $"{"ObjectExecutor"} Run -> load role error. id :{id.ToString()}, role type :{roleType.ToString()}";
@@ -300,11 +303,12 @@ namespace Arycs_Fe.ScriptManagement
             }
 
             List<MapClass> classes;
-            if (!m_UnitDict.TryGetValue(attitudeTowards,out classes))
+            if (!m_UnitDict.TryGetValue(attitudeTowards, out classes))
             {
                 classes = new List<MapClass>();
-                m_UnitDict.Add(attitudeTowards,classes);
+                m_UnitDict.Add(attitudeTowards, classes);
             }
+
             classes.Add(mapCls);
             cellData.mapObject = mapCls;
             cmdError = null;
@@ -352,7 +356,7 @@ namespace Arycs_Fe.ScriptManagement
                 items,
                 out cmdError);
         }
-        
+
         public override void OnMouseLButtonDown(Vector3 mousePosition)
         {
             if (status == ActionStatus.WaitScenarioDone)
@@ -771,6 +775,57 @@ namespace Arycs_Fe.ScriptManagement
                 //TODO 更新界面血量
                 // panel.UpdateHp(step.GetCombatVariable(0).hp, step.GetCombatVariable(1).hp)
             }
+        }
+
+        /// <summary>
+        /// 游戏结束
+        /// </summary>
+        /// <param name="result"></param>
+        public void MapEndCommand(int result)
+        {
+            //TODO 游戏结算 处理
+            // if (m_EventCoroutine != null)
+            // {
+            //     GameEntry.GameDirector.StopCoroutine(m_EventCoroutine);
+            //     m_EventCoroutine = null;
+            // }
+            //
+            // GameEntry.GameDirector.StopGameAction();
+            // if (previous != null)
+            // {
+            //     ScenarioBlackboard.Set(ScenarioBlackboard.battleMapScene, result);
+            //     (previous as ScenarioAction).BattleMapDone(error);
+            //     GameEntry.GameDirector.BackGameAction();
+            //     MessageCenter.AddListener(GameMain.k_Event_OnSceneLoaded, MapEndCommand_OnSceneLoaded);
+            //     if (string.IsNullOrEmpty(nextScene))
+            //     {
+            //         GameMain.instance.LoadSceneAsync(ScenarioBlackboard.lastScenarioScene,
+            //             mode: LoadSceneMode.Additive);
+            //     }
+            //     else
+            //     {
+            //         GameMain.instance.LoadSceneAsync(nextScene, mode: LoadSceneMode.Additive);
+            //     }
+            // }
+            // else
+            // {
+            //     Debug.LogError("MapAction -> no previous game action.");
+            //     GameDirector.instance.BackGameAction();
+            // }
+        }
+
+        private void MapEndCommand_OnSceneLoaded(string message, object sender, /*MessageArgs messageArgs,*/
+            params object[] messageParams)
+        {
+            // MessageCenter.RemoveListener(GameMain.k_Event_OnSceneLoaded, MapEndCommand_OnSceneLoaded);
+            //
+            // OnSceneLoadedArgs args = messageArgs as OnSceneLoadedArgs;
+            // GameMain.instance.SetActiveScene(args.scene.name);
+            // GameMain.instance.UnloadSceneAsync(ScenarioBlackboard.battleMapScene);
+            // ScenarioBlackboard.battleMapScene = string.Empty;
+            // ScenarioBlackboard.mapScript = string.Empty;
+            //
+            // GameDirector.instance.RunGameAction();
         }
 
         /// <summary>
