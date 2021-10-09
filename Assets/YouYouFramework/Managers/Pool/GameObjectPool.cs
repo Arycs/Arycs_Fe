@@ -33,8 +33,8 @@ namespace YouYou
             m_InstanceIdPoolDic = new Dictionary<int, byte>();
             m_PrefabPoolQueue = new Queue<PrefabPool>();
 
-            InstanceHandler.InstantiateDelegates += this.InstantiateDelegate;
-            InstanceHandler.DestroyDelegates += this.DestroyDelegate;
+            InstanceHandler.InstantiateDelegates += InstantiateDelegate;
+            InstanceHandler.DestroyDelegates += DestroyDelegate;
 
         }
 
@@ -60,7 +60,7 @@ namespace YouYou
                 Debug.LogError("resourceEntity= " + resourceEntity.ResourceName);
             }
 
-            GameObject obj = UnityEngine.Object.Instantiate(prefab, pos, rot) as GameObject;
+            GameObject obj = Object.Instantiate(prefab, pos, rot);
             Debug.LogError("实例编号000=" + obj.GetInstanceID());
 
             //注册
@@ -74,7 +74,7 @@ namespace YouYou
         /// <param name="instance"></param>
         public void DestroyDelegate(GameObject instance)
         {
-            UnityEngine.Object.Destroy(instance);
+            Object.Destroy(instance);
             GameEntry.Resource.ResourceLoaderManager.UnLoadGameObject(instance);
         }
 
@@ -98,7 +98,7 @@ namespace YouYou
                 }
 
                 //创建对象池
-                PathologicalGames.SpawnPool pool = PathologicalGames.PoolManager.Pools.Create(entity.PoolName);
+                SpawnPool pool = PathologicalGames.PoolManager.Pools.Create(entity.PoolName);
                 pool.group.parent = parent;
                 pool.group.localPosition = Vector3.zero;
                 entity.Pool = pool;
@@ -131,7 +131,7 @@ namespace YouYou
                 }
 
                 //拿到对象池
-                GameObjectPoolEntity gameObjectPoolEntity = m_SpawnPoolDic[(byte)entity.PoolId];
+                GameObjectPoolEntity gameObjectPoolEntity = m_SpawnPoolDic[entity.PoolId];
 
                 //使用预设编号 当做池ID
                 PrefabPool prefabPool = gameObjectPoolEntity.Pool.GetPrefabPool(entity.Id);
@@ -143,7 +143,7 @@ namespace YouYou
                     if (retTrans != null)
                     {
                         int instanceID = retTrans.gameObject.GetInstanceID();
-                        m_InstanceIdPoolDic[instanceID] = (byte)entity.PoolId;
+                        m_InstanceIdPoolDic[instanceID] = entity.PoolId;
                         onComplete?.Invoke(retTrans);
                         return;
                     }
@@ -159,7 +159,7 @@ namespace YouYou
                         //拿到一个实例
                         Transform retTrans = _SpawnPool.Spawn(_Transform, _ResourceEntity);
                         int instanceID = retTrans.gameObject.GetInstanceID();
-                        m_InstanceIdPoolDic[instanceID] = (byte)entity.PoolId;
+                        m_InstanceIdPoolDic[instanceID] = entity.PoolId;
                         onComplete?.Invoke(retTrans);
                     });
                     return;
@@ -171,13 +171,13 @@ namespace YouYou
                     //拿到一个实例
                     Transform retTrans = _SpawnPool.Spawn(_Transform, _ResourceEntity);
                     int instanceID = retTrans.gameObject.GetInstanceID();
-                    m_InstanceIdPoolDic[instanceID] = (byte)entity.PoolId;
+                    m_InstanceIdPoolDic[instanceID] = entity.PoolId;
                     onComplete?.Invoke(retTrans);
                 });
                 m_LoadingPrefabPoolDic[prefabId] = lst;
 
                 GameEntry.Resource.ResourceLoaderManager.LoadMainAsset((AssetCategory)entity.AssetCategory, entity.AssetPath,
-                    (ResourceEntity resourceEntity) =>
+                    resourceEntity =>
                     {
                         Transform prefab = ((GameObject)resourceEntity.Target).transform;
 
@@ -202,7 +202,7 @@ namespace YouYou
                                 gameObjectPoolEntity.Pool.CreatePrefabPool(prefabPool, resourceEntity);
                             }
 
-                            prefabPool.OnPrefabPoolClear = (PrefabPool pool) =>
+                            prefabPool.OnPrefabPoolClear = pool =>
                             {
                                 //预设池加入队列
                                 pool.PrefabPoolId = 0;

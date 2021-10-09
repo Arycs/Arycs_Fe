@@ -21,12 +21,12 @@ public class PropertyCondition : Condition
 
     public override bool GetResult(MapAction action)
     {
-        if (action.selectedUnit == null)
+        if (action.SelectedUnit == null)
         {
             return false;
         }
 
-        Role role = action.selectedUnit.role;
+        Role role = action.SelectedUnit.role;
         FightProperties fightProperties = role.fightProperties;
         return fightProperties[propertyType] >= minValue && fightProperties[propertyType] <= maxValue;
     }

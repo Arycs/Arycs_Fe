@@ -16,12 +16,12 @@ public class RoleTalkCondition : RoleCondition
 
     public override bool GetResult(MapAction action)
     {
-        if (action.selectedUnit == null || action.targetUnit == null || action.selectedUnit.role.roleType != RoleType.Unique || action.targetUnit.role.roleType != RoleType.Unique)
+        if (action.SelectedUnit == null || action.TargetUnit == null || action.SelectedUnit.role.roleType != RoleType.Unique || action.TargetUnit.role.roleType != RoleType.Unique)
         {
             return false;
         }
 
-        if (action.selectedUnit.role.characterId != characterId || action.targetUnit.role.characterId != targetId)
+        if (action.SelectedUnit.role.characterId != characterId || action.TargetUnit.role.characterId != targetId)
         {
             return false;
         }

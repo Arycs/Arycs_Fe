@@ -10,7 +10,7 @@ namespace Arycs_Fe.FindPath
     {
         public override CellData ChoseCell(PathFinding search)
         {
-            if (search.reachable.Count == 0)
+            if (search.Reachable.Count == 0)
             {
                 return null;
             }
@@ -19,10 +19,10 @@ namespace Arycs_Fe.FindPath
             //当你在寻找路径有卡顿时，请一定使用更好的查找方式，
             //例如可以改用二叉树的方式
             //也可以将PathFinding里面reachable.Add(Adjacent)的方法改成边排序边加入的方法
-            search.reachable.Sort((cell1, cell2) => -cell1.f.CompareTo(cell2.f));
-            int index = search.reachable.Count - 1;
-            CellData chose = search.reachable[index];
-            search.reachable.RemoveAt(index);
+            search.Reachable.Sort((cell1, cell2) => -cell1.f.CompareTo(cell2.f));
+            int index = search.Reachable.Count - 1;
+            CellData chose = search.Reachable[index];
+            search.Reachable.RemoveAt(index);
 
             return chose;
         }
@@ -30,7 +30,7 @@ namespace Arycs_Fe.FindPath
         public override float CalcGPerCell(PathFinding search, CellData adjacent)
         {
             //获取邻居的Tile
-            SrpgTile tile = search.map.GetTile(adjacent.position);
+            SrpgTile tile = search.Map.GetTile(adjacent.position);
 
             return search.GetMoveConsumption(tile.terrainType);
         }
@@ -50,7 +50,7 @@ namespace Arycs_Fe.FindPath
             }
 
             //计算消耗 = 当前cell的消耗 + 邻居cell的消耗
-            float g = search.currentCell.g + CalcGPerCell(search, adjacent);
+            float g = search.CurrentCell.g + CalcGPerCell(search, adjacent);
 
             //已经加入过开放集
             if (search.IsCellInReachable(adjacent))
@@ -59,7 +59,7 @@ namespace Arycs_Fe.FindPath
                 if (g < adjacent.g)
                 {
                     adjacent.g = g;
-                    adjacent.previous = search.currentCell;
+                    adjacent.previous = search.CurrentCell;
                 }
 
                 return false;
@@ -72,19 +72,19 @@ namespace Arycs_Fe.FindPath
             }
 
             adjacent.g = g;
-            adjacent.previous = search.currentCell;
+            adjacent.previous = search.CurrentCell;
 
             return true;
         }
 
         public override void BuildResult(PathFinding search)
         {
-            for (int i = 0; i < search.explored.Count; i++)
+            for (int i = 0; i < search.Explored.Count; i++)
             {
-                CellData cell = search.explored[i];
+                CellData cell = search.Explored[i];
                 if (cell.g >= search.range.x && cell.g <= search.range.y)
                 {
-                    search.result.Add(cell);
+                    search.Result.Add(cell);
                 }
             }
         }

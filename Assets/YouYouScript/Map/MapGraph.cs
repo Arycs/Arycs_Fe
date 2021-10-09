@@ -733,7 +733,7 @@ namespace Arycs_Fe.Maps
                 Debug.LogErrorFormat("Error: Move Range({0}) is Not Found", 5f);
             }
 
-            return m_SearchPath.result;
+            return m_SearchPath.Result;
         }
 
         /// <summary>
@@ -756,7 +756,7 @@ namespace Arycs_Fe.Maps
                 Debug.LogErrorFormat("Error : Attack Range{0} - {1} is Not Found", 2, 3);
             }
 
-            return m_SearchPath.result;
+            return m_SearchPath.Result;
         }
 
         /// <summary>
@@ -779,7 +779,7 @@ namespace Arycs_Fe.Maps
                 return null;
             }
 
-            return m_SearchPath.result;
+            return m_SearchPath.Result;
         }
 
 

@@ -17,12 +17,12 @@ public class PositionCondition : Condition
 
     public override bool GetResult(MapAction action)
     {
-        if (action.selectedUnit == null)
+        if (action.SelectedUnit == null)
         {
             return false;
         }
 
-        Vector3Int position = action.selectedUnit.cellPosition;
+        Vector3Int position = action.SelectedUnit.cellPosition;
         return position.x == x && position.y == y;
     }
 }

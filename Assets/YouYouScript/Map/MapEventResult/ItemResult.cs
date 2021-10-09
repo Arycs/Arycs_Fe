@@ -25,12 +25,12 @@ public class ItemResult : Result
         Role role;
         if (characterId  < 0)
         {
-            if (action.selectedUnit == null)
+            if (action.SelectedUnit == null)
             {
                 return false;
             }
 
-            role = action.selectedUnit.role;
+            role = action.SelectedUnit.role;
         }
         else
         {

@@ -13,14 +13,14 @@ public class RoleCombatTalkCondition : RoleTalkCondition
 
     public override bool GetResult(MapAction action)
     {
-        if (action.selectedUnit == null || action.targetUnit == null || action.selectedUnit.role.roleType != RoleType.Unique || action.targetUnit.role.roleType != RoleType.Unique)
+        if (action.SelectedUnit == null || action.TargetUnit == null || action.SelectedUnit.role.roleType != RoleType.Unique || action.TargetUnit.role.roleType != RoleType.Unique)
         {
             return false;
         }        
-        if ((action.selectedUnit.role.characterId == characterId
-             && action.targetUnit.role.characterId == targetId)
-            || (action.selectedUnit.role.characterId == targetId
-                && action.targetUnit.role.characterId == characterId))
+        if ((action.SelectedUnit.role.characterId == characterId
+             && action.TargetUnit.role.characterId == targetId)
+            || (action.SelectedUnit.role.characterId == targetId
+                && action.TargetUnit.role.characterId == characterId))
         {
             return true;
         }

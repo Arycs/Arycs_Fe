@@ -40,6 +40,10 @@ namespace Arycs_Fe.ScriptManagement
             set { m_Error = value; }
         }
 
+        /// <summary>
+        /// 获取默认解释器
+        /// </summary>
+        /// <returns></returns>
         public static List<Type> GetDefaultExecutorTypesForScenarioAction()
         {
             return new List<Type>()

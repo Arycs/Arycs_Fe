@@ -11,27 +11,27 @@ namespace Arycs_Fe.FindPath
     {
         public virtual CellData ChoseCell(PathFinding search)
         {
-            if (search.reachable.Count == 0)
+            if (search.Reachable.Count == 0)
             {
                 return null;
             }
 
-            int index = search.reachable.Count - 1;
-            CellData chose = search.reachable[index];
-            search.reachable.RemoveAt(index);
+            int index = search.Reachable.Count - 1;
+            CellData chose = search.Reachable[index];
+            search.Reachable.RemoveAt(index);
             return chose;
         }
 
         public virtual bool IsFinishedOnChose(PathFinding search)
         {
-            if (search.currentCell == null)
+            if (search.CurrentCell == null)
             {
                 return true;
             }
 
-            if (!search.IsCellInExplored(search.currentCell))
+            if (!search.IsCellInExplored(search.CurrentCell))
             {
-                search.explored.Add(search.currentCell);
+                search.Explored.Add(search.CurrentCell);
             }
 
             return false;
@@ -62,7 +62,7 @@ namespace Arycs_Fe.FindPath
             }
 
             //计算消耗
-            float h = search.currentCell.g + CalcGPerCell(search, adjacent);
+            float h = search.CurrentCell.g + CalcGPerCell(search, adjacent);
 
             //不在范围内
             if (h < 0f || h > search.range.y)
@@ -76,12 +76,12 @@ namespace Arycs_Fe.FindPath
 
         public virtual void BuildResult(PathFinding search)
         {
-            for (int i = 0; i < search.explored.Count; i++)
+            for (int i = 0; i < search.Explored.Count; i++)
             {
-                CellData cell = search.explored[i];
+                CellData cell = search.Explored[i];
                 if (cell.h >= search.range.x && cell.h <= search.range.y)
                 {
-                    search.result.Add(cell);
+                    search.Result.Add(cell);
                 }
             }
         }

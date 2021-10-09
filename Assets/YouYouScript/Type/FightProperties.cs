@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 /// <summary>
@@ -14,31 +15,37 @@ public struct FightProperties
     /// <summary>
     /// 力量
     /// </summary>
+    [ProgressBar(0, 60)]
     public int str;
 
     /// <summary>
     /// 魔力
     /// </summary>
+    [ProgressBar(0, 60)]
     public int mag;
 
     /// <summary>
     /// 技巧
     /// </summary>
+    [ProgressBar(0, 60)]
     public int skl;
 
     /// <summary>
     /// 速度
     /// </summary>
+    [ProgressBar(0, 60)]
     public int spd;
 
     /// <summary>
     /// 防御
     /// </summary>
+    [ProgressBar(0, 60)]
     public int def;
 
     /// <summary>
     /// 魔防
     /// </summary>
+    [ProgressBar(0, 60)]
     public int mdf;
 
     public int this[int index]

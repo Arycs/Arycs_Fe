@@ -16,40 +16,22 @@ namespace Arycs_Fe.FindPath
 
         #endregion
 
-        private MapGraph m_Map;
+        public MapGraph Map { get; }
 
-        public MapGraph map
-        {
-            get { return m_Map; }
-        }
-        
-        private List<CellData> m_Reachable = new List<CellData>();
         /// <summary>
         /// 开放列表
         /// </summary>
-        public List<CellData> reachable
-        {
-            get { return m_Reachable; }
-        }
-        private List<CellData> m_Explored = new List<CellData>();
+        public List<CellData> Reachable { get; } = new List<CellData>();
 
         /// <summary>
         /// 关闭列表
         /// </summary>
-        public List<CellData> explored
-        {
-            get { return m_Explored; }
-        }
-
-        private List<CellData> m_Result = new List<CellData>();
+        public List<CellData> Explored { get; } = new List<CellData>();
 
         /// <summary>
         /// 结果
         /// </summary>
-        public List<CellData> result
-        {
-            get { return m_Result; }
-        }
+        public List<CellData> Result { get; } = new List<CellData>();
 
         private Vector2 m_Range;
 
@@ -59,27 +41,15 @@ namespace Arycs_Fe.FindPath
         }
 
         private CellData m_StartCell;
-        private CellData m_EndCell;
-        public CellData endCell
-        {
-            get { return m_EndCell; }
-        }
-        
-        private CellData m_CurrentCell;
-        public CellData currentCell
-        {
-            get { return m_CurrentCell; }
-        }
+        public CellData EndCell { get; private set; }
+        public CellData CurrentCell { get; private set; }
 
         private bool m_Finished;
-        private int m_SearchCount = 0;
+
         /// <summary>
         /// 迭代次数
         /// </summary>
-        public int searchCount
-        {
-            get { return m_SearchCount; }
-        }
+        public int SearchCount { get; private set; } = 0;
 
         private IHowToFind m_HowToFind;
 
@@ -92,7 +62,7 @@ namespace Arycs_Fe.FindPath
 
         public PathFinding(MapGraph map)
         {
-            m_Map = map;
+            Map = map;
         }
 
         #endregion
@@ -104,13 +74,13 @@ namespace Arycs_Fe.FindPath
         private bool FindNext()
         {
             //已有结果
-            if (m_Result.Count > 0)
+            if (Result.Count > 0)
             {
                 return true;
             }
 
             //选择节点 
-            m_CurrentCell = m_HowToFind.ChoseCell(this);
+            CurrentCell = m_HowToFind.ChoseCell(this);
 
             //判断是否搜索结束
             if (m_HowToFind.IsFinishedOnChose(this))
@@ -121,14 +91,14 @@ namespace Arycs_Fe.FindPath
             }
 
             //当前选择的节点不为null
-            if (m_CurrentCell != null)
+            if (CurrentCell != null)
             {
-                for (int i = 0; i < m_CurrentCell.adjacents.Count; i++)
+                for (int i = 0; i < CurrentCell.adjacents.Count; i++)
                 {
                     //是否可以加入到开放集中
-                    if (m_HowToFind.CanAddAdjacentToReachable(this, m_CurrentCell.adjacents[i]))
+                    if (m_HowToFind.CanAddAdjacentToReachable(this, CurrentCell.adjacents[i]))
                     {
-                        m_Reachable.Add(m_CurrentCell.adjacents[i]);
+                        Reachable.Add(CurrentCell.adjacents[i]);
                     }
                 }
             }
@@ -140,14 +110,14 @@ namespace Arycs_Fe.FindPath
         {
             while (!m_Finished)
             {
-                m_SearchCount++;
+                SearchCount++;
                 m_Finished = FindNext();
                 if (!m_Finished && onStep != null)
                 {
                     onStep(this);
                 }
 
-                if (m_SearchCount >= m_MaxSearchCount)
+                if (SearchCount >= m_MaxSearchCount)
                 {
                     Debug.LogError("Search is timeout. MaxCount: " + m_MaxSearchCount.ToString());
                     return false;
@@ -180,7 +150,7 @@ namespace Arycs_Fe.FindPath
             m_StartCell.ResetAStar();
             m_Range.y = movePoint;
 
-            m_Reachable.Add(m_StartCell);
+            Reachable.Add(m_StartCell);
 
             return SearchRangeInternal();
         }
@@ -211,15 +181,15 @@ namespace Arycs_Fe.FindPath
             //其二 ： 二次查找时不破坏路径，否则路径将被破坏
             if (useEndCell)
             {
-                m_EndCell = start;
-                m_CurrentCell.h = 0f;
-                m_Reachable.Add(m_EndCell);
+                EndCell = start;
+                CurrentCell.h = 0f;
+                Reachable.Add(EndCell);
             }
             else
             {
                 m_StartCell = start;
                 m_StartCell.h = 0f;
-                m_Reachable.Add(m_StartCell);
+                Reachable.Add(m_StartCell);
             }
 
             return SearchRangeInternal();
@@ -245,11 +215,11 @@ namespace Arycs_Fe.FindPath
             m_MoveConsumption = consumption;
             m_StartCell = start;
             m_StartCell.ResetAStar();
-            m_EndCell = end;
-            m_EndCell.ResetAStar();
+            EndCell = end;
+            EndCell.ResetAStar();
 
 
-            m_Reachable.Add(m_StartCell);
+            Reachable.Add(m_StartCell);
             m_StartCell.h = m_HowToFind.CalcH(this, m_StartCell);
 
             return SearchRangeInternal();
@@ -257,12 +227,12 @@ namespace Arycs_Fe.FindPath
 
         public bool IsCellInExplored(CellData cell)
         {
-            return m_Explored.Contains(cell);
+            return Explored.Contains(cell);
         }
 
         public bool IsCellInReachable(CellData cell)
         {
-            return m_Reachable.Contains(cell);
+            return Reachable.Contains(cell);
         }
 
         /// <summary>
@@ -294,7 +264,7 @@ namespace Arycs_Fe.FindPath
                 return null;
             }
 
-            List<CellData> path = useResult ? m_Result : new List<CellData>();
+            List<CellData> path = useResult ? Result : new List<CellData>();
             CellData current = endCell;
             path.Add(current);
             while (current.previous != null)
@@ -338,19 +308,19 @@ namespace Arycs_Fe.FindPath
         /// </summary>
         public void Reset()
         {
-            m_Reachable.Clear();
-            m_Explored.Clear();
-            m_Result.Clear();
+            Reachable.Clear();
+            Explored.Clear();
+            Result.Clear();
 
             m_Range = Vector2.zero;
             m_StartCell = null;
-            m_EndCell = null;
-            m_CurrentCell = null;
+            EndCell = null;
+            CurrentCell = null;
             m_Finished = false;
             m_HowToFind = null;
             m_MoveConsumption = null;
 
-            m_SearchCount = 0;
+            SearchCount = 0;
         }
 
         #endregion

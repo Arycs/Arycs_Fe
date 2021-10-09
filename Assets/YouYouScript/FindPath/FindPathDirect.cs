@@ -15,22 +15,22 @@ namespace Arycs_Fe.FindPath
         public override bool IsFinishedOnChose(PathFinding search)
         {
             //如果开放集中已经空了，则说明没有到达目标点
-            if (search.currentCell == null)
+            if (search.CurrentCell == null)
             {
                 //使用H最小值建立结果
-                CellData minHCell = search.explored.First(cell => cell.h == search.explored.Min(c => c.h));
+                CellData minHCell = search.Explored.First(cell => cell.h == search.Explored.Min(c => c.h));
                 search.BuildPath(minHCell, true);
                 return true;
             }
 
-            if (search.currentCell == search.endCell)
+            if (search.CurrentCell == search.EndCell)
             {
                 return true;
             }
 
-            if (!search.IsCellInExplored(search.currentCell))
+            if (!search.IsCellInExplored(search.CurrentCell))
             {
-                search.explored.Add(search.currentCell);
+                search.Explored.Add(search.CurrentCell);
             }
             return false;
         }
@@ -38,8 +38,8 @@ namespace Arycs_Fe.FindPath
         public override float CalcH(PathFinding search, CellData adjacent)
         {
             Vector2 hVec;
-            hVec.x = Mathf.Abs(adjacent.position.x - search.endCell.position.x);
-            hVec.y = Mathf.Abs(adjacent.position.y - search.endCell.position.y);
+            hVec.x = Mathf.Abs(adjacent.position.x - search.EndCell.position.x);
+            hVec.y = Mathf.Abs(adjacent.position.y - search.EndCell.position.y);
             return hVec.x + hVec.y;
         }
 
@@ -57,7 +57,7 @@ namespace Arycs_Fe.FindPath
             }
             
             //计算消耗 = 当前cell 的消耗 + 邻居cell 的消耗
-            float g = search.currentCell.g + CalcGPerCell(search, adjacent);
+            float g = search.CurrentCell.g + CalcGPerCell(search, adjacent);
             
             //已经加入过开放集
             if (search.IsCellInReachable(adjacent))
@@ -66,7 +66,7 @@ namespace Arycs_Fe.FindPath
                 if (g < adjacent.g)
                 {
                     adjacent.g = g;
-                    adjacent.previous = search.currentCell;
+                    adjacent.previous = search.CurrentCell;
                 }
 
                 return false;
@@ -74,19 +74,19 @@ namespace Arycs_Fe.FindPath
 
             adjacent.g = g;
             adjacent.h = CalcH(search, adjacent);
-            adjacent.previous = search.currentCell;
+            adjacent.previous = search.CurrentCell;
             return true;
         }
         
         public override void BuildResult(PathFinding search)
         {
             //当没有达到目标时，已经建立过结果
-            if (search.result.Count > 0)
+            if (search.Result.Count > 0)
             {
                 return;
             }
 
-            search.BuildPath(search.endCell, true);
+            search.BuildPath(search.EndCell, true);
         }
         
     }

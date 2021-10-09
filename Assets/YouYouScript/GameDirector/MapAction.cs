@@ -16,24 +16,70 @@ namespace Arycs_Fe.ScriptManagement
     /// </summary>
     public class MapAction : GameAction
     {
-        public MapGraph map { get; set; }
-        private string nextScene { get; set; } = string.Empty;
-        public ActionStatus status { get; set; } = ActionStatus.Error;
-        public MapScenarioAction scenarioAction = null;
+        /// <summary>
+        /// 当前执行脚本的地图
+        /// </summary>
+        public MapGraph Map { get; set; }
+        
+        /// <summary>
+        /// 执行完的下一个场景
+        /// </summary>
+        private string NextScene { get; set; } = string.Empty;
+        
+        /// <summary>
+        /// 当前脚本的状态
+        /// </summary>
+        public ActionStatus Status { get; set; } = ActionStatus.Error;
+        
+        /// <summary>
+        /// 地图 剧情脚本
+        /// </summary>
+        public MapScenarioAction ScenarioAction = null;
 
-        public MapStatus mapStatus { get; set; } = MapStatus.Normal;
+        /// <summary>
+        /// 地图状态,用来判断是显示攻击范围等---
+        /// </summary>
+        public MapStatus MapStatus { get; set; } = MapStatus.Normal;
 
-        public AttitudeTowards turn { get; set; } = AttitudeTowards.Player;
-        public int turnToken { get; set; } = 0;
+        /// <summary>
+        /// 当前回合为哪方阵营
+        /// </summary>
+        public AttitudeTowards Turn { get; set; } = AttitudeTowards.Player;
+        
+        /// <summary>
+        /// 回合数,用来判断某些胜利条件或者事件
+        /// </summary>
+        public int TurnToken { get; set; } = 0;
 
-        public CellData selectedCell { get; set; } = null;
-        public MapClass selectedUnit { get; set; } = null;
-        public MapClass targetUnit { get; set; } = null;
-        private CellData movingEndCell { get; set; } = null;
+        /// <summary>
+        /// 当前选中的格子数据
+        /// </summary>
+        public CellData SelectedCell { get; set; } = null;
+        
+        /// <summary>
+        /// 当前选中的实体(角色)
+        /// </summary>
+        public MapClass SelectedUnit { get; set; } = null;
+        
+        /// <summary>
+        /// 当前的目标实体(角色)
+        /// </summary>
+        public MapClass TargetUnit { get; set; } = null;
+        
+        /// <summary>
+        /// 移动结束格子信息
+        /// </summary>
+        private CellData MovingEndCell { get; set; } = null;
 
+        /// <summary>
+        /// 阵营以及 对应角色字典
+        /// </summary>
         protected readonly Dictionary<AttitudeTowards, List<MapClass>> m_UnitDict =
             new Dictionary<AttitudeTowards, List<MapClass>>();
 
+        /// <summary>
+        /// 障碍物集合
+        /// </summary>
         protected readonly HashSet<MapObstacle> m_Obstacles = new HashSet<MapObstacle>();
 
         public MapAction() : base()
@@ -52,14 +98,14 @@ namespace Arycs_Fe.ScriptManagement
         public bool Load(string scriptName)
         {
             //寻找地图
-            map = GameObject.FindObjectOfType<MapGraph>();
-            if (map == null)
+            Map = GameObject.FindObjectOfType<MapGraph>();
+            if (Map == null)
             {
                 error = "MapAction -> MapGraph was not found";
                 return false;
             }
 
-            map.InitMap();
+            Map.InitMap();
             //TODO 读取地图脚本，加载资源,根据 scriptName 来加载地图脚本
             TextAsset asset = new TextAsset();
             if (asset == null)
@@ -78,7 +124,7 @@ namespace Arycs_Fe.ScriptManagement
 
             //地图结束后的场景名称 可以为null
             // 为null时， 回到上一个场景
-            nextScene = info.nextScene;
+            NextScene = info.nextScene;
 
             //设置鼠标光标
             if (!string.IsNullOrEmpty(info.mouseCursor.prefab))
@@ -87,11 +133,11 @@ namespace Arycs_Fe.ScriptManagement
                 MapMouseCursor mouseCursor = new MapMouseCursor();
                 if (mouseCursor != null)
                 {
-                    map.mouseCursorPrefab = mouseCursor;
+                    Map.mouseCursorPrefab = mouseCursor;
                 }
             }
 
-            map.mouseCursor.UpdatePosition(new Vector3Int(info.mouseCursor.x, info.mouseCursor.y, 0));
+            Map.mouseCursor.UpdatePosition(new Vector3Int(info.mouseCursor.x, info.mouseCursor.y, 0));
 
             //设置移动范围和攻击范围的图标
             if (!string.IsNullOrWhiteSpace(info.cursor))
@@ -100,7 +146,7 @@ namespace Arycs_Fe.ScriptManagement
                 MapCursor cursor = new MapCursor();
                 if (cursor != null)
                 {
-                    map.cursorPrefab = cursor;
+                    Map.cursorPrefab = cursor;
                 }
             }
 
@@ -111,7 +157,7 @@ namespace Arycs_Fe.ScriptManagement
             }
 
             //设置状态
-            status = ActionStatus.WaitInput;
+            Status = ActionStatus.WaitInput;
             return true;
         }
 
@@ -146,15 +192,15 @@ namespace Arycs_Fe.ScriptManagement
                 return false;
             }
 
-            scenarioAction = action;
+            ScenarioAction = action;
             return true;
         }
 
         public void ScenarioDone()
         {
-            if (status == ActionStatus.WaitScenarioDone)
+            if (Status == ActionStatus.WaitScenarioDone)
             {
-                status = ActionStatus.WaitInput;
+                Status = ActionStatus.WaitInput;
                 GameEntry.GameDirector.StopGameAction();
             }
         }
@@ -166,20 +212,20 @@ namespace Arycs_Fe.ScriptManagement
         /// <returns></returns>
         public bool ScenarioCommand(string flag)
         {
-            if (scenarioAction == null)
+            if (ScenarioAction == null)
             {
                 error = "MapAction -> No Scenario";
                 return false;
             }
 
-            ActionStatus s = scenarioAction.GotoCommand(flag, out m_Error);
+            ActionStatus s = ScenarioAction.GotoCommand(flag, out m_Error);
             if (s == ActionStatus.Error)
             {
-                status = ActionStatus.Error;
+                Status = ActionStatus.Error;
                 return false;
             }
 
-            status = ActionStatus.WaitScenarioDone;
+            Status = ActionStatus.WaitScenarioDone;
             GameEntry.GameDirector.RunGameAction();
             return true;
         }
@@ -194,25 +240,25 @@ namespace Arycs_Fe.ScriptManagement
         /// <returns></returns>
         public ActionStatus ObjectCommandCreateObstacle(string prefab, Vector3Int position, out string cmdError)
         {
-            CellData cellData = map.GetCellData(position);
+            CellData cellData = Map.GetCellData(position);
             if (cellData == null)
             {
                 cmdError =
-                    $"{"ObjectExecutor"} Create Obstacle -> position '{position.ToString()}' is out of range, prefab : {prefab} ";
+                    $"ObjectExecutor Create Obstacle -> position '{position.ToString()}' is out of range, prefab : {prefab} ";
                 return ActionStatus.Error;
             }
 
             if (cellData.hasMapObject)
             {
                 cmdError =
-                    $"{"ObjectExecutor"} Create Obstacle -> the object in position '{position.ToString()}' is already, prefab :{prefab}";
+                    $"ObjectExecutor Create Obstacle -> the object in position '{position.ToString()}' is already, prefab :{prefab}";
                 return ActionStatus.Error;
             }
 
-            MapObject mapObject = map.CreateMapObject(prefab, position);
+            MapObject mapObject = Map.CreateMapObject(prefab, position);
             if (mapObject == null || mapObject.mapObjectType != MapObjectType.Obstacle)
             {
-                cmdError = $"{"ObjectExecutor"} Create Obstacle -> create map object error. prefab :{prefab} ";
+                cmdError = $"ObjectExecutor Create Obstacle -> create map object error. prefab :{prefab} ";
                 if (mapObject != null)
                 {
                     //TODO 回池
@@ -233,22 +279,22 @@ namespace Arycs_Fe.ScriptManagement
         {
             if (roleType == RoleType.Following && attitudeTowards == AttitudeTowards.Player)
             {
-                cmdError = $"{"ObjectExecutor"} Create Class -> role type of player can only be 'Unique'";
+                cmdError = $"ObjectExecutor Create Class -> role type of player can only be 'Unique'";
                 return ActionStatus.Error;
             }
 
-            CellData cellData = map.GetCellData(position);
+            CellData cellData = Map.GetCellData(position);
             if (cellData == null)
             {
                 cmdError =
-                    $"{"ObjectExecutor"} Create Class -> position '{position.ToString()}',id :{id.ToString()}";
+                    $"ObjectExecutor Create Class -> position '{position.ToString()}',id :{id.ToString()}";
                 return ActionStatus.Error;
             }
 
             if (cellData.hasMapObject)
             {
                 cmdError =
-                    $"{"ObjectExecutor"} Create Class -> the object in position '{position.ToString()}' is already exist. id :{id.ToString()}";
+                    $"ObjectExecutor Create Class -> the object in position '{position.ToString()}' is already exist. id :{id.ToString()}";
                 return ActionStatus.Error;
             }
 
@@ -264,7 +310,7 @@ namespace Arycs_Fe.ScriptManagement
             }
 
 
-            MapObject mapObject = map.CreateMapObject(prefab, position);
+            MapObject mapObject = Map.CreateMapObject(prefab, position);
             if (mapObject == null)
             {
                 cmdError = $"{"ObjectExecutor"} Create Class -> create map object error";
@@ -274,7 +320,7 @@ namespace Arycs_Fe.ScriptManagement
             if (mapObject.mapObjectType != MapObjectType.Class)
             {
                 cmdError =
-                    $"{"ObjectExecutor"} Create Class -> Create map object error, type error, id:{id.ToString()}";
+                    $"ObjectExecutor Create Class -> Create map object error, type error, id:{id.ToString()}";
                 //TODO 回池
                 //ObjectPool.DespawnUnsafe(mapObject.gameObject, true);
                 return ActionStatus.Error;
@@ -284,7 +330,7 @@ namespace Arycs_Fe.ScriptManagement
             if (!mapCls.Load(id, roleType))
             {
                 cmdError =
-                    $"{"ObjectExecutor"} Run -> load role error. id :{id.ToString()}, role type :{roleType.ToString()}";
+                    $"ObjectExecutor Run -> load role error. id :{id.ToString()}, role type :{roleType.ToString()}";
                 return ActionStatus.Error;
             }
 
@@ -359,9 +405,9 @@ namespace Arycs_Fe.ScriptManagement
 
         public override void OnMouseLButtonDown(Vector3 mousePosition)
         {
-            if (status == ActionStatus.WaitScenarioDone)
+            if (Status == ActionStatus.WaitScenarioDone)
             {
-                scenarioAction.OnMouseLButtonDown(mousePosition);
+                ScenarioAction.OnMouseLButtonDown(mousePosition);
                 return;
             }
 
@@ -371,36 +417,36 @@ namespace Arycs_Fe.ScriptManagement
             }
 
             //获取点击的CellData
-            Vector3Int cellPosition = map.mouseCursor.cellPosition;
-            CellData cell = map.GetCellData(cellPosition);
+            Vector3Int cellPosition = Map.mouseCursor.cellPosition;
+            CellData cell = Map.GetCellData(cellPosition);
             if (cell == null)
             {
                 return;
             }
 
-            switch (mapStatus)
+            switch (MapStatus)
             {
                 case MapStatus.Normal:
-                    if (selectedUnit == null)
+                    if (SelectedUnit == null)
                     {
                         // 如果Cell中有角色
                         if (cell.hasMapObject && cell.mapObject.mapObjectType == MapObjectType.Class)
                         {
                             MapClass mapClass = cell.mapObject as MapClass;
-                            selectedCell = cell;
-                            selectedUnit = mapClass;
+                            SelectedCell = cell;
+                            SelectedUnit = mapClass;
                         }
                     }
 
                     ShowMapMenu(false);
                     break;
                 case MapStatus.MoveCursor:
-                    if (selectedUnit.role.attitudeTowards != AttitudeTowards.Player)
+                    if (SelectedUnit.role.attitudeTowards != AttitudeTowards.Player)
                     {
-                        map.HideRangeCursors();
-                        selectedUnit = null;
-                        selectedCell = null;
-                        mapStatus = MapStatus.Normal;
+                        Map.HideRangeCursors();
+                        SelectedUnit = null;
+                        SelectedCell = null;
+                        MapStatus = MapStatus.Normal;
                         break;
                     }
 
@@ -411,7 +457,7 @@ namespace Arycs_Fe.ScriptManagement
                     }
 
                     //如果选中的在移动范围内，那么开始移动，并播放移动动画
-                    MoveMapClass(selectedUnit, cell);
+                    MoveMapClass(SelectedUnit, cell);
                     break;
                 case MapStatus.AttackCursor:
                     //如果选中的不在攻击范围内
@@ -439,9 +485,9 @@ namespace Arycs_Fe.ScriptManagement
                         break;
                     }
 
-                    targetUnit = target;
+                    TargetUnit = target;
                     //攻击目标
-                    AttackMapClass(selectedUnit, target);
+                    AttackMapClass(SelectedUnit, target);
                     break;
             }
         }
@@ -456,7 +502,7 @@ namespace Arycs_Fe.ScriptManagement
             HashSet<MenuTextID> showButtons;
 
             // 如果点击的不是角色，那么显示主菜单
-            if (selectedUnit == null)
+            if (SelectedUnit == null)
             {
                 showButtons = GetDefaultMainMenuTextIds();
                 //如果角色移动过，就不能存档
@@ -473,7 +519,7 @@ namespace Arycs_Fe.ScriptManagement
             {
                 showButtons = GetDefaultUnitMenuTextIds();
                 //如果是玩家
-                if (selectedUnit.role.attitudeTowards == AttitudeTowards.Player)
+                if (SelectedUnit.role.attitudeTowards == AttitudeTowards.Player)
                 {
                     //如果是移动后的菜单
                     if (sub)
@@ -482,9 +528,9 @@ namespace Arycs_Fe.ScriptManagement
                         showButtons.Remove(MenuTextID.Status);
                         //如果物品栏里没有武器， 或所有武器不可用
                         bool canAtk = false;
-                        for (int i = 0; i < selectedUnit.role.items.Length; i++)
+                        for (int i = 0; i < SelectedUnit.role.items.Length; i++)
                         {
-                            Item item = selectedUnit.role.items[i];
+                            Item item = SelectedUnit.role.items[i];
                             if (item == null || item.ItemType != ItemType.Weapon)
                             {
                                 continue;
@@ -492,7 +538,7 @@ namespace Arycs_Fe.ScriptManagement
 
                             //有武器，但是职业不能装备此武器
                             if ((item as Weapon).level >
-                                selectedUnit.role.cls.info.AvailableWeapons[(item as Weapon).weaponType])
+                                SelectedUnit.role.cls.info.AvailableWeapons[(item as Weapon).weaponType])
                             {
                                 continue;
                             }
@@ -517,7 +563,7 @@ namespace Arycs_Fe.ScriptManagement
                         showButtons.Remove(MenuTextID.Holding);
 
                         //如果目标已经待机，不可移动
-                        if (selectedUnit.role.holding)
+                        if (SelectedUnit.role.holding)
                         {
                             showButtons.Remove(MenuTextID.Move);
                         }
@@ -551,30 +597,30 @@ namespace Arycs_Fe.ScriptManagement
                     ResetSelected();
                     break;
                 case MenuTextID.Move:
-                    if (map.SearchAndShowMoveRange(selectedUnit, true))
+                    if (Map.SearchAndShowMoveRange(SelectedUnit, true))
                     {
-                        mapStatus = MapStatus.MoveCursor;
+                        MapStatus = MapStatus.MoveCursor;
                         DisplayMouseCursor(true);
                     }
                     else
                     {
-                        mapStatus = MapStatus.Normal;
+                        MapStatus = MapStatus.Normal;
                         error = "MapAction -> Search Move Range error";
-                        status = ActionStatus.Error;
+                        Status = ActionStatus.Error;
                     }
 
                     break;
                 case MenuTextID.Attack:
                     //TODO 这里应该显示选择武器面板，后续修改
-                    Weapon roleWeapon = selectedUnit.role.equipedWeapon;
+                    Weapon roleWeapon = SelectedUnit.role.equipedWeapon;
                     List<CellData> atkCells =
-                        map.SearchAttackRange(movingEndCell, roleWeapon.minRange, roleWeapon.maxRange, true);
-                    map.ShowRangeCursors(atkCells, MapCursor.CursorType.Attack);
-                    mapStatus = MapStatus.AttackCursor;
+                        Map.SearchAttackRange(MovingEndCell, roleWeapon.minRange, roleWeapon.maxRange, true);
+                    Map.ShowRangeCursors(atkCells, MapCursor.CursorType.Attack);
+                    MapStatus = MapStatus.AttackCursor;
                     DisplayMouseCursor(true);
                     break;
                 case MenuTextID.Holding:
-                    HoldingMapClass(selectedUnit);
+                    HoldingMapClass(SelectedUnit);
                     break;
                 // 省略其它case
             }
@@ -588,27 +634,27 @@ namespace Arycs_Fe.ScriptManagement
         protected void MoveMapClass(MapClass mapClass, CellData moveTo)
         {
             //隐藏光标
-            map.HideRangeCursors();
+            Map.HideRangeCursors();
             DisplayMouseCursor(false);
             // 开始移动动画
-            Stack<CellData> path = map.searchPath.BuildPath(moveTo);
+            Stack<CellData> path = Map.searchPath.BuildPath(moveTo);
             mapClass.onMovingEnd += MapClass_OnMovingEnd;
-            mapStatus = MapStatus.Animation;
+            MapStatus = MapStatus.Animation;
             mapClass.animatorController.PlayMove();
             mapClass.StartMove(path);
         }
 
         private void MapClass_OnMovingEnd(CellData endCell)
         {
-            selectedUnit.onMovingEnd -= MapClass_OnMovingEnd;
+            SelectedUnit.onMovingEnd -= MapClass_OnMovingEnd;
 
             //设置坐标
-            selectedCell.mapObject = null;
-            movingEndCell = endCell;
-            movingEndCell.mapObject = selectedUnit;
-            selectedUnit.UpdatePosition(movingEndCell.position);
-            map.mouseCursor.UpdatePosition(movingEndCell.position);
-            selectedUnit.role.OnMoveEnd(endCell.g); //减去移动消耗
+            SelectedCell.mapObject = null;
+            MovingEndCell = endCell;
+            MovingEndCell.mapObject = SelectedUnit;
+            SelectedUnit.UpdatePosition(MovingEndCell.position);
+            Map.mouseCursor.UpdatePosition(MovingEndCell.position);
+            SelectedUnit.role.OnMoveEnd(endCell.g); //减去移动消耗
             ShowMapMenu(true);
         }
 
@@ -622,15 +668,15 @@ namespace Arycs_Fe.ScriptManagement
         {
             //停止移动动画 ，并隐藏光标
             mapClass.animatorController.StopMove();
-            map.HideRangeCursors();
+            Map.HideRangeCursors();
             DisplayMouseCursor(false);
             // 计算战斗并开始战斗动画
-            CombatAnimaController combatAnim = Combat.GetOrAdd(map.gameObject);
+            CombatAnimaController combatAnim = Combat.GetOrAdd(Map.gameObject);
             combatAnim.LoadCombatUnit(mapClass, target);
             combatAnim.onPlay.AddListener(MapClass_OnCombatAnimaPlay);
             combatAnim.onStep.AddListener(MapClass_OnCombatAnimaStep);
             combatAnim.onStop.AddListener(MapClass_OnCombatAnimaStop);
-            mapStatus = MapStatus.Animation;
+            MapStatus = MapStatus.Animation;
             combatAnim.PlayAnimas(true);
         }
 
@@ -672,29 +718,29 @@ namespace Arycs_Fe.ScriptManagement
 
         protected virtual void ClearSelected()
         {
-            if (selectedUnit != null)
+            if (SelectedUnit != null)
             {
-                selectedUnit.animatorController.StopMove();
-                selectedUnit.animatorController.StopPrepareAttack();
+                SelectedUnit.animatorController.StopMove();
+                SelectedUnit.animatorController.StopPrepareAttack();
             }
 
-            if (targetUnit != null)
+            if (TargetUnit != null)
             {
-                targetUnit.animatorController.StopMove();
-                targetUnit.animatorController.StopPrepareAttack();
+                TargetUnit.animatorController.StopMove();
+                TargetUnit.animatorController.StopPrepareAttack();
             }
 
-            selectedCell = null;
-            selectedUnit = null;
-            movingEndCell = null;
-            targetUnit = null;
-            mapStatus = MapStatus.Normal;
+            SelectedCell = null;
+            SelectedUnit = null;
+            MovingEndCell = null;
+            TargetUnit = null;
+            MapStatus = MapStatus.Normal;
             DisplayMouseCursor(true);
         }
 
         private void OnMapClassDead(MapClass mapClass)
         {
-            CellData cellData = map.GetCellData(mapClass.cellPosition);
+            CellData cellData = Map.GetCellData(mapClass.cellPosition);
             cellData.mapObject = null;
             m_UnitDict[mapClass.role.attitudeTowards].Remove(mapClass);
             if (m_UnitDict[mapClass.role.attitudeTowards].Count == 0)
@@ -835,14 +881,14 @@ namespace Arycs_Fe.ScriptManagement
         public override bool Update()
         {
             //如果是剧本，就运行剧本
-            if (status == ActionStatus.WaitScenarioDone)
+            if (Status == ActionStatus.WaitScenarioDone)
             {
-                if (!scenarioAction.Update())
+                if (!ScenarioAction.Update())
                 {
-                    if (scenarioAction.status == ActionStatus.Error)
+                    if (ScenarioAction.status == ActionStatus.Error)
                     {
-                        status = ActionStatus.Error;
-                        error = scenarioAction.error;
+                        Status = ActionStatus.Error;
+                        error = ScenarioAction.error;
                         Abort();
                     }
 
@@ -860,19 +906,19 @@ namespace Arycs_Fe.ScriptManagement
         /// <returns></returns>
         public virtual bool CanInput(bool cancelButton)
         {
-            if (status != ActionStatus.WaitInput || turn != AttitudeTowards.Player)
+            if (Status != ActionStatus.WaitInput || Turn != AttitudeTowards.Player)
             {
                 return false;
             }
 
-            if (mapStatus == MapStatus.Animation || mapStatus == MapStatus.Event)
+            if (MapStatus == MapStatus.Animation || MapStatus == MapStatus.Event)
             {
                 return false;
             }
 
             if (!cancelButton)
             {
-                if (mapStatus == MapStatus.Menu || mapStatus == MapStatus.SubMenu)
+                if (MapStatus == MapStatus.Menu || MapStatus == MapStatus.SubMenu)
                 {
                     return false;
                 }
@@ -884,15 +930,15 @@ namespace Arycs_Fe.ScriptManagement
         protected Vector3Int MouseToCellPosition(Vector3 mousePosition)
         {
             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-            Vector3Int cellPosition = map.grid.WorldToCell(worldPosition);
+            Vector3Int cellPosition = Map.grid.WorldToCell(worldPosition);
             return cellPosition;
         }
 
         public override void OnMouseMove(Vector3 mousePosition)
         {
-            if (status == ActionStatus.WaitScenarioDone)
+            if (Status == ActionStatus.WaitScenarioDone)
             {
-                scenarioAction.OnMouseMove(mousePosition);
+                ScenarioAction.OnMouseMove(mousePosition);
                 return;
             }
 
@@ -902,14 +948,14 @@ namespace Arycs_Fe.ScriptManagement
             }
 
             Vector3Int cellPosition = MouseToCellPosition(mousePosition);
-            map.mouseCursor.UpdatePosition(cellPosition);
+            Map.mouseCursor.UpdatePosition(cellPosition);
         }
 
         public override void OnMouseRButtonDown(Vector3 mousePosition)
         {
-            if (status == ActionStatus.WaitScenarioDone)
+            if (Status == ActionStatus.WaitScenarioDone)
             {
-                scenarioAction.OnMouseRButtonDown(mousePosition);
+                ScenarioAction.OnMouseRButtonDown(mousePosition);
                 return;
             }
 
@@ -918,7 +964,7 @@ namespace Arycs_Fe.ScriptManagement
                 return;
             }
 
-            switch (mapStatus)
+            switch (MapStatus)
             {
                 case MapStatus.Menu:
                 case MapStatus.SubMenu:
@@ -929,7 +975,7 @@ namespace Arycs_Fe.ScriptManagement
                     ResetSelected();
                     break;
                 case MapStatus.AttackCursor:
-                    map.HideRangeCursors();
+                    Map.HideRangeCursors();
                     DisplayMouseCursor(false);
                     ShowMapMenu(true);
                     break;
@@ -941,45 +987,45 @@ namespace Arycs_Fe.ScriptManagement
             if (show)
             {
                 //只有玩家才会显示
-                if (turn == AttitudeTowards.Player)
+                if (Turn == AttitudeTowards.Player)
                 {
-                    map.mouseCursor.DisPlayCursor(true);
+                    Map.mouseCursor.DisPlayCursor(true);
                 }
             }
             else
             {
-                map.mouseCursor.DisPlayCursor(false);
+                Map.mouseCursor.DisPlayCursor(false);
             }
         }
 
         protected virtual void ResetSelected()
         {
             //如果选择了目标
-            if (selectedUnit != null)
+            if (SelectedUnit != null)
             {
                 //隐藏移动和攻击光标
-                map.HideRangeCursors();
+                Map.HideRangeCursors();
                 //如果移动过了
-                if (movingEndCell != null)
+                if (MovingEndCell != null)
                 {
                     //重置格子数据
-                    movingEndCell.mapObject = null;
-                    selectedCell.mapObject = selectedUnit;
-                    movingEndCell = null;
+                    MovingEndCell.mapObject = null;
+                    SelectedCell.mapObject = SelectedUnit;
+                    MovingEndCell = null;
                     //重置角色位置和移动力
-                    selectedUnit.UpdatePosition(selectedCell.position);
-                    selectedUnit.role.ResetMovePoint();
+                    SelectedUnit.UpdatePosition(SelectedCell.position);
+                    SelectedUnit.role.ResetMovePoint();
 
                     //停止动画
-                    selectedUnit.animatorController.StopMove();
-                    selectedUnit.animatorController.StopPrepareAttack();
+                    SelectedUnit.animatorController.StopMove();
+                    SelectedUnit.animatorController.StopPrepareAttack();
                 }
 
-                selectedCell = null;
-                selectedUnit = null;
+                SelectedCell = null;
+                SelectedUnit = null;
             }
 
-            mapStatus = MapStatus.Normal;
+            MapStatus = MapStatus.Normal;
             DisplayMouseCursor(true);
         }
     }

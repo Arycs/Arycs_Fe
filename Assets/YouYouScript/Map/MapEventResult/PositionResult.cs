@@ -18,21 +18,21 @@ public class PositionResult : Result
 
     public override bool Trigger(MapAction action)
     {
-        if (action.selectedUnit == null)
+        if (action.SelectedUnit == null)
         {
             return false;
         }
 
         Vector3Int position = new Vector3Int(x, y, 0);
-        CellData cellData = action.map.GetCellData(position);
+        CellData cellData = action.Map.GetCellData(position);
         if (cellData == null || cellData.hasMapObject)
         {
             return false;
         }
 
-        action.selectedCell.mapObject = null;
-        action.selectedUnit.UpdatePosition(position);
-        cellData.mapObject = action.selectedUnit;
+        action.SelectedCell.mapObject = null;
+        action.SelectedUnit.UpdatePosition(position);
+        cellData.mapObject = action.SelectedUnit;
         return true;
     }
 }

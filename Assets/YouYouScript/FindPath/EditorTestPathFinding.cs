@@ -109,9 +109,9 @@ public class EditorTestPathFinding : MonoBehaviour
         if (m_DebugInfo && m_DebugStep)
         {
             Debug.LogFormat("{0}: The G value of Cell {1} is {2}.",
-                searchPath.searchCount,
-                searchPath.currentCell.position.ToString(),
-                searchPath.currentCell.g.ToString());
+                searchPath.SearchCount,
+                searchPath.CurrentCell.position.ToString(),
+                searchPath.CurrentCell.g.ToString());
         }
     }
 

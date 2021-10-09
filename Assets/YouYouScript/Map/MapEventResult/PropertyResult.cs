@@ -19,12 +19,12 @@ public class PropertyResult : Result
 
     public override bool Trigger(MapAction action)
     {
-        if (action.selectedUnit == null)
+        if (action.SelectedUnit == null)
         {
             return false;
         }
 
-        Role role = action.selectedUnit.role;
+        Role role = action.SelectedUnit.role;
         role.AddFightProperty(propertyType, value);
         return true;
     }

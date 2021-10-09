@@ -24,12 +24,12 @@ public class TurnCondition : Condition
 
     public sealed override bool GetResult(MapAction action)
     {
-        if (!allAttitudeTowards && action.turn != attitudeTowards)
+        if (!allAttitudeTowards && action.Turn != attitudeTowards)
         {
             return false;
         }
 
-        int turn = action.turnToken;
+        int turn = action.TurnToken;
         //如果最大回合数小于 0 则只取最小回合
         if (maxTurn < 0)
         {

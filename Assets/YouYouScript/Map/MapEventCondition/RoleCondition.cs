@@ -17,12 +17,12 @@ public class RoleCondition : Condition
 
     public override bool GetResult(MapAction action)
     {
-        if (action.selectedUnit == null)
+        if (action.SelectedUnit == null)
         {
             return false;
         }
 
-        Role role = action.selectedUnit.role;
+        Role role = action.SelectedUnit.role;
         if (role.roleType == RoleType.Following)
         {
             return false;
