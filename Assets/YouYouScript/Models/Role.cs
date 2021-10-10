@@ -230,6 +230,11 @@ namespace Arycs_Fe.Models
             get { return m_EquipedWeapon; }
         }
 
+        public void EquipWeapon( Weapon weapon)
+        {
+            m_EquipedWeapon = weapon;
+        }
+
         public Item[] items
         {
             get { return m_Items; }

@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class WinResult : Result
 {
+    public int result;
+    
     public override MapEventResultType type
     {
         get { return MapEventResultType.WinResult; }

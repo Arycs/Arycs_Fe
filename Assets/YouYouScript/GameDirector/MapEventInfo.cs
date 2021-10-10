@@ -8,6 +8,8 @@ namespace Arycs_Fe.ScriptManagement
     [Serializable]
     public class MapEventInfo
     {
+        public MapEvent[] events;
+        
         public string nextScene;
 
         public string scenarioName;
@@ -22,5 +24,10 @@ namespace Arycs_Fe.ScriptManagement
             public int x;
             public int y;
         }
+
+        public MapEventNoCondition startEvent;
+
+        public MapEventWinLose[] resultEvents;
+
     }
 }

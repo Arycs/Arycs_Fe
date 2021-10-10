@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Arycs_Fe.CombatManagement;
 using Arycs_Fe.Maps;
 using Arycs_Fe.Models;
@@ -82,6 +83,8 @@ namespace Arycs_Fe.ScriptManagement
         /// </summary>
         protected readonly HashSet<MapObstacle> m_Obstacles = new HashSet<MapObstacle>();
 
+        private MapEventCollection m_MapEvents;
+
         public MapAction() : base()
         {
         }
@@ -159,11 +162,6 @@ namespace Arycs_Fe.ScriptManagement
             //设置状态
             Status = ActionStatus.WaitInput;
             return true;
-        }
-
-        private bool LoadMapEvent(MapEventInfo info)
-        {
-            throw new System.NotImplementedException();
         }
 
         private bool LoadScenario(string scriptName)
@@ -622,6 +620,9 @@ namespace Arycs_Fe.ScriptManagement
                 case MenuTextID.Holding:
                     HoldingMapClass(SelectedUnit);
                     break;
+                case MenuTextID.TurnEnd:
+                    NextTurn();
+                    break;
                 // 省略其它case
             }
         }
@@ -676,8 +677,12 @@ namespace Arycs_Fe.ScriptManagement
             combatAnim.onPlay.AddListener(MapClass_OnCombatAnimaPlay);
             combatAnim.onStep.AddListener(MapClass_OnCombatAnimaStep);
             combatAnim.onStop.AddListener(MapClass_OnCombatAnimaStop);
-            MapStatus = MapStatus.Animation;
-            combatAnim.PlayAnimas(true);
+
+            TriggerEvents(MapEventConditionType.RoleCombatTalkCondition, () =>
+            {
+                MapStatus = MapStatus.Animation;
+                combatAnim.PlayAnimas(true);
+            });
         }
 
         private void MapClass_OnCombatAnimaPlay(CombatAnimaController combatAnima, bool inMap)
@@ -699,15 +704,21 @@ namespace Arycs_Fe.ScriptManagement
 
             if (unit0.role.isDead)
             {
-                ClearSelected();
-                OnMapClassDead(unit0);
-                //TODO 关闭界面
+                TriggerEvents(MapEventConditionType.RoleDeadCondition, () =>
+                {
+                    ClearSelected();
+                    OnMapClassDead(unit0);
+                    //TODO 关闭界面
+                });
             }
             else if (unit1.role.isDead)
             {
-                HoldingMapClass(unit0);
-                OnMapClassDead(unit1);
-                //TODO 关闭界面
+                TriggerEvents(MapEventConditionType.RoleDeadCondition, () =>
+                {
+                    HoldingMapClass(unit0);
+                    OnMapClassDead(unit1);
+                    //TODO 关闭界面
+                });
             }
             else
             {
@@ -790,7 +801,15 @@ namespace Arycs_Fe.ScriptManagement
                 mapClass.swapper.SwapColors(GetSwapperHoldingColorName());
             }
 
-            ClearSelected();
+            // 如果是独有角色，触发坐标事件
+            if (mapClass.role.roleType == RoleType.Unique)
+            {
+                TriggerEvents(MapEventConditionType.PositionCondition, ClearSelected);
+            }
+            else
+            {
+                ClearSelected();
+            }
         }
 
         private void MapClass_OnCombatAnimaStep(CombatAnimaController combatAnima, int index, float wait, bool end)
@@ -891,13 +910,99 @@ namespace Arycs_Fe.ScriptManagement
                         error = ScenarioAction.error;
                         Abort();
                     }
+                    
+                    if (Turn != AttitudeTowards.Player)
+                    {
+                        if (MapStatus == MapStatus.Animation 
+                            || MapStatus == MapStatus.Event 
+                            || MapStatus == MapStatus.Menu || MapStatus == MapStatus.SubMenu)
+                        {
+                            return true;
+                        }
 
+                        // TODO 具体NPC操作
+                        //获取NPC
+                        List<MapClass> units;
+                        if (!m_UnitDict.TryGetValue(Turn,out  units) || m_NpcIndex >= units.Count)
+                        {
+                            NextTurn();
+                            return true;
+                        }
+
+                        MapClass unit = units[m_NpcIndex];
+                        //光标跟随
+                        if (Map.mouseCursor.cellPosition  != unit.cellPosition)
+                        {
+                            MoveCursorCommand(unit.cellPosition, 0.5f);
+                            return true;
+                        }
+
+                        //NPC 移动
+                        if (MapStatus != MapStatus.AttackCursor)
+                        {
+                            NpcMove(unit);
+                        }
+                        else //NPC 攻击
+                        {
+                            NpcAttack(unit);
+                        }
+
+
+                        return true;
+                    }
                     return false;
                 }
             }
 
             return true;
         }
+        
+        
+        /// <summary>
+        /// 移动光标
+        /// </summary>
+        /// <param name="targetPos"></param>
+        /// <param name="time"></param>
+        public void MoveCursorCommand(Vector3Int targetPos, float time, Action onMoveEnd = null)
+        {
+            if (time <= 0f)
+            {
+                Map.mouseCursor.UpdatePosition(targetPos);
+                if (onMoveEnd != null)
+                {
+                    onMoveEnd();
+                }
+            }
+            GameEntry.Instance.StartCoroutine(MovingCursorToCell(targetPos, time, onMoveEnd));
+        }
+
+        private IEnumerator MovingCursorToCell(Vector3Int targetPos, float time, Action onMoveEnd)
+        {
+            MapStatus = MapStatus.Animation;
+
+            Vector3 start = Map.mouseCursor.transform.position;
+            Vector3 end = Map.GetCellPosition(targetPos);
+            float t = 0f;
+
+            while (t < time)
+            {
+                t += Time.deltaTime;
+                Vector3 pos = Vector3.Lerp(start, end, t / time);
+                Map.mouseCursor.transform.position = pos;
+                yield return null;
+            }
+
+            Map.mouseCursor.UpdatePosition(targetPos);
+            
+            // 最后延迟0.5秒
+            yield return new WaitForSeconds(0.5f);
+            MapStatus = MapStatus.Normal;
+            if (onMoveEnd != null)
+            {
+                onMoveEnd();
+            }
+        }
+        
 
         /// <summary>
         /// 判断是否可以输入
@@ -995,7 +1100,7 @@ namespace Arycs_Fe.ScriptManagement
             else
             {
                 Map.mouseCursor.DisPlayCursor(false);
-            }
+            } 
         }
 
         protected virtual void ResetSelected()
@@ -1028,5 +1133,437 @@ namespace Arycs_Fe.ScriptManagement
             MapStatus = MapStatus.Normal;
             DisplayMouseCursor(true);
         }
+        
+        protected Coroutine m_EventCoroutine = null;
+        
+        private int m_NpcIndex = 0;
+
+        /// <summary>
+        /// 触发地图事件
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="onTriggerEnd"></param>
+        public void TriggerEvents(MapEventConditionType type, Action onTriggerEnd)
+        {
+            MapStatus = MapStatus.Event;
+            if (m_EventCoroutine == null)
+            {
+                error = "MapAction TriggerEvents -> event is running";
+                Status = ActionStatus.Error;
+                Debug.LogError(error);
+                if (onTriggerEnd != null)
+                {
+                    onTriggerEnd();
+                }
+
+                return;
+            }
+
+            m_EventCoroutine = GameEntry.Instance.StartCoroutine(EventsTriggering(type, onTriggerEnd));
+        }
+
+        private IEnumerator EventsTriggering(MapEventConditionType type, Action onTriggerEnd)
+        {
+            yield return null;
+            switch (type)
+            {
+                case MapEventConditionType.NoneCondition:
+                    yield return m_MapEvents.TriggerStartEvents(
+                        this, onError: eventError => error = eventError);
+                    break;
+                case MapEventConditionType.TurnCondition:
+                    yield return m_MapEvents.TriggerTurnEvents(
+                        this, onError: eventError => error = eventError);
+                    break;
+                case MapEventConditionType.PositionCondition:
+                    if (MovingEndCell != null)
+                    {
+                        yield return m_MapEvents.TriggerPositionEvents(
+                            this, MovingEndCell.position, onError: eventError => error = eventError);
+                    }
+
+                    break;
+                case MapEventConditionType.RoleDeadCondition:
+                    if (SelectedUnit != null && SelectedUnit.role.isDead)
+                    {
+                        yield return m_MapEvents.TriggerDeadEvents(
+                            this, SelectedUnit.role.characterId, onError: eventError => error = eventError);
+                    }
+
+                    if (TargetUnit != null && TargetUnit.role.isDead)
+                    {
+                        yield return m_MapEvents.TriggerDeadEvents(
+                            this, TargetUnit.role.characterId, onError: eventError => error = eventError);
+                    }
+
+                    break;
+                case MapEventConditionType.RoleTalkCondition:
+                    if (SelectedUnit != null && TargetUnit != null)
+                    {
+                        yield return m_MapEvents.TriggerRoleTalkEvents(
+                            this, SelectedUnit.role.characterId, TargetUnit.role.characterId,
+                            onError: eventError => error = eventError);
+                    }
+
+                    break;
+                case MapEventConditionType.RoleCombatTalkCondition:
+                    if (SelectedUnit != null && TargetUnit != null)
+                    {
+                        yield return m_MapEvents.TriggerRoleCombatTalkEvents(
+                            this, SelectedUnit.role.characterId, TargetUnit.role.characterId,
+                            onError: eventError => error = eventError);
+                    }
+
+                    break;
+            }
+
+            m_EventCoroutine = null;
+            if (onTriggerEnd != null)
+            {
+                onTriggerEnd();
+            }
+        }
+
+        /// <summary>
+        /// NPC 移动
+        /// </summary>
+        /// <param name="npc"></param>
+        public void NpcMove(MapClass npc)
+        {
+            Vector3Int npcPosition = npc.cellPosition;
+            CellData npcCell = Map.GetCellData(npcPosition);
+            SelectedCell = npcCell;
+            SelectedUnit = npc;
+            
+            //TODO 之类可以根据AI 来判断敌人的一共
+            //NpcAi ai = ai.Model.Get(npc.id);
+            //以下是寻找敌人进行攻击的建议AI(忽略了治疗或状态等的移动)
+            
+            //假设中立不对不可移动
+            if (Turn == AttitudeTowards.Neutral)
+            {
+                ClearSelected();
+                m_NpcIndex++;
+                return;
+            }
+            
+            CellData moveToCell = npcCell;
+            //TODO 简易AI ，朝向最近目标移动或攻击
+            //移动
+            MoveMapClass(npc, moveToCell);
+            
+            //TODO 以下是简易 搜寻可攻击目标
+            HashSet<CellData> moveRange = new HashSet<CellData>(
+                Map.SearchMoveRange(npcCell, npc.role.movePoint, npc.role.moveConsumption));
+
+            bool atk = false; // 是否有可攻击的目标
+            for (int i = 0; i < npc.role.items.Length; i++)
+            {
+                Item item = npc.role.items[i];
+                if (item == null || item.ItemType != ItemType.Weapon)
+                {
+                    continue;
+                }
+                
+                //搜索所有移动范围内的可攻击目标
+                Dictionary<CellData, HashSet<CellData>> deferDict =
+                    new Dictionary<CellData, HashSet<CellData>>(Map.cellPositionEqualityCompaper);
+                
+                foreach (CellData cell in moveRange)
+                {
+                    List<CellData> atkCells = Map.SearchAttackRange(cell, (item as Weapon).minRange,
+                        (item as Weapon).maxRange, true);
+                    //防守者
+                    // 1 必须是有地图对象
+                    // 2 地图对象是地图职业
+                    // 3 目标不能同阵营（如果是治疗，必须是同阵营或同盟）
+                    // 4 目标不能是中立
+                    IEnumerable<CellData> defers = atkCells.Where(c => c.hasMapObject &&
+                                                                       c.mapObject.mapObjectType ==
+                                                                       MapObjectType.Class &&
+                                                                       (c.mapObject as MapClass).role.attitudeTowards !=
+                                                                       Turn &&
+                                                                       (c.mapObject as MapClass).role.attitudeTowards !=
+                                                                       AttitudeTowards.Neutral);
+                    //如果是盟友，还不应包括玩家
+                    if (npc.role.attitudeTowards == AttitudeTowards.Ally)
+                    {
+                        defers = defers.Where(c =>
+                            (c.mapObject as MapClass).role.attitudeTowards != AttitudeTowards.Player);
+                    }
+
+                    foreach (CellData c in defers)
+                    {
+                        if (!deferDict.ContainsKey(c))
+                        {
+                            deferDict[c] = new HashSet<CellData>(Map.cellPositionEqualityCompaper);
+                        }
+                        deferDict[c].Add(cell);
+                    }
+                }
+
+                if (deferDict.Count > 0)
+                {
+                    //寻找最近的目标
+                    CellData targetCell = null;
+                    int minDist = int.MaxValue;
+                    foreach (CellData cell in deferDict.Keys)
+                    {
+                        int dist = CalcCellDist(cell.position, npcPosition);
+                        if (dist < minDist)
+                        {
+                            targetCell = cell;
+                            minDist = dist;
+                        }
+                    }
+                    //寻找最近的可攻击到目标的位置
+                    minDist = int.MaxValue;
+                    foreach (CellData cell in deferDict[targetCell])
+                    {
+                        int dist = CalcCellDist(cell.position, npcPosition);
+                        if (dist < minDist)
+                        {
+                            moveToCell = cell;
+                            minDist = dist;
+                        }
+                    }
+                    
+                    //设置攻击目标
+                    TargetUnit = targetCell.mapObject as MapClass;
+                    ;
+                    atk = true;
+                    npc.role.EquipWeapon(item as Weapon);
+                }
+
+                // 如果能攻击到目标
+                if (atk)
+                {
+                    break;
+                }
+            }
+        }
+
+        private int CalcCellDist(Vector3Int cellPosition, Vector3Int npcPosition)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// NPC 攻击
+        /// </summary>
+        /// <param name="npc"></param>
+        public void NpcAttack(MapClass npc)
+        {
+            //TODO
+        }
+
+        /// <summary>
+        /// 转换回合
+        /// </summary>
+        protected void NextTurn()
+        {
+            //重置npc下标
+            m_NpcIndex = 0;
+            switch (Turn)
+            {
+                case AttitudeTowards.Player:
+                    TurnToken++; // 只有所有阵营结束，回合数才+1
+
+                    // 将所有玩家回复移动力，并将待机状态重置
+                    string color = GetSwapperColorName(AttitudeTowards.Player);
+                    foreach (MapClass unit in m_UnitDict[AttitudeTowards.Player])
+                    {
+                        unit.role.Holding(false);
+                        unit.role.ResetMovePoint();
+                        unit.swapper.SwapColors(color);
+                    }
+
+                    // 隐藏光标
+                    DisplayMouseCursor(false);
+                    Turn = AttitudeTowards.Enemy;
+                    GameEntry.GameDirector.RunGameAction();
+                    break;
+                case AttitudeTowards.Enemy:
+                    Turn = AttitudeTowards.Ally;
+                    break;
+                case AttitudeTowards.Ally:
+                    Turn = AttitudeTowards.Neutral;
+                    break;
+                case AttitudeTowards.Neutral:
+                    Turn = AttitudeTowards.Player;
+                    break;
+            }
+
+
+            if (m_UnitDict.ContainsKey(Turn))
+            {
+                OnChangeTurn(Turn);
+            }
+            else
+            {
+                // 如果不存在MapClass，直接下一组回合
+                NextTurn();
+            }
+        }
+
+        private void OnChangeTurn(AttitudeTowards turn)
+        {
+            // 播放转换回合的UI动画
+            MapStatus = MapStatus.Animation;
+            //TODO UI 相关处理
+            // UIChangeTurnPanel panel = UIManager.views.OpenView<UIChangeTurnPanel>(UINames.k_UIChangeTurnPanel, false);
+            // panel.ChangeTurn(turn, () =>
+            // {
+            //     UIManager.views.CloseView();
+            //
+            //     // 触发回合事件
+            //     TriggerEvents(MapEventConditionType.TurnCondition, () =>
+            //     {
+            //         if (turn == AttitudeTowards.Player)
+            //         {
+            //             // 移动光标到首个玩家单位
+            //             MoveCursorCommand(m_UnitDict[AttitudeTowards.Player][0].cellPosition, 0.5f, ClearSelected);
+            //         }
+            //         else
+            //         {
+            //             ClearSelected();
+            //         }
+            //     });
+            // });
+        }
+        
+        /// <summary>
+        /// 读取事件
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        private bool LoadMapEvent(MapEventInfo info)
+        {
+            // 地图加载事件
+            if (info.startEvent != null)
+            {
+                if (info.startEvent.entryConditionType != MapEventConditionType.NoneCondition)
+                {
+                    info.startEvent.entryConditionType = MapEventConditionType.NoneCondition;
+                }
+                m_MapEvents.Add(info.startEvent);
+            }
+
+            // 地图中的事件
+            if (info.events != null)
+            {
+                for (int i = 0; i < info.events.Length; i++)
+                {
+                    MapEvent me = info.events[i];
+                    if (me == null)
+                    {
+                        continue;
+                    }
+
+                    if (!m_MapEvents.Add(me))
+                    {
+                        error = string.Format(
+                            "MapAction -> Load map event failure. Entry type `{0}` is not supported."
+                            + " Or, id of map event is already exist.",
+                            me.entryConditionType);
+                        return false;
+                    }
+                }
+            }
+
+            // 地图结束事件
+            if (info.resultEvents != null)
+            {
+                for (int i = 0; i < info.resultEvents.Length; i++)
+                {
+                    MapEvent me = info.resultEvents[i];
+                    if (me == null)
+                    {
+                        continue;
+                    }
+
+                    if (!m_MapEvents.Add(me))
+                    {
+                        error = string.Format(
+                            "MapAction -> Load map event failure. Entry type `{0}` is not supported."
+                            + " Or, id of map event is already exist.",
+                            me.entryConditionType);
+                        return false;
+                    }
+                }
+            }
+
+            // 执行地图加载事件
+            TriggerEvents(MapEventConditionType.NoneCondition, () =>
+            {
+                OnChangeTurn(AttitudeTowards.Player);
+            });
+
+            return true;
+        }
+        
+        
+        
+        public override void Dispose()
+        {
+            base.Dispose();
+
+            Status = ActionStatus.Error;
+            if (ScenarioAction != null)
+            {
+                ScenarioAction.Dispose();
+                ScenarioAction = null;
+            }
+            Turn = AttitudeTowards.Player;
+            TurnToken = 0;
+
+            SelectedCell = null;
+            SelectedUnit = null;
+            MapStatus = MapStatus.Normal;
+            MovingEndCell = null;
+            TargetUnit = null;
+
+            //npcIndex = 0;
+
+            foreach (KeyValuePair<AttitudeTowards, List<MapClass>> kvp in m_UnitDict)
+            {
+                if (kvp.Value == null)
+                {
+                    continue;
+                }
+
+                foreach (MapClass unit in kvp.Value)
+                {
+                    //ObjectPool.DespawnUnsafe(unit.gameObject, true);
+                }
+            }
+            m_UnitDict.Clear();
+
+            m_NpcIndex = 0;
+            
+            foreach (MapObstacle obstacle in m_Obstacles)
+            {
+                //ObjectPool.DespawnUnsafe(obstacle.gameObject, true);
+            }
+            m_Obstacles.Clear();
+
+            if (m_EventCoroutine != null)
+            {
+                GameEntry.Instance.StopCoroutine(m_EventCoroutine);
+                m_EventCoroutine = null;
+            }
+            m_MapEvents.Clear();
+
+            if (Map != null)
+            {
+                Map.HideRangeCursors();
+                //ObjectPool.DespawnUnsafe(m_Map.mouseCursor.gameObject);
+                //map.mapCursorPool.DestroyRecycledImmediate();
+                //map.mapObjectPool.DestroyRecycledImmediate();
+                Map = null;
+            }
+        }
+        
+        
     }
 }

@@ -421,6 +421,8 @@ namespace Arycs_Fe.Maps
         [SerializeField] private FindRange m_FindMoveRange;
 
         [SerializeField] private FindRange m_FindPathDirect;
+        
+        public IEqualityComparer<CellData> cellPositionEqualityCompaper;
 
         #endregion
 
