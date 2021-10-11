@@ -128,7 +128,6 @@ namespace YouYou
         
         #endregion
 
-
         #region CDN
         /// <summary>
         /// CDN资源包信息

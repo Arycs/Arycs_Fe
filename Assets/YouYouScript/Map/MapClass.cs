@@ -121,7 +121,7 @@ namespace Arycs_Fe.Maps
             //计算 sortingOrder
             if (renderer != null)
             {
-                renderer.sortingOrder = MapObject.ClacSortingOrder(map, next.position);
+                renderer.sortingOrder = MapObject.CalcSortingOrder(map, next.position);
             }
             
             if (m_MoveTimePerCell <= 0f)

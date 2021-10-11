@@ -5,8 +5,7 @@ using Arycs_Fe.Maps;
 using Arycs_Fe.Models;
 using UnityEngine;
 
-[Serializable]
-public abstract class MapObjectInfon
+public abstract class MapObjectInfo
 {
     public abstract MapObjectType objectType { get; }
 
@@ -14,7 +13,7 @@ public abstract class MapObjectInfon
     public int y;
 }
 
-public class ObstacleInfo : MapObjectInfon
+public class ObstacleInfo : MapObjectInfo
 {
     public override MapObjectType objectType
     {
@@ -25,7 +24,7 @@ public class ObstacleInfo : MapObjectInfon
 }
 
 [Serializable]
-public abstract class ClassInfo : MapObjectInfon
+public abstract class ClassInfo : MapObjectInfo
 {
     public override MapObjectType objectType
     {

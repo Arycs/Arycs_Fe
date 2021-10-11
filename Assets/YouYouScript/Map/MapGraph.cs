@@ -3,6 +3,7 @@ using System.Linq;
 using Arycs_Fe.FindPath;
 using Arycs_Fe.Models;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 #if UNITY_EDITOR
 using Handles = UnityEditor.Handles;
@@ -404,7 +405,7 @@ namespace Arycs_Fe.Maps
         /// <summary>
         /// 静态地图对象列表
         /// </summary>
-        public GameObject mapObjectPool;
+        [FormerlySerializedAs("mapObjectPool")] public GameObject mapStaticObjectParent;
         
         #endregion
 
@@ -483,13 +484,13 @@ namespace Arycs_Fe.Maps
         /// </summary>
         private void InitMapObjectsInMap()
         {
-            if (mapObjectPool == null)
+            if (mapStaticObjectParent == null)
             {
                 Debug.LogError("MapGraph -> MapObject Pool(这里的Pool 是指静态地图上的父物体列表) is null");
                 return;
             }
 
-            MapObject[] mapObjects = mapObjectPool.gameObject.GetComponentsInChildren<MapObject>();
+            MapObject[] mapObjects = mapStaticObjectParent.gameObject.GetComponentsInChildren<MapObject>();
             if (mapObjects != null)
             {
                 foreach (MapObject mapObject in mapObjects)

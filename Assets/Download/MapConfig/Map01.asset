@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8560d244803f8b54aa04298655b16a90, type: 3}
+  m_Name: Map01
+  m_EditorClassIdentifier: 
+  events: []
+  nextScene: 
+  scenarioName: stage0
+  mouseCursor:
+    prefab: MouseCursor
+    x: 5
+    y: 5
+  cursor: Cursor
+  startEvent:
+    id: 0
+    onlyonce: 1
+    entryConditionType: 0
+  resultEvents:
+  - id: 10
+    onlyonce: 1
+    entryConditionType: 0
+  - id: 20
+    onlyonce: 1
+    entryConditionType: 0

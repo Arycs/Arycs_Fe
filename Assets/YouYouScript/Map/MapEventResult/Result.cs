@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using Arycs_Fe.ScriptManagement;
 using UnityEngine;
 
-[Serializable]
-public class Result
+public abstract class Result
 {
     public virtual MapEventResultType type
     {

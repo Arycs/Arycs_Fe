@@ -35,7 +35,7 @@ namespace Arycs_Fe.Maps
                 m_CellPosition = value;
                 if (renderer != null)
                 {
-                    renderer.sortingOrder = MapObject.ClacSortingOrder(map, value);
+                    renderer.sortingOrder = MapObject.CalcSortingOrder(map, value);
                 }
             }
         }
@@ -106,7 +106,7 @@ namespace Arycs_Fe.Maps
         /// <param name="map"></param>
         /// <param name="cellPosition"></param>
         /// <returns></returns>
-        public static int ClacSortingOrder(MapGraph map, Vector3Int cellPosition)
+        public static int CalcSortingOrder(MapGraph map, Vector3Int cellPosition)
         {
             if (map == null)
             {

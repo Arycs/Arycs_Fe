@@ -29,6 +29,10 @@ public class UIFormId
     /// </summary>
     public const int UI_Task = 104;
 
-
+    /// <summary>
+    /// 对话界面
+    /// </summary>
+    public const int UI_Talk = 100;
+    
 
 }

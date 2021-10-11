@@ -1,10 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Sirenix.OdinInspector;
+using Sirenix.Utilities;
 using UnityEngine;
 
 namespace Arycs_Fe.ScriptManagement
 {
+    [Serializable]
     public class MapEvent
     {
         public int id;
@@ -27,12 +31,33 @@ namespace Arycs_Fe.ScriptManagement
         /// <summary>
         /// 额外的事件条件
         /// </summary>
+        [ShowInInspector]
+        [TypeFilter("GetFilteredTypeByConditionList")]
         public List<Condition> conditions = new List<Condition>();
-
+        public IEnumerable<Type> GetFilteredTypeByConditionList()
+        {
+            var q = typeof(Condition).Assembly.GetTypes()
+                .Where(x => !x.IsAbstract)                                          // Excludes BaseClass
+                .Where(x => !x.IsGenericTypeDefinition)                             // Excludes C1<>
+                .Where(x => typeof(Condition).IsAssignableFrom(x));                 // Excludes classes not inheriting from BaseClass
+            return q;
+        }
         /// <summary>
         /// 事件结果
         /// </summary>
+        [ShowInInspector]
+        [TypeFilter("GetFilteredTypeByResultList")]
         public List<Result> triggers = new List<Result>();
+        public IEnumerable<Type> GetFilteredTypeByResultList()
+        {
+            var q = typeof(Result).Assembly.GetTypes()
+                .Where(x => !x.IsAbstract)                                          // Excludes BaseClass
+                .Where(x => !x.IsGenericTypeDefinition)                             // Excludes C1<>
+                .Where(x => typeof(Result).IsAssignableFrom(x));                 // Excludes classes not inheriting from BaseClass
+            return q;
+        }
+        
+        
         
         /// <summary>
         /// 是否已经触发过

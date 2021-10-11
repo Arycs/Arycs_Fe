@@ -1,31 +1,36 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
+using UnityEngine.UI;
 using YouYou;
 
-public class UITaskForm : UIFormBase
+public class UITalkForm : UIFormBase
 {
+    public Image LeftRole;
+
+    public Image RightRole;
+
+    public Text TalkInfo;
+    
     protected override void OnInit(object userData)
     {
         base.OnInit(userData);
-        Debug.Log("UITaskForm Init");
     }
 
     protected override void OnOpen(object userData)
     {
+        Debug.LogError("Open UITalkForm");
         base.OnOpen(userData);
-        Debug.Log("UITaskForm Open");
+        BaseParams baseParams = userData as BaseParams;
     }
 
     protected override void OnClose()
     {
         base.OnClose();
-        Debug.Log("UITaskForm Close");
     }
 
     protected override void OnBeforDestroy()
     {
         base.OnBeforDestroy();
-        Debug.Log("UITaskForm OnBeforDestory");
     }
 }
+

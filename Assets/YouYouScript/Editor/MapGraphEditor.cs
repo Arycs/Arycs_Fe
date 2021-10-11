@@ -57,12 +57,12 @@ namespace Arycs_Fe.Maps
         /// </summary>
         private void ClearMapObjects()
         {
-            if (map.mapObjectPool == null)
+            if (map.mapStaticObjectParent == null)
             {
                 return;
             }
 
-            MapObject[] mapObjects = map.mapObjectPool.gameObject.GetComponentsInChildren<MapObject>();
+            MapObject[] mapObjects = map.mapStaticObjectParent.gameObject.GetComponentsInChildren<MapObject>();
             if (mapObjects != null)
             {
                 foreach (MapObject mapObject in mapObjects)
@@ -81,13 +81,13 @@ namespace Arycs_Fe.Maps
         /// </summary>
         private void UpdateMapObjectSortingLayer()
         {
-            if (map.mapObjectPool == null)
+            if (map.mapStaticObjectParent == null)
             {
                 Debug.LogError("MapGraph -> MapObject Pool is null");
                 return;
             }
             
-            MapObject[] mapObjects = map.mapObjectPool.gameObject.GetComponentsInChildren<MapObject>();
+            MapObject[] mapObjects = map.mapStaticObjectParent.gameObject.GetComponentsInChildren<MapObject>();
             if (mapObjects != null)
             {
                 foreach (MapObject mapObject in mapObjects)
@@ -102,7 +102,7 @@ namespace Arycs_Fe.Maps
                         //更新坐标
                         Vector3 world = mapObject.transform.position;
                         Vector3Int cellPosition = map.grid.WorldToCell(world);
-                        mapObject.renderer.sortingOrder = MapObject.ClacSortingOrder(map, cellPosition);
+                        mapObject.renderer.sortingOrder = MapObject.CalcSortingOrder(map, cellPosition);
                     }
                 }
             }

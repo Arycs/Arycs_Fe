@@ -101,7 +101,6 @@ namespace YouYou
             Sys_LanguageDBModel = new Sys_LanguageDBModel();
             Sys_CharacterDBModel = new Sys_CharacterDBModel();
             Sys_ClassDBModel = new Sys_ClassDBModel();
-            Sys_ItemDBModel = new Sys_ItemDBModel();
             Sys_MoveConsumptionDBModel = new Sys_MoveConsumptionDBModel();
         }
 
@@ -121,6 +120,7 @@ namespace YouYou
             //Sys_SceneDBModel.LoadData();
             //Sys_SceneDetailDBModel.LoadData();
             //New
+            Sys_UIFormDBModel.LoadData();
             Sys_CharacterDBModel.LoadData();
             Sys_ItemDBModel.LoadData();
             Sys_LanguageDBModel.LoadData();

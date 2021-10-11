@@ -12,18 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ba730078e491f24ba07eea65bf6e83d, type: 3}
   m_Name: UIFormEditor
   m_EditorClassIdentifier: 
-  IsEditor: 0
+  IsEditor: 1
   FileName: Sys_UIForm
   SaveTxtFilePath: Assets/Download/DataTable/Txt
   SaveByteFilePath: Assets/Download/DataTable/Bytes
   SaveCSFilePath: Assets/YouYouScript/Data/DataTable/Create
   UIFormInfos:
-  - uiFormId: 0
-    desc: 
-    uiName: 
-    uiGroup: 0
+  - uiFormId: 10
+    desc: "\u5BF9\u8BDD\u754C\u9762"
+    uiName: UITalkForm
+    uiGroup: 2
     disableUILayer: 0
     isLock: 0
-    assetPath: 
+    assetPath: Assets/Download/Prefab/UIPrefab
     canMulit: 0
     showMode: 0

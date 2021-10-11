@@ -75,7 +75,7 @@ namespace Arycs_Fe.ScriptManagement
         /// <summary>
         /// 阵营以及 对应角色字典
         /// </summary>
-        protected readonly Dictionary<AttitudeTowards, List<MapClass>> m_UnitDict =
+        private readonly Dictionary<AttitudeTowards, List<MapClass>> m_UnitDict =
             new Dictionary<AttitudeTowards, List<MapClass>>();
 
         /// <summary>

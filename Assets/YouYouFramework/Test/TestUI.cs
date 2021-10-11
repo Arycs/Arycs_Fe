@@ -16,7 +16,7 @@ public class TestUI : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.B))
         {
-            GameEntry.UI.OpenUIForm(UIFormId.UI_Reg);
+            GameEntry.UI.OpenUIForm(UIFormId.UI_Talk);
         }
         if (Input.GetKeyDown(KeyCode.C))
         {

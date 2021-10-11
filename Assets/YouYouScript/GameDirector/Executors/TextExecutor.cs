@@ -4,6 +4,7 @@ using System.Text;
 using Arycs_Fe.ScriptManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using YouYou;
 
 namespace Arycs_Fe.ScriptManagement
 {
@@ -85,6 +86,7 @@ namespace Arycs_Fe.ScriptManagement
         protected override ActionStatus Run(IGameAction gameAction, IScenarioContent content, TextArgs args, out string error)
         {
             //TODO 打开UI窗口，写入内容
+            GameEntry.UI.OpenUIForm(10,args);
             error = null;
             
             //如果是快进模式，要等待一帧，防止看不到界面，闪屏都没有

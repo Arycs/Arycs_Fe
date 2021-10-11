@@ -2,10 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Arycs_Fe.ScriptManagement;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
-[Serializable]
-public class Condition
+public abstract class Condition
 {
     public virtual MapEventConditionType type
     {

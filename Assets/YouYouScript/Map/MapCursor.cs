@@ -4,8 +4,6 @@ using UnityEngine;
 
 namespace Arycs_Fe.Maps
 {
-    
-    
     public class MapCursor : MapObject
     {
     
