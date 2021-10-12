@@ -10,9 +10,9 @@ public class UIFormId
     public const int Loading = 1;
 
     /// <summary>
-    /// 登录背景 界面
+    /// 加载资源界面
     /// </summary>
-    public const int UI_LogonBG = 101;
+    public const int UI_CheckVersion = 101;
 
     /// <summary>
     /// 注册 界面
@@ -33,6 +33,12 @@ public class UIFormId
     /// 对话界面
     /// </summary>
     public const int UI_Talk = 10;
-    
+
+    /// <summary>
+    /// 开始界面
+    /// </summary>
+    public const int UI_Start = 11;
+
+
 
 }

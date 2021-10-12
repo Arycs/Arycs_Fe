@@ -264,12 +264,11 @@ namespace YouYou
 
                 LoadUIAsset(assetPath, (ResourceEntity resourceEntity) =>
                 {
-                    GameObject uiObj = UnityEngine.Object.Instantiate((UnityEngine.Object)resourceEntity.Target) as GameObject;
+                    GameObject uiObj = UnityEngine.Object.Instantiate((UnityEngine.Object)resourceEntity.Target, GameEntry.UI.GetUIGroup(entity.UIGroupId).Group, true) as GameObject;
 
                     //把克隆出的资源 加入实例资源池
                     GameEntry.Pool.RegisterInstanceResource(uiObj.GetInstanceID(), resourceEntity);
 
-                    uiObj.transform.SetParent(GameEntry.UI.GetUIGroup(entity.UIGroupId).Group);
                     uiObj.transform.localPosition = Vector3.zero;
                     uiObj.transform.localScale = Vector3.one;
 

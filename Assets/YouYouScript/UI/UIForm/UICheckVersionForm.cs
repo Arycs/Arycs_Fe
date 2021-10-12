@@ -61,7 +61,6 @@ public class UICheckVersionForm : UIFormBase
     private void OnCloseCheckVersionUI(object userData)
     {
         Destroy(gameObject); //临时
-
     }
 
     #endregion

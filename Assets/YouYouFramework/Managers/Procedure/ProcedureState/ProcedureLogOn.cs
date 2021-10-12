@@ -14,14 +14,15 @@ namespace YouYou
             base.OnEnter();
             GameEntry.Log(LogCategory.Procedure,"OnEnter ProcedureLogOn");
 
-            GameEntry.UI.OpenUIForm(UIFormId.UI_LogonBG, onOpen: OnLogonBGOpen);
+            GameEntry.UI.OpenUIForm(UIFormId.UI_CheckVersion, onOpen: OnStartUIForm);
         }
 
-        private void OnLogonBGOpen(UIFormBase uiFormBase)
+        private void OnStartUIForm(UIFormBase uiFormBase)
         {
-            GameEntry.UI.OpenUIForm(UIFormId.UI_Login);
-
             GameEntry.Event.CommonEvent.Dispatch(SysEventId.CloseCheckVersionUI);
+
+            GameEntry.UI.OpenUIForm(UIFormId.UI_Start);
+
         }
 
         public override void OnUpdate()

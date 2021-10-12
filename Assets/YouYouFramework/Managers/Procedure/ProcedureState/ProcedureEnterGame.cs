@@ -13,11 +13,6 @@ namespace YouYou
         {
             base.OnEnter();
             Debug.Log("OnEnter ProcedureEnterGame");
-            string name = GameEntry.Procedure.GetData<string>("Name");
-            int code = GameEntry.Procedure.GetData<int>("code");
-            Debug.Log("name : " + name);
-            Debug.Log("code : " + code);
-            
         }
 
         public override void OnUpdate()

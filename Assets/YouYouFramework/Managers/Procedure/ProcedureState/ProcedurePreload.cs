@@ -76,10 +76,10 @@ namespace YouYou
         public void LoadReport()
         {
 #if DEBUG_MODEL
-         GameEntry.Resource.ResourceLoaderManager.LoadMainAsset(AssetCategory.Reporter, ConstDefine.ReporterPath, (ResourceEntity resourceEntity) =>
-            {
-                UnityEngine.Object.Instantiate(resourceEntity.Target as GameObject);
-            });
+         // GameEntry.Resource.ResourceLoaderManager.LoadMainAsset(AssetCategory.Reporter, ConstDefine.ReporterPath, (ResourceEntity resourceEntity) =>
+         //    {
+         //        UnityEngine.Object.Instantiate(resourceEntity.Target as GameObject);
+         //    });
 #endif
         }
 
@@ -134,7 +134,9 @@ namespace YouYou
         /// </summary>
         private void LoadAudio()
         {
-            GameEntry.Audio.LoadBanks(() => { LoadShader(); });
+            LoadShader();
+            //TODO 音效这块先屏蔽处理
+            //GameEntry.Audio.LoadBanks(() => {  });
         }
 
         /// <summary>
