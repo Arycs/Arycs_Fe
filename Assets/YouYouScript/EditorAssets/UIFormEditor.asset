@@ -18,7 +18,25 @@ MonoBehaviour:
   SaveByteFilePath: Assets/Download/DataTable/Bytes
   SaveCSFilePath: Assets/YouYouScript/Data/DataTable/Create
   UIFormInfos:
-  - uiFormId: 10
+  - uiFormId: 1001
+    desc: "Loading\u754C\u9762"
+    uiName: UILoading
+    uiGroup: 2
+    disableUILayer: 0
+    isLock: 0
+    assetPath: UILoading
+    canMulit: 0
+    showMode: 0
+  - uiFormId: 1002
+    desc: "\u5F00\u59CB\u83DC\u5355\u754C\u9762"
+    uiName: UIStartForm
+    uiGroup: 2
+    disableUILayer: 0
+    isLock: 0
+    assetPath: UIStartForm
+    canMulit: 0
+    showMode: 0
+  - uiFormId: 2001
     desc: "\u5BF9\u8BDD\u754C\u9762"
     uiName: UITalkForm
     uiGroup: 2
@@ -27,21 +45,12 @@ MonoBehaviour:
     assetPath: UITalkForm
     canMulit: 0
     showMode: 0
-  - uiFormId: 101
-    desc: "\u68C0\u67E5\u7248\u672C"
-    uiName: UICheckVersionForm
+  - uiFormId: 2002
+    desc: "\u6E38\u620F\u4E2D\u5C0F\u83DC\u5355\u754C\u9762"
+    uiName: UIGameMenu
     uiGroup: 2
     disableUILayer: 0
     isLock: 0
-    assetPath: UICheckVersionForm
-    canMulit: 0
-    showMode: 0
-  - uiFormId: 11
-    desc: "\u5F00\u59CB\u6E38\u620F\u754C\u9762"
-    uiName: UIStartForm
-    uiGroup: 2
-    disableUILayer: 0
-    isLock: 0
-    assetPath: UIStartForm
+    assetPath: UIGameMenu
     canMulit: 0
     showMode: 0

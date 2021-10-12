@@ -1,34 +1,27 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace YouYou
+public class ProcedureGame : ProcedureBase
 {
-    /// <summary>
-    /// 进入游戏流程
-    /// </summary>
-    public class ProcedureEnterGame : ProcedureBase
-    {
         public override void OnEnter()
         {
+            Debug.Log("进入到游戏流程");
             base.OnEnter();
-            Debug.Log("OnEnter ProcedureEnterGame");
         }
-
         public override void OnUpdate()
         {
             base.OnUpdate();
         }
-
+    
         public override void OnLeave()
         {
-            Debug.Log("OnLeave ProcedureEnterGame");
             base.OnLeave();
         }
-
+    
         public override void OnDestroy()
         {
             base.OnDestroy();
         }
-    }
+
 }

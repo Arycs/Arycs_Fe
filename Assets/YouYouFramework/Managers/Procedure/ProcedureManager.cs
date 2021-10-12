@@ -9,15 +9,13 @@ namespace YouYou
     /// </summary>
     public enum ProcedureState
     {
+        /// <summary>
+        /// 初始场景
+        /// </summary>
         Launch = 0,
-        CheckVersion = 1,
-        Preload = 2,
-        ChangeScene = 3,
-        LogOn = 4,
-        SelectRole = 5,
-        EnterGame = 6,
-        WorldMap = 7,
-        GameLevel = 8
+        Preload = 1,
+        StartMenu = 2,
+        Game = 3
     }
 
     /// <summary>
@@ -64,17 +62,11 @@ namespace YouYou
         /// </summary>
         public override void Init()
         {
-            FsmState<ProcedureManager>[] states = new FsmState<ProcedureManager>[9];
+            FsmState<ProcedureManager>[] states = new FsmState<ProcedureManager>[4];
             states[0] = new ProcedureLaunch();
-            states[1] = new ProcedureCheckVersion();
-            states[2] = new ProcedurePreload();
-            states[3] = new ProcedureChangeScene();
-            states[4] = new ProcedureLogOn();
-            states[5] = new ProcedureSelectRole();
-            states[6] = new ProcedureEnterGame();
-            states[7] = new ProcedureWorldMap();
-            states[8] = new ProcedureGameLevel();
-            
+            states[1] = new ProcedurePreload();
+            states[2] = new ProcedureStartMenu();
+            states[3] = new ProcedureGame();
             m_CurrFsm = GameEntry.Fsm.Create(this,states);
         }
         

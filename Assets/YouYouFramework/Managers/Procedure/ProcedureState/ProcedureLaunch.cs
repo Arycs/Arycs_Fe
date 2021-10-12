@@ -13,7 +13,12 @@ namespace YouYou
         {
             base.OnEnter();
             Debug.Log("OnEnter ProcedureLaunch");
-            GameEntry.Procedure.ChangeState(ProcedureState.CheckVersion);
+            
+#if DISABLE_ASSETBUNDLE
+            GameEntry.Procedure.ChangeState(ProcedureState.Preload);
+#else
+            GameEntry.Resource.InitStreamingAssetsBundleInfo();
+#endif
         }
 
         public override void OnUpdate()
@@ -33,5 +38,4 @@ namespace YouYou
             base.OnDestroy();
         }
     }
-
 }

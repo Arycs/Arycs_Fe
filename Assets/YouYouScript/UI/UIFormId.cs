@@ -7,38 +7,20 @@ public class UIFormId
     /// <summary>
     /// Loading 界面
     /// </summary>
-    public const int Loading = 1;
-
+    public const int Loading = 1001;
+    
     /// <summary>
-    /// 加载资源界面
+    /// 开始菜单界面
     /// </summary>
-    public const int UI_CheckVersion = 101;
-
-    /// <summary>
-    /// 注册 界面
-    /// </summary>
-    public const int UI_Reg = 102;
-
-    /// <summary>
-    /// 登录 界面
-    /// </summary>
-    public const int UI_Login = 103;
-
-    /// <summary>
-    /// 任务列表
-    /// </summary>
-    public const int UI_Task = 104;
-
+    public const int UI_Start = 1002;
+    
     /// <summary>
     /// 对话界面
     /// </summary>
-    public const int UI_Talk = 10;
+    public const int UI_Talk = 2001;
 
     /// <summary>
-    /// 开始界面
+    /// 游戏中小菜单界面
     /// </summary>
-    public const int UI_Start = 11;
-
-
-
+    public const int UI_GameMenu = 2002;
 }

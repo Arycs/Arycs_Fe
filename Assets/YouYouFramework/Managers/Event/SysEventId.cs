@@ -63,5 +63,10 @@ namespace YouYou
         /// 关闭检查版本UI
         /// </summary>
         public const ushort CloseCheckVersionUI = 1207;
+
+        /// <summary>
+        /// 关闭开始菜单
+        /// </summary>
+        public const ushort CloseStartMenu = 1208;
     }
 }

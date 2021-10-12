@@ -32,11 +32,12 @@ public class UIStartForm : UIFormBase
 
     public void OnStartGame()
     {
-        GameEntry.Procedure.ChangeState(ProcedureState.EnterGame);
+        GameEntry.Event.CommonEvent.Dispatch(SysEventId.CloseStartMenu);
     }
 
     public void OnLoadGame()
     {
+        GameEntry.Event.CommonEvent.Dispatch(SysEventId.CloseStartMenu);
         //TODO 读档 开始 游戏
     }
 

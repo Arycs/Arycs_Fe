@@ -18,9 +18,5 @@ public class TestUI : MonoBehaviour
         {
             GameEntry.UI.OpenUIForm(UIFormId.UI_Talk);
         }
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            GameEntry.UI.OpenUIForm(UIFormId.UI_Login);
-        }
     }
 }
