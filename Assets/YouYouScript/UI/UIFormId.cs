@@ -32,7 +32,7 @@ public class UIFormId
     /// <summary>
     /// 对话界面
     /// </summary>
-    public const int UI_Talk = 100;
+    public const int UI_Talk = 10;
     
 
 }

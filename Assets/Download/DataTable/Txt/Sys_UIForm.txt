@@ -1,0 +1,1 @@
+UIID : 10 , UI描述 : 对话界面 , UI名称 : UITalkForm , UI分组编号 : 2 , 是否禁用层级管理 : False , 是否锁定 : False , 路径 : UITalkForm , 是否允许多实例 : False , 显示类型 : 0
