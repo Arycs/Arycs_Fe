@@ -73,5 +73,16 @@ namespace YouYou
         /// 对话界面事件
         /// </summary>
         public const ushort UITalkWriteDown = 1209;
+
+
+        /// <summary>
+        /// 关闭UI界面
+        /// </summary>
+        public const ushort UITalkClose = 1210;
+
+        /// <summary>
+        /// 对话界面更新状态事件
+        /// </summary>
+        public const ushort UITalkStateUpdate = 1211;
     }
 }

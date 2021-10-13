@@ -162,7 +162,18 @@ namespace Arycs_Fe.ScriptManagement
             token++;
             ActionStatus result = executor.Execute(this, content, out m_Error);
 
+            if (result == ActionStatus.WaitWriteTextDone)
+            {
+                GameEntry.Event.CommonEvent.AddEventListener(SysEventId.UITalkWriteDown,OnTalkState); 
+            }
+            
             return result;
+        }
+
+        public bool isUIWrite = false;
+        private void OnTalkState(object userdata)
+        {
+            isUIWrite = ((BaseParams) userdata).BoolParam1;
         }
 
         #region InputEvent
@@ -173,6 +184,8 @@ namespace Arycs_Fe.ScriptManagement
                  WriteTextDone();
             }
         }
+
+        
 
         public override void OnMouseLButtonUp(Vector3 mousePosition)
         {
@@ -193,11 +206,11 @@ namespace Arycs_Fe.ScriptManagement
         {
             if (status == ActionStatus.WaitWriteTextDone)
             {
-                UITalkForm uiFormBase = (UITalkForm)GameEntry.UI.GetUIFormBaseById(UIFormId.UI_Talk);
-                if (uiFormBase.isWrited)
+                GameEntry.Event.CommonEvent.Dispatch(SysEventId.UITalkStateUpdate);
+                if (isUIWrite)
                 {
                     status = ActionStatus.Continue;
-                    uiFormBase.Close();
+                    GameEntry.Event.CommonEvent.Dispatch(SysEventId.UITalkClose);
                 }
                 else
                 {
