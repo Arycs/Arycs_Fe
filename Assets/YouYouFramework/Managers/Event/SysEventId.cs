@@ -68,5 +68,10 @@ namespace YouYou
         /// 关闭开始菜单
         /// </summary>
         public const ushort CloseStartMenu = 1208;
+
+        /// <summary>
+        /// 对话界面事件
+        /// </summary>
+        public const ushort UITalkWriteDown = 1209;
     }
 }

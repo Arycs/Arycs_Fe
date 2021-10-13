@@ -15,7 +15,8 @@ public class TestPool : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Vector3 v3 = new Vector3(1, 2, 3);
+        v3.Set(4,5,6);
     }
 
     // Update is called once per frame
@@ -84,4 +85,7 @@ public class TestPool : MonoBehaviour
     {
         GameEntry.Pool.GameObjectDespawn(poolId,instance);        
     }
+
+    
+    
 }

@@ -27,28 +27,71 @@ namespace Arycs_Fe.ScriptManagement
             Type[] executorTypes = GameAction.GetDefaultExecutorTypesForScenarioAction().ToArray();
             action.LoadExecutors(executorTypes);
             CurrentAction = action;
-            isLoaded = LoadScenario("test");
+        }
+        
+        /// <summary>
+        /// 运行脚本
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userData"></param>
+        /// <param name="onOpen"></param>
+        public void RunScenario(int id, object userData = null, BaseAction<TextAsset> onOpen = null)
+        {
+            //1. 读表 , 如果没有则直接返回
+            //TODO 这里的路径为临时写入
+            LoadScenarioAsset("test",(resourceEntity =>
+            {
+                TextAsset textAsset = resourceEntity.Target as TextAsset;
+                Debug.Log("加载出来的目标为" + textAsset.text);
+                TxtScript txt = new TxtScript();
+                txt.Load("序章", textAsset.text);
+                if (((ScenarioAction) CurrentAction).LoadScenario(txt))
+                {
+                    isLoaded = true;
+                }
+                else
+                {
+                    isLoaded = false;
+                    Debug.LogError("剧本读取失败,请查看剧本,剧本名称为" + "//Todo 剧本名称");
+                    return;
+                }
+                RunGameAction();
+            }));
         }
 
-        /// <summary>
-        /// 读取剧本
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public virtual bool LoadScenario(string name)
+        private void LoadScenarioAsset(string assetPath, BaseAction<ResourceEntity> onComplete)
         {
-            TextAsset tempTxt = Resources.Load<TextAsset>(name);
-            TxtScript txt = new TxtScript();
-            txt.Load("序章", tempTxt.text);
-            (CurrentAction as ScenarioAction)?.LoadScenario(txt);
-            return true;
+            GameEntry.Resource.ResourceLoaderManager.LoadMainAsset(AssetCategory.Scenario,
+                string.Format("Assets/Download/Scenario/{0}.txt",assetPath),
+                (resourceEntity =>
+                {
+                    if (onComplete != null)
+                    {
+                        onComplete(resourceEntity);
+                    }
+                }));
         }
 
         public void Update()
         {
             if (isLoaded)
             {
-                CurrentAction.Update();
+                if (Input.GetMouseButtonDown(0))
+                {
+                    CurrentAction.OnMouseLButtonDown(Input.mousePosition);
+                }
+                else if (Input.GetMouseButtonUp(0))
+                {
+                    CurrentAction.OnMouseLButtonUp(Input.mousePosition);
+                }
+                else if (Input.GetMouseButtonDown(1))
+                {
+                    CurrentAction.OnMouseRButtonDown(Input.mousePosition);
+                }
+                else if (Input.GetMouseButtonUp(1))
+                {
+                    CurrentAction.OnMouseRButtonUp(Input.mousePosition);
+                }
             }
         }
 
@@ -57,13 +100,26 @@ namespace Arycs_Fe.ScriptManagement
             m_GameAction?.Dispose();
         }
         /// <summary>
-        /// 开始运行
+        /// 执行当前脚本
         /// </summary>
         public void RunGameAction()
         {
             m_Coroutine = GameEntry.Instance.StartCoroutine(RunningGameAction());
         }
-
+        
+        /// <summary>
+        /// 停止当前脚本
+        /// </summary>
+        public void StopGameAction()
+        {
+            if (m_Coroutine == null)
+            {
+                return;
+            }
+            GameEntry.Instance.StopCoroutine(m_Coroutine);
+            m_Coroutine = null;
+        }
+        
         /// <summary>
         /// 运行中
         /// </summary>
@@ -120,16 +176,6 @@ namespace Arycs_Fe.ScriptManagement
             
             CurrentAction.Pause();
             CurrentAction = action;
-        }
-
-        public void StopGameAction()
-        {
-            if (m_Coroutine == null)
-            {
-                return;
-            }
-            GameEntry.Instance.StopCoroutine(m_Coroutine);
-            m_Coroutine = null;
         }
 
         public void BackGameAction()

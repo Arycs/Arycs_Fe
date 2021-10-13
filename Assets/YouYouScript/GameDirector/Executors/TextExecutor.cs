@@ -85,13 +85,18 @@ namespace Arycs_Fe.ScriptManagement
 
         protected override ActionStatus Run(IGameAction gameAction, IScenarioContent content, TextArgs args, out string error)
         {
-            //TODO 打开UI窗口，写入内容
-            GameEntry.UI.OpenUIForm(10,args);
+            BaseParams baseParams = GameEntry.Pool.DequeueClassObject<BaseParams>();
+            baseParams.Reset();
+            baseParams.StringParam1 = args.position;
+            baseParams.StringParam2 = args.text;
+            baseParams.BoolParam1 = args.async;
+            GameEntry.UI.OpenUIForm(UIFormId.UI_Talk,baseParams);
             error = null;
+            // GameEntry.Event.CommonEvent.AddEventListener(SysEventId.UITalkWriteDown,((ScenarioAction) gameAction).WriteTextDone);
+            
             
             //如果是快进模式，要等待一帧，防止看不到界面，闪屏都没有
             return args.async ? ActionStatus.WaitWriteTextDone : ActionStatus.NextFrame;
-
         }
     }
 }

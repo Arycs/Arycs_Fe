@@ -165,6 +165,84 @@ namespace Arycs_Fe.ScriptManagement
             return result;
         }
 
+        #region InputEvent
+        public override void OnMouseLButtonDown(Vector3 mousePosition)
+        {
+            if (status == ActionStatus.WaitWriteTextDone)
+            {
+                 WriteTextDone();
+            }
+        }
+
+        public override void OnMouseLButtonUp(Vector3 mousePosition)
+        {
+        }
+
+        public override void OnMouseRButtonDown(Vector3 mousePosition)
+        {
+        }
+
+        public override void OnMouseRButtonUp(Vector3 mousePosition)
+        {
+        }
+        #endregion
+        
+
+        #region Status Methods
+        public void WriteTextDone()
+        {
+            if (status == ActionStatus.WaitWriteTextDone)
+            {
+                UITalkForm uiFormBase = (UITalkForm)GameEntry.UI.GetUIFormBaseById(UIFormId.UI_Talk);
+                if (uiFormBase.isWrited)
+                {
+                    status = ActionStatus.Continue;
+                    uiFormBase.Close();
+                }
+                else
+                {
+                    //TODO 如果正在输入过程 直接显示结果 或者 显示下一句
+                }
+                //UITextPanel panel = UIManager.views.GetView<UITextPanel>(UINames.k_UITextPanel);
+                // if (panel.isWriting)
+                // {
+                //     panel.WriteTextImmediately();
+                // }
+                // else
+                // {
+                //     panel.HideIcon();
+                //     status = ActionStatus.Continue;
+                // }
+            }
+        }
+
+        public void MenuDone()
+        {
+            if (status == ActionStatus.WaitMenuOption)
+            {
+                status = ActionStatus.NextFrame;
+            }
+        }
+
+        public void BattleMapDone(string error = null)
+        {
+            if (status == ActionStatus.WaitMapDone)
+            {
+                if (string.IsNullOrEmpty(error))
+                {
+                    status = ActionStatus.NextFrame;
+                }
+                else
+                {
+                    this.error = error;
+                    status = ActionStatus.Error;
+                }
+            }
+        }
+        #endregion
+
+        
+        
         public override bool Update()
         {
             while (status == ActionStatus.Continue)
@@ -267,15 +345,7 @@ namespace Arycs_Fe.ScriptManagement
             cmdError = null;
             return ActionStatus.Continue;
         }
-
-        public void MenuDone()
-        {
-            if (status == ActionStatus.WaitMenuOption)
-            {
-                status = ActionStatus.NextFrame;
-            }
-        }
-
+        
         public override void Dispose()
         {
             base.Dispose();

@@ -366,6 +366,7 @@ namespace YouYou
             Resource.OnUpdate();
             Download.OnUpdate();
             UI.OnUpdate();
+            GameDirector.Update();
         }
 
         /// <summary>

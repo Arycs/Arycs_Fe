@@ -38,6 +38,12 @@ namespace YouYou
         public string StringParam4;
         public string StringParam5;
 
+        public bool BoolParam1;
+        public bool BoolParam2;
+        public bool BoolParam3;
+        public bool BoolParam4;
+        public bool BoolParam5;
+        
         public BaseAction ActionParam1;
         public BaseAction ActionParam2;
         public BaseAction ActionParam3;
@@ -54,6 +60,7 @@ namespace YouYou
             FloatParam1 = FloatParam2 = FloatParam3 = FloatParam4 = FloatParam5 = 0;
             StringParam1 = StringParam2 = StringParam3 = StringParam4 = StringParam5 = null;
             ActionParam1 = ActionParam2 = ActionParam3 = ActionParam4 = ActionParam5 = null;
+            BoolParam1 = BoolParam2 = BoolParam3 = BoolParam4 = BoolParam5 = false;
         }
     }
 }

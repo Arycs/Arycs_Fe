@@ -52,8 +52,6 @@ namespace Arycs_Fe.ScriptManagement
         /// </summary>
         protected class Command : IScenarioContent
         {
-            //TODO 命令
-
             #region Fields
 
             private readonly int m_LineNo;

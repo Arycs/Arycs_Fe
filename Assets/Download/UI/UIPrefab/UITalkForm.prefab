@@ -318,8 +318,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LeftRole: {fileID: 2490050984623940166}
-  RightRole: {fileID: 0}
-  TalkInfo: {fileID: 0}
+  TalkInfo: {fileID: 1295568799792903032}
 --- !u!1 &6908644070217897994
 GameObject:
   m_ObjectHideFlags: 0

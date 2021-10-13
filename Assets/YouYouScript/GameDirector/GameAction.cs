@@ -52,6 +52,8 @@ namespace Arycs_Fe.ScriptManagement
                 typeof(GotoExecutor),
                 typeof(CalcExecutor),
                 typeof(IfGotoExecutor),
+                typeof(DebugExecutor),
+                typeof(TextExecutor)
             };
         }
     
@@ -97,6 +99,7 @@ namespace Arycs_Fe.ScriptManagement
         
         public virtual void Abort(params object[] abortParams)
         {
+            Debug.LogError(error);
             onAbort?.Invoke(this, abortParams);
         }
 

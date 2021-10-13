@@ -164,7 +164,11 @@ public enum AssetCategory
     /// <summary>
     /// 日志预设
     /// </summary>
-    Reporter
+    Reporter,
+    /// <summary>
+    /// 剧情脚本
+    /// </summary>
+    Scenario
 }
 #endregion
 

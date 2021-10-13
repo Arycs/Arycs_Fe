@@ -1,0 +1,26 @@
+﻿// 测试剧本
+
+#Testing; // 测试剧本
+
+    #TestVar;
+        var a = 10;
+        var b = 5;
+        var c;
+        calc c = a + b;
+        var d;
+        calc d = c * 10;
+        debug log "a的值为" a "b的值为" b "c的值为" c "d的值为" d;
+        debug warning "a的值为" a "b的值为" b "c的值为" c "d的值为" d;
+        if d == 150 goto #TestUI;
+        
+	#TestUI;
+		text top "哆啦A梦在做梦"
+		    "哆啦B梦在做梦"
+		    "哆啦C梦在做梦";
+	    if a == 10 goto #TestEnd;
+	    
+    #TestEnd;
+        debug log "结束"
+		
+
+	

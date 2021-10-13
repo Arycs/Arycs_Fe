@@ -52,10 +52,18 @@ namespace YouYou
 #if DISABLE_ASSETBUNDLE && UNITY_EDITOR
             Debug.LogError("取池");
             m_CurrResourceEntity = GameEntry.Pool.DequeueClassObject<ResourceEntity>();
-            m_CurrResourceEntity.Category = assetCategory;
+            m_CurrResourceEntity.Category = assetCategory;/////////////////
             m_CurrResourceEntity.IsAssetBundle = false;
             m_CurrResourceEntity.ResourceName = assetFullName;
-            m_CurrResourceEntity.Target = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>(assetFullName);
+            if (assetCategory == AssetCategory.Scenario)
+            {
+                m_CurrResourceEntity.Target = UnityEditor.AssetDatabase.LoadAssetAtPath<TextAsset>(assetFullName);
+            }
+            else
+            {
+                m_CurrResourceEntity.Target = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>(assetFullName);
+            }
+
             if (onComplete != null)
             {
                 onComplete(m_CurrResourceEntity);

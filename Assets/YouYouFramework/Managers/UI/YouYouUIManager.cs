@@ -353,6 +353,19 @@ namespace YouYou
             return false;
         }
 
+        public UIFormBase GetUIFormBaseById(int uiformId)
+        {
+            for (LinkedListNode<UIFormBase> curr = m_OpenUIFormList.First; curr != null; curr = curr.Next)
+            {
+                if (curr.Value.UIFormId == uiformId)
+                {
+                    return curr.Value;
+                }
+            }
+
+            return null;
+        }
+
         /// <summary>
         /// 显示/激活一个UI
         /// </summary>

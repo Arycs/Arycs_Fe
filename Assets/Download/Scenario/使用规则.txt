@@ -1,0 +1,51 @@
+﻿规定默认占用的字符 : 
+    ';'     : 命令的分隔符
+    ' '     : 空格,分割每个字符
+    '\t'    : 分隔符
+    '\n'    : 换行符
+    '//'    : 注释前缀, 后面跟注释
+
+已定义解释器指令 :
+    'var'   : 定义变量或赋值
+        Example : var a; //定义一个a变量 
+                  var b = 10; //定义一个b变量 并赋值为10
+        PS : 长度必须为 2 或 4 以上两种形式
+    
+    'calc'  : 计算变量
+        Example : calc var += 1; //计算var的值
+                  calc var = var + 10; 
+        PS : 长度必须为 4 或 6 格式为以上两种, 且 "var" 必须为脚本文件中已经存在过的变量,即已经用var指令定义过的  支持 +,-,*,/,&,|,^,+=,-=,/=,*=,&=,|=,^= 这些符号
+        
+    'if,goto' : 判断语句,结合使用
+        Example : if var goto #flag;
+                  if !var goto #flag;
+                  if var >= num goto #flag;
+        PS : 长度必须为 4 或 6 格式为以上三种, 且 "var" 必须为脚本文件中已经存在过的变量,即已经用var指令定义过的 支持 ==,!=,>,<,>=,<= 这些符号 goto后面的 #flag 必须存在否则报错
+
+    '#' : 对应SetFlagExecutor 设置标识
+        Example : #flag; 
+        PS : 长度只为 1 必须为#XX 这种格式 其余情况下的#flag不作为单独标记 flog 不能重复 标记过后的flag可以用在goto后面,将执行流程切换过去
+
+    'goto'  : 前往 对应剧情标识处
+        Example : goto #flag;
+        PS : 长度必须为 2 格式为以上  flag 必须是经过# 定义过的 
+      
+    'debug' : 在Unity中输出日志,用于调试剧本相关内容,实际运行游戏不会输出相关内容
+        Example : debug log "message";
+                  debug warning "var" = var;
+                  debug error "str0" var0 "str1" var1 var2 var3 "str2"....;
+                  debug exception "str0" var0;
+                  debug assert "str0" var0;
+        PS : 长度必须大于3 其中"var"的变量为字符串即输出"var" 没有加""的则是 var指令定义的变量,如果有前文定义则会输出对应的值
+      
+    'text'  : 打开对话窗口
+        Example : text top text1 text2; 
+                  text bottom text1 text2;
+                  text global text1 text2; 
+        PS : 长度必须大于等于 3 text1 和text2 之间可以换行, 一条命令以;分割所以可以通过不同行来获取不同的内容
+        
+    'battle': 战斗标识
+    'clear' : 清空UI
+    'menu'  : 菜单,选择
+    
+         

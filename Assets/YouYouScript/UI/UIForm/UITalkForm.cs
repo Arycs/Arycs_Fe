@@ -7,9 +7,9 @@ public class UITalkForm : UIFormBase
 {
     public Image LeftRole;
 
-    public Image RightRole;
-
     public Text TalkInfo;
+
+    public bool isWrited;
     
     protected override void OnInit(object userData)
     {
@@ -21,6 +21,9 @@ public class UITalkForm : UIFormBase
         Debug.LogError("Open UITalkForm");
         base.OnOpen(userData);
         BaseParams baseParams = userData as BaseParams;
+        
+        TalkInfo.text = "位置" + baseParams.StringParam1 +"内容 : "+ baseParams.StringParam2 + "是否异步输出 :" + baseParams.BoolParam1;
+        isWrited = true;
     }
 
     protected override void OnClose()
