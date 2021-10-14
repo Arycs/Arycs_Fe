@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ba730078e491f24ba07eea65bf6e83d, type: 3}
   m_Name: UIFormEditor
   m_EditorClassIdentifier: 
-  IsEditor: 0
+  IsEditor: 1
   FileName: Sys_UIForm
   SaveTxtFilePath: Assets/Download/DataTable/Txt
   SaveByteFilePath: Assets/Download/DataTable/Bytes
@@ -52,5 +52,14 @@ MonoBehaviour:
     disableUILayer: 0
     isLock: 0
     assetPath: UIGameMenu
+    canMulit: 0
+    showMode: 0
+  - uiFormId: 2003
+    desc: "\u6E38\u620F\u4E2D\u9009\u62E9\u754C\u9762"
+    uiName: UIOptionMenu
+    uiGroup: 2
+    disableUILayer: 0
+    isLock: 0
+    assetPath: UIOptionMenu
     canMulit: 0
     showMode: 0

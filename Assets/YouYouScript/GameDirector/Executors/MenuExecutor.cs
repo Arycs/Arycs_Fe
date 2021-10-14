@@ -109,6 +109,8 @@ namespace Arycs_Fe.ScriptManagement
                 {
                     baseParams.StringParam5 = args.options[i];
                 }
+
+                i++;
             }
             GameEntry.UI.OpenUIForm(UIFormId.UI_OptionMenu,baseParams);
             //TODO 传入对应参数

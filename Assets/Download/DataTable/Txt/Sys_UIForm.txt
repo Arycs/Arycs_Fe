@@ -2,3 +2,4 @@ UIID : 1001 , UI描述 : Loading界面 , UI名称 : UILoading , UI分组编号 :
 UIID : 1002 , UI描述 : 开始菜单界面 , UI名称 : UIStartForm , UI分组编号 : 2 , 是否禁用层级管理 : False , 是否锁定 : False , 路径 : UIStartForm , 是否允许多实例 : False , 显示类型 : 0
 UIID : 2001 , UI描述 : 对话界面 , UI名称 : UITalkForm , UI分组编号 : 2 , 是否禁用层级管理 : False , 是否锁定 : False , 路径 : UITalkForm , 是否允许多实例 : False , 显示类型 : 0
 UIID : 2002 , UI描述 : 游戏中小菜单界面 , UI名称 : UIGameMenu , UI分组编号 : 2 , 是否禁用层级管理 : False , 是否锁定 : False , 路径 : UIGameMenu , 是否允许多实例 : False , 显示类型 : 0
+UIID : 2003 , UI描述 : 游戏中选择界面 , UI名称 : UIOptionMenu , UI分组编号 : 2 , 是否禁用层级管理 : False , 是否锁定 : False , 路径 : UIOptionMenu , 是否允许多实例 : False , 显示类型 : 0
