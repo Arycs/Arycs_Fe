@@ -69,20 +69,32 @@ namespace YouYou
         /// </summary>
         public const ushort CloseStartMenu = 1208;
 
+        
+        #region UITalk 相关事件
         /// <summary>
-        /// 对话界面事件
+        /// 监测对话写入状态
         /// </summary>
-        public const ushort UITalkWriteDown = 1209;
+        public const ushort UITalkWriteDown = 1210;
 
 
         /// <summary>
-        /// 关闭UI界面
+        /// 关闭对话界面
         /// </summary>
-        public const ushort UITalkClose = 1210;
+        public const ushort UITalkClose = 1211;
 
         /// <summary>
         /// 对话界面更新状态事件
         /// </summary>
-        public const ushort UITalkStateUpdate = 1211;
+        public const ushort UITalkStateUpdate = 1212;
+        #endregion
+
+        #region UIMenuOption 相关事件
+
+        /// <summary>
+        /// 等待选择界面做选择
+        /// </summary>
+        public const ushort UIMenuOptionDown = 1221;
+
+        #endregion
     }
 }

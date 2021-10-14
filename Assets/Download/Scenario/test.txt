@@ -14,13 +14,31 @@
         if d == 150 goto #TestUI;
         
 	#TestUI;
-		text top "哆啦A梦在做梦"
-		    "哆啦B梦在做梦"
-		    "哆啦C梦在做梦";
-	    if a == 10 goto #TestEnd;
+	    menu option
+	        "前往哆啦A梦在睡觉的世界"
+	        "前往哆啦B梦在睡觉的世界"
+	        "前往哆啦C梦在睡觉的世界"
+	        "结束";
+	    if  option == 1 goto #A;  
+	    if  option == 2 goto #B;
+	    if  option == 3 goto #C;
+	    if  option == 4 goto #End;
+	#A;
+	    text top "哆啦A梦在做梦";
+	    goto #TestUI;
+	
+	#B;
+	    text top "哆啦B梦在做梦";
+	    goto #TestUI;
+	
+	#C;
+	    text top "哆啦C梦在睡觉";
+	    goto #TestUI;
 	    
-    #TestEnd;
-        debug log "结束"
+    #End;
+        debug log "结束";
+        clear text;
+
 		
 
 	

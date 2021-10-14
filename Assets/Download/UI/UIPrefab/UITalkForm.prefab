@@ -317,8 +317,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71ac36134610c9b4d991e4f262979506, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LeftRole: {fileID: 2490050984623940166}
-  TalkInfo: {fileID: 1295568799792903032}
+  imgLeftRole: {fileID: 2490050984623940166}
+  textTalkInfo: {fileID: 1295568799792903032}
 --- !u!1 &6908644070217897994
 GameObject:
   m_ObjectHideFlags: 0

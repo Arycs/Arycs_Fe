@@ -53,7 +53,9 @@ namespace Arycs_Fe.ScriptManagement
                 typeof(CalcExecutor),
                 typeof(IfGotoExecutor),
                 typeof(DebugExecutor),
-                typeof(TextExecutor)
+                typeof(TextExecutor),
+                typeof(ClearExecutor),
+                typeof(MenuExecutor)
             };
         }
     

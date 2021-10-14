@@ -164,28 +164,41 @@ namespace Arycs_Fe.ScriptManagement
 
             if (result == ActionStatus.WaitWriteTextDone)
             {
-                GameEntry.Event.CommonEvent.AddEventListener(SysEventId.UITalkWriteDown,OnTalkState); 
+                GameEntry.Event.CommonEvent.AddEventListener(SysEventId.UITalkWriteDown, OnTalkState);
             }
-            
+            else if (result == ActionStatus.WaitMenuOption)
+            {
+                GameEntry.Event.CommonEvent.AddEventListener(SysEventId.UIMenuOptionDown, OnMenuState);
+            }
+
             return result;
         }
 
+        private void OnMenuState(object userdata)
+        {
+            BaseParams baseParams = userdata as BaseParams;
+            string optionName = baseParams.StringParam1;
+            int optionChoice = baseParams.IntParam1;
+            ScenarioBlackboard.Set(optionName, optionChoice);
+            status = ActionStatus.Continue;
+        }
+
         public bool isUIWrite = false;
+
         private void OnTalkState(object userdata)
         {
             isUIWrite = ((BaseParams) userdata).BoolParam1;
         }
 
         #region InputEvent
+
         public override void OnMouseLButtonDown(Vector3 mousePosition)
         {
             if (status == ActionStatus.WaitWriteTextDone)
             {
-                 WriteTextDone();
+                WriteTextDone();
             }
         }
-
-        
 
         public override void OnMouseLButtonUp(Vector3 mousePosition)
         {
@@ -198,10 +211,12 @@ namespace Arycs_Fe.ScriptManagement
         public override void OnMouseRButtonUp(Vector3 mousePosition)
         {
         }
+
         #endregion
-        
+
 
         #region Status Methods
+
         public void WriteTextDone()
         {
             if (status == ActionStatus.WaitWriteTextDone)
@@ -210,7 +225,7 @@ namespace Arycs_Fe.ScriptManagement
                 if (isUIWrite)
                 {
                     status = ActionStatus.Continue;
-                    GameEntry.Event.CommonEvent.Dispatch(SysEventId.UITalkClose);
+                    // GameEntry.Event.CommonEvent.Dispatch(SysEventId.UITalkClose);
                 }
                 else
                 {
@@ -252,10 +267,10 @@ namespace Arycs_Fe.ScriptManagement
                 }
             }
         }
+
         #endregion
 
-        
-        
+
         public override bool Update()
         {
             while (status == ActionStatus.Continue)
@@ -280,6 +295,7 @@ namespace Arycs_Fe.ScriptManagement
                 BackAction();
                 status = ActionStatus.NextFrame;
             }
+
             return true;
         }
 
@@ -358,7 +374,7 @@ namespace Arycs_Fe.ScriptManagement
             cmdError = null;
             return ActionStatus.Continue;
         }
-        
+
         public override void Dispose()
         {
             base.Dispose();

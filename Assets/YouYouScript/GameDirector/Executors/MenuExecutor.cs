@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using YouYou;
 
 namespace Arycs_Fe.ScriptManagement
 {
@@ -28,6 +29,7 @@ namespace Arycs_Fe.ScriptManagement
                 error = GetLengthErrorString();
                 return false;
             }
+
             // 获取使用的变量
             if (!RegexUtility.IsMatchVariable(content[1]))
             {
@@ -38,12 +40,12 @@ namespace Arycs_Fe.ScriptManagement
             args.menuName = content[1];
             List<string> options = new List<string>();
             int index = 2;
-            while (index<content.length)
+            while (index < content.length)
             {
                 string line;
                 if (content[index].StartsWith("\""))
                 {
-                    if (!ScenarioUtility.ParseContentString(content,ref index, out line, out error))
+                    if (!ScenarioUtility.ParseContentString(content, ref index, out line, out error))
                     {
                         return false;
                     }
@@ -52,10 +54,11 @@ namespace Arycs_Fe.ScriptManagement
                 {
                     //可能是个变量
                     int id = -1;
-                    if (!ParseOrGetVarValue(content[index],ref id,out error))
+                    if (!ParseOrGetVarValue(content[index], ref id, out error))
                     {
                         return false;
                     }
+
                     //TODO
                     line = "语言包获取";
                     if (string.IsNullOrEmpty(line))
@@ -66,6 +69,7 @@ namespace Arycs_Fe.ScriptManagement
 
                     index++;
                 }
+
                 options.Add(line);
             }
 
@@ -74,16 +78,39 @@ namespace Arycs_Fe.ScriptManagement
             return true;
         }
 
-        protected override ActionStatus Run(IGameAction gameAction, IScenarioContent content, MenuArgs args, out string error)
+        protected override ActionStatus Run(IGameAction gameAction, IScenarioContent content, MenuArgs args,
+            out string error)
         {
             ScenarioAction action;
-            if (!ParseAction(gameAction,out action,out error))
+            if (!ParseAction(gameAction, out action, out error))
             {
                 return ActionStatus.Error;
             }
+
             // 重置变为 -1
-            ScenarioBlackboard.Set(args.menuName,-1);
-            //TODO 打开UI
+            ScenarioBlackboard.Set(args.menuName, -1);
+            BaseParams baseParams = GameEntry.Pool.DequeueClassObject<BaseParams>();
+            baseParams.Reset();
+            baseParams.IntParam1 = args.options.Length;
+            baseParams.StringParam1 = args.menuName;
+            int i = 0;
+            while (i < args.options.Length )
+            {
+                if ( i == 0)
+                {
+                    baseParams.StringParam2 = args.options[i];
+                }else if (i == 1)
+                {
+                    baseParams.StringParam3 = args.options[i];
+                }else if (i == 2)
+                {
+                    baseParams.StringParam4 = args.options[i];
+                }else if (i == 3)
+                {
+                    baseParams.StringParam5 = args.options[i];
+                }
+            }
+            GameEntry.UI.OpenUIForm(UIFormId.UI_OptionMenu,baseParams);
             //TODO 传入对应参数
 
             error = null;

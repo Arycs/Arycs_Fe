@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using YouYou;
 
 namespace Arycs_Fe.ScriptManagement
 {
@@ -116,11 +117,21 @@ namespace Arycs_Fe.ScriptManagement
         {
             error = null;
             //TODO 判断界面是否打开
+            if (args.type == "text")
+            {
+                //TODO 如果位置为空，默认全部关闭。
+                string position = args.arg0;
+                //TODO 否则关闭对应位置的窗口
+                if (GameEntry.UI.IsExists(UIFormId.UI_Talk))
+                {
+                    GameEntry.Event.CommonEvent.Dispatch(SysEventId.UITalkClose);
+                }
+                
+            }
 
-            //TODO 如果位置为空，默认全部关闭。
-            string position = args.arg0;
             
-            //TODO 否则关闭对应位置的窗口
+            
+            
             
             return ActionStatus.NextFrame;;
         }

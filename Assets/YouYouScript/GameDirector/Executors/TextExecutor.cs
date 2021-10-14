@@ -93,10 +93,10 @@ namespace Arycs_Fe.ScriptManagement
             GameEntry.UI.OpenUIForm(UIFormId.UI_Talk,baseParams);
             error = null;
             // GameEntry.Event.CommonEvent.AddEventListener(SysEventId.UITalkWriteDown,((ScenarioAction) gameAction).WriteTextDone);
-            
-            
+
+            return ActionStatus.WaitWriteTextDone;
             //如果是快进模式，要等待一帧，防止看不到界面，闪屏都没有
-            return args.async ? ActionStatus.WaitWriteTextDone : ActionStatus.NextFrame;
+            //return args.async ? ActionStatus.WaitWriteTextDone : ActionStatus.NextFrame;
         }
     }
 }

@@ -15,12 +15,17 @@ public class UIFormId
     public const int UI_Start = 1002;
     
     /// <summary>
-    /// 对话界面
-    /// </summary>
-    public const int UI_Talk = 2001;
-
-    /// <summary>
     /// 游戏中小菜单界面
     /// </summary>
-    public const int UI_GameMenu = 2002;
+    public const int UI_GameMenu = 2001;
+    
+    /// <summary>
+    /// 对话界面
+    /// </summary>
+    public const int UI_Talk = 2002;
+
+    /// <summary>
+    /// 分支选项界面
+    /// </summary>
+    public const int UI_OptionMenu = 2003;
 }

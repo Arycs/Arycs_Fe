@@ -271,7 +271,7 @@ namespace Arycs_Fe.ScriptManagement
         /// <param name="result"></param>
         /// <param name="error"></param>
         /// <returns></returns>
-        public static bool ParseContenStrings(IScenarioContent content, ref int startIndex, out List<string> result, out string error)
+        public static bool ParseContentStrings(IScenarioContent content, ref int startIndex, out List<string> result, out string error)
         {
             if (content == null)
             {

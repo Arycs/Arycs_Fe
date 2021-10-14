@@ -42,10 +42,18 @@
         Example : text top text1 text2; 
                   text bottom text1 text2;
                   text global text1 text2; 
-        PS : 长度必须大于等于 3 text1 和text2 之间可以换行, 一条命令以;分割所以可以通过不同行来获取不同的内容
+        PS : 长度必须大于等于 3 text1 和text2 之间可以换行, 一条命令以;分割所以可以通过不同行来获取不同的内容, text1 如果是带""的字符串,则直接显示内容, 如果不带则表明是个变量,需要在上文中定义var
         
-    'battle': 战斗标识
     'clear' : 清空UI
+        Example : clear uiType uiPosition
+        PS : 长度必须大于 2 uiType 目前只 支持 text , uiPosition 代表关闭界面中UI的位置, 对话界面的三个参数为{top bottom global} 关闭对话界面, 后续扩展多余的,支持同时关闭多个界面
+
     'menu'  : 菜单,选择
+        Example : menu option
+                    "1,选项"
+                    "2,选项";
+        PS : 长度必须大于3 每个选项之间用换行分割, option为前文需要定义的var
+    
+    'battle': 战斗标识
     
          
