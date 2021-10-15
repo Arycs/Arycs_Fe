@@ -25,14 +25,17 @@
 	    if  option == 4 goto #End;
 	#A;
 	    text top "哆啦A梦在做梦";
+	    clear text;
 	    goto #TestUI;
 	
 	#B;
 	    text top "哆啦B梦在做梦";
+	    clear text;
 	    goto #TestUI;
 	
 	#C;
 	    text top "哆啦C梦在睡觉";
+	    clear text;
 	    goto #TestUI;
 	    
     #End;

@@ -121,6 +121,7 @@ namespace YouYou
             //Sys_SceneDetailDBModel.LoadData();
             //New
             Sys_UIFormDBModel.LoadData();
+            Sys_PrefabDBModel.LoadData();
             Sys_CharacterDBModel.LoadData();
             Sys_ItemDBModel.LoadData();
             Sys_LanguageDBModel.LoadData();

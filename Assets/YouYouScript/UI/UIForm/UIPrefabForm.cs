@@ -9,13 +9,13 @@ public class UIPrefabForm : UIFormBase
     protected override void OnInit(object userData)
     {
         base.OnInit(userData);
-        Debug.Log("UITaskForm Init");
+        Debug.Log("检查要打开的UI的脚本是否未替换");
     }
 
     protected override void OnOpen(object userData)
     {
         base.OnOpen(userData);
-        Debug.Log("UITaskForm Open");
+        Debug.Log("检查要打开的UI的脚本是否未替换");
     }
 
     protected override void OnClose()

@@ -180,6 +180,7 @@ namespace Arycs_Fe.ScriptManagement
             string optionName = baseParams.StringParam1;
             int optionChoice = baseParams.IntParam1;
             ScenarioBlackboard.Set(optionName, optionChoice);
+            GameEntry.Event.CommonEvent.RemoveEventListener(SysEventId.UIMenuOptionDown, OnMenuState);
             status = ActionStatus.Continue;
         }
 
@@ -224,6 +225,8 @@ namespace Arycs_Fe.ScriptManagement
                 GameEntry.Event.CommonEvent.Dispatch(SysEventId.UITalkStateUpdate);
                 if (isUIWrite)
                 {
+                    
+                    GameEntry.Event.CommonEvent.RemoveEventListener(SysEventId.UITalkWriteDown, OnTalkState);
                     status = ActionStatus.Continue;
                     // GameEntry.Event.CommonEvent.Dispatch(SysEventId.UITalkClose);
                 }

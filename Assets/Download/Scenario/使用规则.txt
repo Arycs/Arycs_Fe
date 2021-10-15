@@ -55,5 +55,5 @@
         PS : 长度必须大于3 每个选项之间用换行分割, option为前文需要定义的var
     
     'battle': 战斗标识
-    
-         
+        Example : battle Stage0Scene Stage0Script
+        PS : 长度必须为 3 第一个参数为切换的场景, 第二个为场景执行的剧本         

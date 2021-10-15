@@ -205,14 +205,12 @@ namespace YouYou
 
         public void OnUpdate()
         {
-
             if (Time.time > m_NextRunTime + UIClearInterval)
             {
                 m_NextRunTime = Time.time;
                 //释放 UI对象池
                 m_UIPool.CheckClear();
             }
-
         }
 
         /// <summary>

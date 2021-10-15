@@ -52,7 +52,7 @@ namespace YouYou
 #if DISABLE_ASSETBUNDLE && UNITY_EDITOR
             Debug.LogError("取池");
             m_CurrResourceEntity = GameEntry.Pool.DequeueClassObject<ResourceEntity>();
-            m_CurrResourceEntity.Category = assetCategory;/////////////////
+            m_CurrResourceEntity.Category = assetCategory;
             m_CurrResourceEntity.IsAssetBundle = false;
             m_CurrResourceEntity.ResourceName = assetFullName;
             if (assetCategory == AssetCategory.Scenario)
@@ -64,6 +64,11 @@ namespace YouYou
                 m_CurrResourceEntity.Target = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>(assetFullName);
             }
 
+            if (m_CurrResourceEntity.Target == null)
+            {
+                Debug.LogError("资源加载出现错误,请检查是否路径正确或者加载格式正确");
+            }
+            
             if (onComplete != null)
             {
                 onComplete(m_CurrResourceEntity);

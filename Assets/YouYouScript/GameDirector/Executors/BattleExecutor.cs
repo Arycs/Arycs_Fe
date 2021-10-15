@@ -32,9 +32,7 @@ namespace Arycs_Fe.ScriptManagement
             error = null;
             return true;
         }
-
         
-
         protected override ActionStatus Run(IGameAction gameAction, IScenarioContent content, BattleArgs args, out string error)
         {
             error = null;

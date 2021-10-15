@@ -458,13 +458,48 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2867426313895750351, guid: 4ddc3025527e199449763ebb24c5e7bf,
         type: 3}
+      propertyPath: GameObjectPoolGroups.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2867426313895750351, guid: 4ddc3025527e199449763ebb24c5e7bf,
+        type: 3}
       propertyPath: GameObjectPoolGroups.Array.data[0].PoolId
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2867426313895750351, guid: 4ddc3025527e199449763ebb24c5e7bf,
         type: 3}
+      propertyPath: GameObjectPoolGroups.Array.data[1].PoolId
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2867426313895750351, guid: 4ddc3025527e199449763ebb24c5e7bf,
+        type: 3}
       propertyPath: GameObjectPoolGroups.Array.data[0].PoolName
       value: Class
+      objectReference: {fileID: 0}
+    - target: {fileID: 2867426313895750351, guid: 4ddc3025527e199449763ebb24c5e7bf,
+        type: 3}
+      propertyPath: GameObjectPoolGroups.Array.data[1].PoolName
+      value: Prefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 2867426313895750351, guid: 4ddc3025527e199449763ebb24c5e7bf,
+        type: 3}
+      propertyPath: GameObjectPoolGroups.Array.data[1].CullAbove
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2867426313895750351, guid: 4ddc3025527e199449763ebb24c5e7bf,
+        type: 3}
+      propertyPath: GameObjectPoolGroups.Array.data[1].CullDelay
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2867426313895750351, guid: 4ddc3025527e199449763ebb24c5e7bf,
+        type: 3}
+      propertyPath: GameObjectPoolGroups.Array.data[1].CullDespawned
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2867426313895750351, guid: 4ddc3025527e199449763ebb24c5e7bf,
+        type: 3}
+      propertyPath: GameObjectPoolGroups.Array.data[1].CullMaxPerPass
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2867426313895750384, guid: 4ddc3025527e199449763ebb24c5e7bf,
         type: 3}

@@ -164,6 +164,11 @@ namespace Arycs_Fe.ScriptManagement
             return true;
         }
 
+        /// <summary>
+        /// 读取地图剧本
+        /// </summary>
+        /// <param name="scriptName"></param>
+        /// <returns></returns>
         private bool LoadScenario(string scriptName)
         {
             //剧本可以为null ，地图中没有剧情，纯战斗
@@ -194,6 +199,9 @@ namespace Arycs_Fe.ScriptManagement
             return true;
         }
 
+        /// <summary>
+        /// 执行地图剧情
+        /// </summary>
         public void ScenarioDone()
         {
             if (Status == ActionStatus.WaitScenarioDone)
@@ -272,6 +280,17 @@ namespace Arycs_Fe.ScriptManagement
             return ActionStatus.Continue;
         }
 
+        /// <summary>
+        /// 创建Class
+        /// </summary>
+        /// <param name="attitudeTowards"></param>
+        /// <param name="roleType"></param>
+        /// <param name="id"></param>
+        /// <param name="position"></param>
+        /// <param name="level"></param>
+        /// <param name="items"></param>
+        /// <param name="cmdError"></param>
+        /// <returns></returns>
         public ActionStatus ObjectCommandCreateClass(AttitudeTowards attitudeTowards, RoleType roleType, int id,
             Vector3Int position, int level, int[] items, out string cmdError)
         {
@@ -401,6 +420,10 @@ namespace Arycs_Fe.ScriptManagement
                 out cmdError);
         }
 
+        /// <summary>
+        /// 点击左键
+        /// </summary>
+        /// <param name="mousePosition"></param>
         public override void OnMouseLButtonDown(Vector3 mousePosition)
         {
             if (Status == ActionStatus.WaitScenarioDone)
@@ -494,7 +517,7 @@ namespace Arycs_Fe.ScriptManagement
         /// 显示地图菜单
         /// </summary>
         /// <param name="sub"></param>
-        protected void ShowMapMenu(bool sub)
+        private void ShowMapMenu(bool sub)
         {
             //TODO 打开MapMenu 界面
             HashSet<MenuTextID> showButtons;

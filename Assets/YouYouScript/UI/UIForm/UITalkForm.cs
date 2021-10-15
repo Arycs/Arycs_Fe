@@ -42,7 +42,7 @@ public class UITalkForm : UIFormBase
         BaseParams baseParams = userData as BaseParams;
         m_IsAsync = baseParams.BoolParam1;
         m_TalkPosition = baseParams.StringParam1;
-        m_TalkInfoList = baseParams.StringParam2.Split('\n');
+        m_TalkInfoList = baseParams.StringParam2.TrimEnd((char[])"\n\r".ToCharArray()).Split('\n');
 
         // textTalkInfo.text = "位置" + baseParams.StringParam1 + "内容 : " + baseParams.StringParam2 + "是否异步输出 :" +
         //                      baseParams.BoolParam1;
@@ -103,6 +103,11 @@ public class UITalkForm : UIFormBase
 
     protected override void OnClose()
     {
+        m_IsAsync = false;
+        m_TalkPosition = "";
+        m_TalkInfoIndex = 0;
+        GameEntry.Event.CommonEvent.RemoveEventListener(SysEventId.UITalkClose, OnCloseByMessage);
+        GameEntry.Event.CommonEvent.RemoveEventListener(SysEventId.UITalkStateUpdate, OnChangeWriteState);
     }
 
     protected override void OnBeforDestroy()

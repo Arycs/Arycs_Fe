@@ -23,6 +23,9 @@ namespace Arycs_Fe.ScriptManagement
         // 匹配 以a-z A-Z 中文字符 开始，以任意结尾的字符串
         private const string k_Variable = @"^[a-zA-Z_\u4e00-\u9fa5)][\w]*$";
 
+        // 匹配数字
+        private const string k_Number = @"[^a-zA-Z_\u4e00-\u9fa5)]+";
+        
         /// <summary>
         /// 匹配 以a-z A-Z 中文字符 开始，以任意结尾的字符串
         /// </summary>
@@ -36,6 +39,17 @@ namespace Arycs_Fe.ScriptManagement
         public static int GetRichTextFormatString(string text, out Dictionary<int, int> richLengthDict, out Dictionary<int, KeyValuePair<string, string>> richTextDict)
         {
             throw new System.NotImplementedException();
+        }
+
+        /// <summary>
+        /// 获取匹配的第一个数字
+        /// </summary>
+        /// <param name="varNum"></param>
+        /// <param name="outNum"></param>
+        public static void IsMatchNumber(string varNum, out int outNum)
+        {
+           Match temp = Regex.Match(varNum, k_Number);
+           outNum = temp.Value.ToInt();
         }
     }
 }
