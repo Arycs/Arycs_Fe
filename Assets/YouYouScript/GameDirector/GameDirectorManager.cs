@@ -59,7 +59,7 @@ namespace Arycs_Fe.ScriptManagement
             }));
         }
 
-        private void LoadScenarioAsset(string assetPath, BaseAction<ResourceEntity> onComplete)
+        public void LoadScenarioAsset(string assetPath, BaseAction<ResourceEntity> onComplete)
         {
             GameEntry.Resource.ResourceLoaderManager.LoadMainAsset(AssetCategory.Scenario,
                 string.Format("Assets/Download/Scenario/{0}.txt",assetPath),
@@ -156,16 +156,21 @@ namespace Arycs_Fe.ScriptManagement
         /// <returns></returns>
         public bool LoadMap(string argsSceneName)
         {
-            //TODO 事件订阅 加载新地图
-            //TODO 场景的加载-切换场景
+            int sceneId =  GameEntry.DataTable.Sys_SceneDBModel.GetSceneIdByName(argsSceneName);
+            if (sceneId == 0)
+            {
+                Debug.LogError("场景名不存在,请检查,场景名为 : " + argsSceneName);
+                return false;
+            }
+            GameEntry.Scene.LoadScene(sceneId,onComplete:LoadMap_OnSceneLoaded);
             return true;
         }
 
-        private void LoadMap_OnSceneLoaded(string message, object sender)
+        private void LoadMap_OnSceneLoaded()
         {
-            //TODO 移除订阅事件
+            //暂停之前的游戏剧本
             StopGameAction();
-
+            
             MapAction action = new MapAction(CurrentAction);
             if (!action.Load(ScenarioBlackboard.mapScript))
             {

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Arycs_Fe.ScriptManagement;
 using UnityEngine;
 
 namespace YouYou
@@ -58,6 +59,10 @@ namespace YouYou
             if (assetCategory == AssetCategory.Scenario)
             {
                 m_CurrResourceEntity.Target = UnityEditor.AssetDatabase.LoadAssetAtPath<TextAsset>(assetFullName);
+            }
+            else if(assetCategory == AssetCategory.MapEventInfo)
+            {
+                m_CurrResourceEntity.Target = UnityEditor.AssetDatabase.LoadAssetAtPath<MapEventInfo>(assetFullName);
             }
             else
             {

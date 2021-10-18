@@ -117,11 +117,11 @@ namespace YouYou
             //Sys_SoundDBModel.LoadData();
             //Sys_StorySoundDBModel.LoadData();
             //Sys_UIFormDBModel.LoadData();
-            //Sys_SceneDBModel.LoadData();
-            //Sys_SceneDetailDBModel.LoadData();
             //New
             Sys_UIFormDBModel.LoadData();
             Sys_PrefabDBModel.LoadData();
+            Sys_SceneDBModel.LoadData();
+            Sys_SceneDetailDBModel.LoadData();
             Sys_CharacterDBModel.LoadData();
             Sys_ItemDBModel.LoadData();
             Sys_LanguageDBModel.LoadData();

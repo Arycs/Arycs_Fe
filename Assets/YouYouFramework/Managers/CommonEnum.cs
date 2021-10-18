@@ -168,7 +168,11 @@ public enum AssetCategory
     /// <summary>
     /// 剧情脚本
     /// </summary>
-    Scenario
+    Scenario,
+    /// <summary>
+    /// 地图事件
+    /// </summary>
+    MapEventInfo,
 }
 #endregion
 

@@ -225,7 +225,7 @@ namespace YouYou
                     m_CurrLoadingParam.IntParam1 = (int) LoadingType.ChangeScene;
                     m_CurrLoadingParam.FloatParam1 = (m_CurrProgress / m_NeedLoadOrUnLoadSceneDetailCount);
                     GameEntry.Event.CommonEvent.Dispatch(SysEventId.LoadingProgressChange, m_CurrLoadingParam);
-                    Debug.LogError("m_CurrProgress=" + (m_CurrProgress / m_NeedLoadOrUnLoadSceneDetailCount));
+                    //Debug.LogError("m_CurrProgress=" + (m_CurrProgress / m_NeedLoadOrUnLoadSceneDetailCount));
                 }
                 else if (m_CurrProgress >= m_NeedLoadOrUnLoadSceneDetailCount)
                 {

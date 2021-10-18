@@ -240,6 +240,10 @@ namespace Arycs_Fe.Maps
                 }
                 return m_MouseCursor;
             }
+            set
+            {
+                m_MouseCursor = value;
+            }
         }
     
         /// <summary>

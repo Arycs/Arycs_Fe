@@ -18,11 +18,13 @@
 	        "前往哆啦A梦在睡觉的世界"
 	        "前往哆啦B梦在睡觉的世界"
 	        "前往哆啦C梦在睡觉的世界"
+	        "塔塔开,塔塔开,塔塔开!!"
 	        "结束";
 	    if  option == 1 goto #A;  
 	    if  option == 2 goto #B;
 	    if  option == 3 goto #C;
-	    if  option == 4 goto #End;
+	    if  option == 4 goto #Start;
+	    if  option == 5 goto #End;
 	#A;
 	    text top "哆啦A梦在做梦";
 	    clear text;
@@ -37,7 +39,10 @@
 	    text top "哆啦C梦在睡觉";
 	    clear text;
 	    goto #TestUI;
-	    
+
+	#Start;
+	    battle GameScene_ChengBao Map01;
+
     #End;
         debug log "结束";
         clear text;

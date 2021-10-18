@@ -109,19 +109,18 @@ namespace Arycs_Fe.ScriptManagement
             }
 
             Map.InitMap();
-            //TODO 读取地图脚本，加载资源,根据 scriptName 来加载地图脚本
+            
             TextAsset asset = new TextAsset();
-            if (asset == null)
-            {
-                error = "MapAction -> script file was not found";
-                return false;
-            }
-
-            //TODO 根据加载的内容，解析地图事件信息
-            MapEventInfo info = new MapEventInfo();
+            MapEventInfo info = null;
+            GameEntry.Resource.ResourceLoaderManager.LoadMainAsset(AssetCategory.MapEventInfo,
+                $"Assets/Download/MapConfig/{scriptName}.asset",(
+                Resources =>
+                {
+                    info = Resources.Target as MapEventInfo;
+                }));
             if (info == null)
             {
-                error = "MapAction -> Load map event info from xml bytes failure";
+                error = $"MapAction -> 加载{scriptName}地图事件错误";
                 return false;
             }
 
@@ -132,12 +131,10 @@ namespace Arycs_Fe.ScriptManagement
             //设置鼠标光标
             if (!string.IsNullOrEmpty(info.mouseCursor.prefab))
             {
-                //TODO  加载资源获取鼠标光标
-                MapMouseCursor mouseCursor = new MapMouseCursor();
-                if (mouseCursor != null)
+                GameEntry.Pool.GameObjectPool.Spawn(PrefabId.MouseCursor,(transform =>
                 {
-                    Map.mouseCursorPrefab = mouseCursor;
-                }
+                    Map.mouseCursor = transform.GetComponent<MapMouseCursor>();
+                }));
             }
 
             Map.mouseCursor.UpdatePosition(new Vector3Int(info.mouseCursor.x, info.mouseCursor.y, 0));
@@ -145,12 +142,10 @@ namespace Arycs_Fe.ScriptManagement
             //设置移动范围和攻击范围的图标
             if (!string.IsNullOrWhiteSpace(info.cursor))
             {
-                //TODO 加载资源后去移动/攻击光标
-                MapCursor cursor = new MapCursor();
-                if (cursor != null)
+                GameEntry.Pool.GameObjectPool.Spawn(PrefabId.MoveOrAttackCursor,(transform =>
                 {
-                    Map.cursorPrefab = cursor;
-                }
+                    Map.cursorPrefab = transform.GetComponent<MapCursor>();
+                }));
             }
 
             //读取剧情剧本与地图事件
@@ -177,13 +172,12 @@ namespace Arycs_Fe.ScriptManagement
                 return true;
             }
 
-            //TODO  根据scriptName 获取Action
             Iscenario scenario = new TxtScript();
-            if (scenario == null)
+            GameEntry.GameDirector.LoadScenarioAsset(scriptName,(resourceEntity =>
             {
-                error = $"MapAction -> LoadScenario error .Script '{scriptName}' was not fount";
-                return false;
-            }
+                TextAsset textAsset = resourceEntity.Target as TextAsset;
+                if (!(textAsset is null)) scenario.Load(scriptName, textAsset.text);
+            }));
 
             MapScenarioAction action = new MapScenarioAction(this);
             List<Type> executorTypes = GameAction.GetDefaultExecutorTypesForScenarioAction();
@@ -1575,7 +1569,7 @@ namespace Arycs_Fe.ScriptManagement
                 GameEntry.Instance.StopCoroutine(m_EventCoroutine);
                 m_EventCoroutine = null;
             }
-            m_MapEvents.Clear();
+            m_MapEvents?.Clear();
 
             if (Map != null)
             {

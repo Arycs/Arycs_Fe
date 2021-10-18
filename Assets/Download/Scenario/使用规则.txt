@@ -56,4 +56,4 @@
     
     'battle': 战斗标识
         Example : battle Stage0Scene Stage0Script
-        PS : 长度必须为 3 第一个参数为切换的场景, 第二个为场景执行的剧本         
+        PS : 长度必须为 3 第一个指定了战斗地图所在场景（Scene）, 第二个指定了在地图参数（地图如何初始化）。
