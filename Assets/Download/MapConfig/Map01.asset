@@ -12,22 +12,327 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8560d244803f8b54aa04298655b16a90, type: 3}
   m_Name: Map01
   m_EditorClassIdentifier: 
-  events: []
   nextScene: 
   scenarioName: stage0
-  mouseCursor:
-    prefab: MouseCursor
-    x: 5
-    y: 5
   cursor: Cursor
-  startEvent:
-    id: 0
-    onlyonce: 1
-    entryConditionType: 0
-  resultEvents:
-  - id: 10
-    onlyonce: 1
-    entryConditionType: 0
-  - id: 20
-    onlyonce: 1
-    entryConditionType: 0
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: mouseCursor
+      Entry: 7
+      Data: Arycs_Fe.ScriptManagement.MapEventInfo+MouseCursorInfo, Assembly-CSharp
+    - Name: prefab
+      Entry: 1
+      Data: MouseCursor
+    - Name: x
+      Entry: 3
+      Data: 5
+    - Name: y
+      Entry: 3
+      Data: 5
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: startEvent
+      Entry: 7
+      Data: 0|Arycs_Fe.ScriptManagement.MapEventNoCondition, Assembly-CSharp
+    - Name: id
+      Entry: 3
+      Data: 0
+    - Name: onlyonce
+      Entry: 5
+      Data: true
+    - Name: entryConditionType
+      Entry: 3
+      Data: 0
+    - Name: entryCondititon
+      Entry: 6
+      Data: 
+    - Name: conditions
+      Entry: 7
+      Data: 1|System.Collections.Generic.List`1[[Condition, Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: triggers
+      Entry: 7
+      Data: 2|System.Collections.Generic.List`1[[Result, Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 2
+    - Name: 
+      Entry: 7
+      Data: 3|CreateObjectResult, Assembly-CSharp
+    - Name: objects
+      Entry: 7
+      Data: 4|MapObjectInfo[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 3
+    - Name: 
+      Entry: 7
+      Data: 5|ClassUniqueInfo, Assembly-CSharp
+    - Name: x
+      Entry: 3
+      Data: 5
+    - Name: y
+      Entry: 3
+      Data: 5
+    - Name: attitudeTowards
+      Entry: 3
+      Data: 0
+    - Name: id
+      Entry: 3
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 6|ClassUniqueInfo, Assembly-CSharp
+    - Name: x
+      Entry: 3
+      Data: 6
+    - Name: y
+      Entry: 3
+      Data: 6
+    - Name: attitudeTowards
+      Entry: 3
+      Data: 1
+    - Name: id
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 7|ClassFollowingInfo, Assembly-CSharp
+    - Name: x
+      Entry: 3
+      Data: 6
+    - Name: y
+      Entry: 3
+      Data: 7
+    - Name: attitudeTowards
+      Entry: 3
+      Data: 1
+    - Name: id
+      Entry: 3
+      Data: 0
+    - Name: level
+      Entry: 3
+      Data: 1
+    - Name: items
+      Entry: 7
+      Data: 8|System.Int32[], mscorlib
+    - Name: 
+      Entry: 14
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: error
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 9|ScenarioResult, Assembly-CSharp
+    - Name: flag
+      Entry: 1
+      Data: '#Start'
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: resultEvents
+      Entry: 7
+      Data: 10|Arycs_Fe.ScriptManagement.MapEventWinLose[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 11|Arycs_Fe.ScriptManagement.MapEventWinLose, Assembly-CSharp
+    - Name: id
+      Entry: 3
+      Data: 10
+    - Name: onlyonce
+      Entry: 5
+      Data: true
+    - Name: entryConditionType
+      Entry: 3
+      Data: 2
+    - Name: entryCondititon
+      Entry: 7
+      Data: 12|PositionCondition, Assembly-CSharp
+    - Name: x
+      Entry: 3
+      Data: 2
+    - Name: y
+      Entry: 3
+      Data: 4
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: conditions
+      Entry: 7
+      Data: 13|System.Collections.Generic.List`1[[Condition, Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: triggers
+      Entry: 7
+      Data: 14|System.Collections.Generic.List`1[[Result, Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 15|ScenarioResult, Assembly-CSharp
+    - Name: flag
+      Entry: 1
+      Data: '#Win'
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: resultTrigger
+      Entry: 7
+      Data: 16|WinResult, Assembly-CSharp
+    - Name: result
+      Entry: 3
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: events
+      Entry: 7
+      Data: 17|Arycs_Fe.ScriptManagement.MapEvent[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 18|Arycs_Fe.ScriptManagement.MapEvent, Assembly-CSharp
+    - Name: id
+      Entry: 3
+      Data: 100
+    - Name: onlyonce
+      Entry: 5
+      Data: true
+    - Name: entryConditionType
+      Entry: 3
+      Data: 2
+    - Name: entryCondititon
+      Entry: 7
+      Data: 19|PositionCondition, Assembly-CSharp
+    - Name: x
+      Entry: 3
+      Data: 4
+    - Name: y
+      Entry: 3
+      Data: 4
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: conditions
+      Entry: 7
+      Data: 20|System.Collections.Generic.List`1[[Condition, Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: triggers
+      Entry: 7
+      Data: 21|System.Collections.Generic.List`1[[Result, Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 22|PropertyResult, Assembly-CSharp
+    - Name: propertyType
+      Entry: 3
+      Data: 0
+    - Name: value
+      Entry: 3
+      Data: 5
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 

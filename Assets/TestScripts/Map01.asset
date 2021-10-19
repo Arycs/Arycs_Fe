@@ -12,10 +12,138 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8560d244803f8b54aa04298655b16a90, type: 3}
   m_Name: Map01
   m_EditorClassIdentifier: 
-  events:
-  - id: 0
-    onlyonce: 0
-    entryConditionType: 0
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: events
+      Entry: 7
+      Data: 0|Arycs_Fe.ScriptManagement.MapEvent[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 1|Arycs_Fe.ScriptManagement.MapEventNoCondition, Assembly-CSharp
+    - Name: id
+      Entry: 3
+      Data: 0
+    - Name: onlyonce
+      Entry: 5
+      Data: false
+    - Name: entryConditionType
+      Entry: 3
+      Data: 0
+    - Name: entryCondititon
+      Entry: 7
+      Data: 2|PositionCondition, Assembly-CSharp
+    - Name: x
+      Entry: 3
+      Data: 123
+    - Name: y
+      Entry: 3
+      Data: 123
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: conditions
+      Entry: 7
+      Data: 3|System.Collections.Generic.List`1[[Condition, Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 4|ItemCondition, Assembly-CSharp
+    - Name: characterId
+      Entry: 3
+      Data: 0
+    - Name: itemId
+      Entry: 3
+      Data: 0
+    - Name: hold
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: triggers
+      Entry: 7
+      Data: 5|System.Collections.Generic.List`1[[Result, Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 6|CreateObjectResult, Assembly-CSharp
+    - Name: objects
+      Entry: 7
+      Data: 7|MapObjectInfo[], Assembly-CSharp
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 8|ClassFollowingInfo, Assembly-CSharp
+    - Name: x
+      Entry: 3
+      Data: 1
+    - Name: y
+      Entry: 3
+      Data: 1
+    - Name: attitudeTowards
+      Entry: 3
+      Data: 0
+    - Name: id
+      Entry: 3
+      Data: 0
+    - Name: level
+      Entry: 3
+      Data: 0
+    - Name: items
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: error
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
   nextScene: 
   scenarioName: stage0
   mouseCursor:

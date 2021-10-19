@@ -6,7 +6,6 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using YouYou;
 
-[Serializable]
 public class ItemCondition : Condition
 {
     public int characterId;

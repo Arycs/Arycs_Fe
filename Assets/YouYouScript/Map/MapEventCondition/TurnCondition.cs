@@ -5,7 +5,6 @@ using Arycs_Fe.Models;
 using Arycs_Fe.ScriptManagement;
 using UnityEngine;
 
-[Serializable]
 public class TurnCondition : Condition
 {
     //最小回合

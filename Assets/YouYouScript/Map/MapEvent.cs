@@ -3,29 +3,37 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 using Sirenix.Utilities;
 using UnityEngine;
 
 namespace Arycs_Fe.ScriptManagement
 {
-    [Serializable]
     public class MapEvent
     {
+        [LabelText("事件ID")]
         public int id;
 
         /// <summary>
         /// 是否只能触发一次
         /// </summary>
+        [LabelText("是否只能触发一次")]
         public bool onlyonce;
 
         /// <summary>
         /// 进入事件条件的类型
         /// </summary>
+        [PropertyTooltip("进入事件条件的类型.")]
+        [LabelText("进入事件条件的类型")]
         public MapEventConditionType entryConditionType;
 
         /// <summary>
         /// 进入事件条件
         /// </summary>
+        [ShowInInspector]
+        [TypeFilter("GetFilteredTypeByConditionList")]
+        [PropertyTooltip("进入事件条件.")]
+        [LabelText("进入事件条件")]
         public Condition entryCondititon;
 
         /// <summary>
@@ -33,11 +41,12 @@ namespace Arycs_Fe.ScriptManagement
         /// </summary>
         [ShowInInspector]
         [TypeFilter("GetFilteredTypeByConditionList")]
+        [PropertyTooltip("额外的事件条件.")]
         public List<Condition> conditions = new List<Condition>();
         public IEnumerable<Type> GetFilteredTypeByConditionList()
         {
             var q = typeof(Condition).Assembly.GetTypes()
-                .Where(x => !x.IsAbstract)                                          // Excludes BaseClass
+                .Where(x => !(x == typeof(Condition)))                                       // Excludes BaseClass
                 .Where(x => !x.IsGenericTypeDefinition)                             // Excludes C1<>
                 .Where(x => typeof(Condition).IsAssignableFrom(x));                 // Excludes classes not inheriting from BaseClass
             return q;
@@ -47,21 +56,21 @@ namespace Arycs_Fe.ScriptManagement
         /// </summary>
         [ShowInInspector]
         [TypeFilter("GetFilteredTypeByResultList")]
+        [PropertyTooltip("事件结果.")]
         public List<Result> triggers = new List<Result>();
         public IEnumerable<Type> GetFilteredTypeByResultList()
         {
             var q = typeof(Result).Assembly.GetTypes()
-                .Where(x => !x.IsAbstract)                                          // Excludes BaseClass
+                .Where(x => !(x == typeof(Result)))                                          // Excludes BaseClass
                 .Where(x => !x.IsGenericTypeDefinition)                             // Excludes C1<>
                 .Where(x => typeof(Result).IsAssignableFrom(x));                 // Excludes classes not inheriting from BaseClass
             return q;
         }
         
-        
-        
         /// <summary>
         /// 是否已经触发过
         /// </summary>
+        [PropertyTooltip("是否已经触发过.")]
         public bool isTriggered { get; protected set; }
 
         public MapEvent()

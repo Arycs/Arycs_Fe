@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Arycs_Fe.ScriptManagement;
 using UnityEngine;
 
-[Serializable]
 public class RoleTalkCondition : RoleCondition
 {
     public int targetId;

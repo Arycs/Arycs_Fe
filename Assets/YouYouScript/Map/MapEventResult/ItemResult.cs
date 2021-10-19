@@ -6,7 +6,6 @@ using Arycs_Fe.ScriptManagement;
 using UnityEngine;
 using YouYou;
 
-[Serializable]
 public class ItemResult : Result
 {
     public int characterId = -1;

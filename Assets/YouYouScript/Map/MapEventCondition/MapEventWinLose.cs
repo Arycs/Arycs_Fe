@@ -6,7 +6,6 @@ using UnityEngine;
 
 namespace Arycs_Fe.ScriptManagement
 {
-    [Serializable]
     public class MapEventWinLose : MapEvent
     {
         public Result resultTrigger;

@@ -8,6 +8,7 @@ public class CreateObjectResult : Result
 {
    public MapObjectInfo[] objects;
 
+   [HideInInspector]
    public string error;
 
    public override MapEventResultType type

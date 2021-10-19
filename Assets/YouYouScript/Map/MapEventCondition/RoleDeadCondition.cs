@@ -5,7 +5,6 @@ using Arycs_Fe.ScriptManagement;
 using UnityEngine;
 using YouYou;
 
-[Serializable]
 public class RoleDeadCondition : RoleCondition
 {
     public override MapEventConditionType type

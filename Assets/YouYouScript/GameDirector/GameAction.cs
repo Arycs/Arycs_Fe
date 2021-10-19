@@ -128,12 +128,11 @@ namespace Arycs_Fe.ScriptManagement
 
         public virtual void OnMouseRButtonUp(Vector3 mousePosition)
         {
-            throw new NotImplementedException();
         }
 
         public virtual void Pause()
         {
-            throw new NotImplementedException();
+            
         }
 
         public virtual void Resume()

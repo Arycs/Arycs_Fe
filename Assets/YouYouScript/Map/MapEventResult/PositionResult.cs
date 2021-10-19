@@ -5,7 +5,6 @@ using Arycs_Fe.Maps;
 using Arycs_Fe.ScriptManagement;
 using UnityEngine;
 
-[Serializable]
 public class PositionResult : Result
 {
     public int x;

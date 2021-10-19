@@ -83,7 +83,7 @@ namespace Arycs_Fe.ScriptManagement
         /// </summary>
         protected readonly HashSet<MapObstacle> m_Obstacles = new HashSet<MapObstacle>();
 
-        private MapEventCollection m_MapEvents;
+        private MapEventCollection m_MapEvents = new MapEventCollection();
 
         public MapAction() : base()
         {

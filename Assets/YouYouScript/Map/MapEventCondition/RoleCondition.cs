@@ -5,7 +5,6 @@ using Arycs_Fe.Models;
 using Arycs_Fe.ScriptManagement;
 using UnityEngine;
 
-[Serializable]
 public class RoleCondition : Condition
 {
     public int characterId;
