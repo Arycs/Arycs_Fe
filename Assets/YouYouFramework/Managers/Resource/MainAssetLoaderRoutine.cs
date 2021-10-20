@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Arycs_Fe.Maps;
 using Arycs_Fe.ScriptManagement;
 using UnityEngine;
 
@@ -64,6 +65,10 @@ namespace YouYou
             {
                 m_CurrResourceEntity.Target = UnityEditor.AssetDatabase.LoadAssetAtPath<MapEventInfo>(assetFullName);
             }
+            else if(assetCategory == AssetCategory.MapObject)
+            {
+                m_CurrResourceEntity.Target = UnityEditor.AssetDatabase.LoadAssetAtPath<MapObject>(assetFullName);
+            }
             else
             {
                 m_CurrResourceEntity.Target = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>(assetFullName);
@@ -71,7 +76,7 @@ namespace YouYou
 
             if (m_CurrResourceEntity.Target == null)
             {
-                Debug.LogError("资源加载出现错误,请检查是否路径正确或者加载格式正确");
+                Debug.LogError($"资源加载出现错误,请检查是否路径正确或者加载格式正确,{assetFullName}");
             }
             
             if (onComplete != null)

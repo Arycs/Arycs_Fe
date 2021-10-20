@@ -186,7 +186,7 @@ namespace YouYou
                             //先去队列里找 空闲的池
                             if (m_PrefabPoolQueue.Count > 0)
                             {
-                                Debug.LogError("从队列里取");
+                                Debug.LogError("从队列里取");    
                                 prefabPool = m_PrefabPoolQueue.Dequeue();
 
                                 prefabPool.PrefabPoolId = entity.Id;//设置预设池编号

@@ -63,3 +63,12 @@ MonoBehaviour:
     assetPath: UIOptionMenu
     canMulit: 0
     showMode: 0
+  - uiFormId: 2004
+    desc: "\u6E38\u620F\u4E2D\u5730\u56FE\u83DC\u5355\u754C\u9762"
+    uiName: UIMapMenu
+    uiGroup: 2
+    disableUILayer: 0
+    isLock: 0
+    assetPath: UIMapMenu
+    canMulit: 0
+    showMode: 0

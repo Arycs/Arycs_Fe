@@ -36,8 +36,8 @@ public class UITalkForm : UIFormBase
     {
         Debug.LogError("Open UITalkForm");
 
-        GameEntry.Event.CommonEvent.AddEventListener(SysEventId.UITalkClose, OnCloseByMessage);
-        GameEntry.Event.CommonEvent.AddEventListener(SysEventId.UITalkStateUpdate, OnChangeWriteState);
+        GameEntry.Event.CommonEvent.AddEventListener(CommonEventId.UITalkClose, OnCloseByMessage);
+        GameEntry.Event.CommonEvent.AddEventListener(CommonEventId.UITalkStateUpdate, OnChangeWriteState);
 
         BaseParams baseParams = userData as BaseParams;
         m_IsAsync = baseParams.BoolParam1;
@@ -92,7 +92,7 @@ public class UITalkForm : UIFormBase
             BaseParams baseParams = GameEntry.Pool.DequeueClassObject<BaseParams>();
             baseParams.Reset();
             baseParams.BoolParam1 = true;
-            GameEntry.Event.CommonEvent.Dispatch(SysEventId.UITalkWriteDown, baseParams);
+            GameEntry.Event.CommonEvent.Dispatch(CommonEventId.UITalkWriteDown, baseParams);
         }
     }
 
@@ -106,8 +106,8 @@ public class UITalkForm : UIFormBase
         m_IsAsync = false;
         m_TalkPosition = "";
         m_TalkInfoIndex = 0;
-        GameEntry.Event.CommonEvent.RemoveEventListener(SysEventId.UITalkClose, OnCloseByMessage);
-        GameEntry.Event.CommonEvent.RemoveEventListener(SysEventId.UITalkStateUpdate, OnChangeWriteState);
+        GameEntry.Event.CommonEvent.RemoveEventListener(CommonEventId.UITalkClose, OnCloseByMessage);
+        GameEntry.Event.CommonEvent.RemoveEventListener(CommonEventId.UITalkStateUpdate, OnChangeWriteState);
     }
 
     protected override void OnBeforDestroy()

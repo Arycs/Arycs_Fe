@@ -14,6 +14,14 @@ namespace Arycs_Fe.Maps
 
         private MapGraph m_Map;
         private Vector3Int m_CellPosition;
+
+        [SerializeField] private int m_PrefabId;
+
+        public int prefabId
+        {
+            get { return m_PrefabId; }
+        }
+
         #endregion
 
         #region Property

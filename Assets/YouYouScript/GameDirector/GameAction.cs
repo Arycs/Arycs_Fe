@@ -108,22 +108,18 @@ namespace Arycs_Fe.ScriptManagement
 
         public virtual void OnMouseMove(Vector3 mousePosition)
         {
-            throw new NotImplementedException();
         }
 
         public virtual void OnMouseLButtonDown(Vector3 mousePosition)
         {
-            throw new NotImplementedException();
         }
 
         public virtual void OnMouseLButtonUp(Vector3 mousePosition)
         {
-            throw new NotImplementedException();
         }
 
         public virtual void OnMouseRButtonDown(Vector3 mousePosition)
         {
-            throw new NotImplementedException();
         }
 
         public virtual void OnMouseRButtonUp(Vector3 mousePosition)
@@ -137,12 +133,11 @@ namespace Arycs_Fe.ScriptManagement
 
         public virtual void Resume()
         {
-            throw new NotImplementedException();
         }
 
         public virtual bool Update()
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         #endregion

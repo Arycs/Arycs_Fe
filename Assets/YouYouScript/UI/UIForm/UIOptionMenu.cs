@@ -65,7 +65,7 @@ public class UIOptionMenu : UIFormBase
             baseParams.Reset();
             RegexUtility.IsMatchNumber(buttonSelf.name, out baseParams.IntParam1);
             baseParams.StringParam1 = m_OptionName;
-            GameEntry.Event.CommonEvent.Dispatch(SysEventId.UIMenuOptionDown,baseParams);
+            GameEntry.Event.CommonEvent.Dispatch(CommonEventId.UIMenuOptionDown,baseParams);
             Close();
         }
         Debug.LogError("关闭 OptionMenu 界面" + buttonSelf.name);

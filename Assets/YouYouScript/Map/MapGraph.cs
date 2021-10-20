@@ -5,6 +5,7 @@ using Arycs_Fe.Models;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
+using YouYou;
 #if UNITY_EDITOR
 using Handles = UnityEditor.Handles;
 using SceneView = UnityEditor.SceneView;
@@ -201,7 +202,7 @@ namespace Arycs_Fe.Maps
                 return m_CellPositionEqualityComparer;
             }
         }
-
+        
         #endregion
 
         #region Map Object Property
@@ -231,9 +232,6 @@ namespace Arycs_Fe.Maps
         {
             get
             {
-                //只有在测试时，才会使用默认Prefab
-                //正是游戏，这里不会为null， 在初始化地图时回加载预制体
-                //如果无法加载，则说明代码可能出现问题
                 if (m_MouseCursor == null)
                 {
                     m_MouseCursor = CreateMapObject(mouseCursorPrefab) as MapMouseCursor;
@@ -410,6 +408,11 @@ namespace Arycs_Fe.Maps
         /// 静态地图对象列表
         /// </summary>
         [FormerlySerializedAs("mapObjectPool")] public GameObject mapStaticObjectParent;
+
+        /// <summary>
+        /// 地图图标父物体
+        /// </summary>
+        public GameObject cursorParent;
         
         #endregion
 
@@ -479,7 +482,7 @@ namespace Arycs_Fe.Maps
                 m_SearchPath = new PathFinding(this);
             }
 
-            //TODO Other Init
+            // 初始化地图静态对象,提前预设好在地图上的
             InitMapObjectsInMap();
         }
     
@@ -809,25 +812,32 @@ namespace Arycs_Fe.Maps
             //用户光标在整个地图中只能有且只有一个
             if (type == MapObjectType.MouseCursor && m_MouseCursor != null)
             {
-                //TODO 销毁 旧的光标 ，使用对象池
+                GameEntry.Pool.GameObjectPool.Despawn(m_MouseCursor.transform);
             }
             
-            //TODO 实例化Map object ， 利用对象池实例化一个新的
-            GameObject instance;
+            GameObject instance = null;
             if (type == MapObjectType.Cursor || type == MapObjectType.MouseCursor)
             {
-                //Todo 利用CursorPool Object 来进行实例化
-                instance = new GameObject("CursorPool Object");
+                // instance = new GameObject("ClassPool Object");
+                // instance = mapCursorPool.Spawn(prefab.gameObject);
+                GameEntry.Pool.GameObjectPool.Spawn(prefab.prefabId,(transform =>
+                {
+                    transform.SetParent(cursorParent.transform);
+                    instance = transform.gameObject;
+                }));
             }
             else
             {
-                //Todo 利用ClassPool Object 来进行实例化
-                instance = new GameObject("ClassPool Object");
+                GameEntry.Pool.GameObjectPool.Spawn(prefab.prefabId,(transform =>
+                {
+                    transform.SetParent(cursorParent.transform);
+                    instance = transform.gameObject;
+                }));
+                // instance = new GameObject("ClassPool Object");
             }
 
             MapObject mapObject = instance.GetComponent<MapObject>();
             mapObject.InitMapObject(this);
-            
             if (type == MapObjectType.MouseCursor)
             {
                 m_MouseCursor = mapObject as MapMouseCursor;
@@ -835,6 +845,19 @@ namespace Arycs_Fe.Maps
 
             return mapObject;
         }
+
+        public void LoadMapObjectAsset(string assetPath, BaseAction<ResourceEntity> onComplete)
+        {
+            GameEntry.Resource.ResourceLoaderManager.LoadMainAsset(AssetCategory.MapObject,
+                string.Format("Assets/Download/UI/ObjectPrefab/{0}.prefab",assetPath),(ResourceEntity resourceEntity)=>
+                {
+                    if (onComplete != null)
+                    {
+                        onComplete(resourceEntity);
+                    }
+                });
+        }
+
 
         /// <summary>
         /// 创建地图对象
@@ -855,16 +878,17 @@ namespace Arycs_Fe.Maps
 
         public MapObject CreateMapObject(string prefabName)
         {
-            //TODO Load 加载资源，利用框架的方式
-            MapObject prefab = new MapClass();
+            MapObject prefab = null;
+            LoadMapObjectAsset(prefabName, resourceEntity =>
+            {
+                prefab = resourceEntity.Target as MapObject;
+            });
             return CreateMapObject(prefab);
         }
 
         public MapObject CreateMapObject(string prefabName, Vector3Int cellPositoin)
         {
-            //TODO Load 加载资源，利用框架的方式
-            MapObject prefab = new MapClass();
-            MapObject mapObject = CreateMapObject(prefab);
+            MapObject mapObject = CreateMapObject(prefabName);
             if (mapObject != null)
             {
                 mapObject.UpdatePosition(cellPositoin);

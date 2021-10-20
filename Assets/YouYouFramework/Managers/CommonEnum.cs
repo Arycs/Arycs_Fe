@@ -173,6 +173,10 @@ public enum AssetCategory
     /// 地图事件
     /// </summary>
     MapEventInfo,
+    /// <summary>
+    /// 地图对象
+    /// </summary>
+    MapObject,
 }
 #endregion
 

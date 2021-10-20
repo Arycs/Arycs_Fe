@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0237fd4dddfb5c24f83306d4b18a4cd7, type: 3}
   m_Name: ClassEditor
   m_EditorClassIdentifier: 
-  IsEditor: 1
+  IsEditor: 0
   FileName: Sys_Class
   SaveTxtFilePath: Assets/Download/DataTable/Txt
   SaveByteFilePath: Assets/Download/DataTable/Bytes
   SaveCSFilePath: Assets/YouYouScript/Data/DataTable/Create
   ClassInfos:
   - id: 1
-    prefab: 123
-    animator: 123
-    name: 123
+    prefab: Sword
+    animator: Sword
+    name: "\u5251\u58EB"
     classType: 0
     movePoint: 5
     fightProperties:
@@ -45,9 +45,9 @@ MonoBehaviour:
       bow: 3
       staff: 3
   - id: 2
-    prefab: 456
-    animator: 456
-    name: 456
+    prefab: Axe
+    animator: Axe
+    name: "\u6218\u58EB"
     classType: 1
     movePoint: 10
     fightProperties:

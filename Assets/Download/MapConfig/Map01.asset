@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextScene: 
   scenarioName: stage0
-  cursor: Cursor
+  cursor: AtkOrMovCursor
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
@@ -32,10 +32,10 @@ MonoBehaviour:
       Data: MouseCursor
     - Name: x
       Entry: 3
-      Data: 5
+      Data: 0
     - Name: y
       Entry: 3
-      Data: 5
+      Data: 0
     - Name: 
       Entry: 8
       Data: 
@@ -71,7 +71,7 @@ MonoBehaviour:
       Data: 2|System.Collections.Generic.List`1[[Result, Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
-      Data: 2
+      Data: 1
     - Name: 
       Entry: 7
       Data: 3|CreateObjectResult, Assembly-CSharp
@@ -86,16 +86,16 @@ MonoBehaviour:
       Data: 5|ClassUniqueInfo, Assembly-CSharp
     - Name: x
       Entry: 3
-      Data: 5
+      Data: 0
     - Name: y
       Entry: 3
-      Data: 5
+      Data: 0
     - Name: attitudeTowards
       Entry: 3
       Data: 0
     - Name: id
       Entry: 3
-      Data: 0
+      Data: 1
     - Name: 
       Entry: 8
       Data: 
@@ -104,10 +104,10 @@ MonoBehaviour:
       Data: 6|ClassUniqueInfo, Assembly-CSharp
     - Name: x
       Entry: 3
-      Data: 6
+      Data: 1
     - Name: y
       Entry: 3
-      Data: 6
+      Data: 1
     - Name: attitudeTowards
       Entry: 3
       Data: 1
@@ -122,19 +122,19 @@ MonoBehaviour:
       Data: 7|ClassFollowingInfo, Assembly-CSharp
     - Name: x
       Entry: 3
-      Data: 6
+      Data: 2
     - Name: y
       Entry: 3
-      Data: 7
+      Data: 2
     - Name: attitudeTowards
       Entry: 3
       Data: 1
     - Name: id
       Entry: 3
-      Data: 0
+      Data: 1
     - Name: level
       Entry: 3
-      Data: 1
+      Data: 2
     - Name: items
       Entry: 7
       Data: 8|System.Int32[], mscorlib
@@ -163,15 +163,6 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: 
-      Entry: 7
-      Data: 9|ScenarioResult, Assembly-CSharp
-    - Name: flag
-      Entry: 1
-      Data: '#Start'
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
       Entry: 13
       Data: 
     - Name: 
@@ -182,13 +173,13 @@ MonoBehaviour:
       Data: 
     - Name: resultEvents
       Entry: 7
-      Data: 10|Arycs_Fe.ScriptManagement.MapEventWinLose[], Assembly-CSharp
+      Data: 9|Arycs_Fe.ScriptManagement.MapEventWinLose[], Assembly-CSharp
     - Name: 
       Entry: 12
       Data: 1
     - Name: 
       Entry: 7
-      Data: 11|Arycs_Fe.ScriptManagement.MapEventWinLose, Assembly-CSharp
+      Data: 10|Arycs_Fe.ScriptManagement.MapEventWinLose, Assembly-CSharp
     - Name: id
       Entry: 3
       Data: 10
@@ -200,7 +191,7 @@ MonoBehaviour:
       Data: 2
     - Name: entryCondititon
       Entry: 7
-      Data: 12|PositionCondition, Assembly-CSharp
+      Data: 11|PositionCondition, Assembly-CSharp
     - Name: x
       Entry: 3
       Data: 2
@@ -212,7 +203,7 @@ MonoBehaviour:
       Data: 
     - Name: conditions
       Entry: 7
-      Data: 13|System.Collections.Generic.List`1[[Condition, Assembly-CSharp]], mscorlib
+      Data: 12|System.Collections.Generic.List`1[[Condition, Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
       Data: 0
@@ -224,13 +215,13 @@ MonoBehaviour:
       Data: 
     - Name: triggers
       Entry: 7
-      Data: 14|System.Collections.Generic.List`1[[Result, Assembly-CSharp]], mscorlib
+      Data: 13|System.Collections.Generic.List`1[[Result, Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
       Data: 1
     - Name: 
       Entry: 7
-      Data: 15|ScenarioResult, Assembly-CSharp
+      Data: 14|ScenarioResult, Assembly-CSharp
     - Name: flag
       Entry: 1
       Data: '#Win'
@@ -245,7 +236,7 @@ MonoBehaviour:
       Data: 
     - Name: resultTrigger
       Entry: 7
-      Data: 16|WinResult, Assembly-CSharp
+      Data: 15|WinResult, Assembly-CSharp
     - Name: result
       Entry: 3
       Data: 1
@@ -263,13 +254,13 @@ MonoBehaviour:
       Data: 
     - Name: events
       Entry: 7
-      Data: 17|Arycs_Fe.ScriptManagement.MapEvent[], Assembly-CSharp
+      Data: 16|Arycs_Fe.ScriptManagement.MapEvent[], Assembly-CSharp
     - Name: 
       Entry: 12
       Data: 1
     - Name: 
       Entry: 7
-      Data: 18|Arycs_Fe.ScriptManagement.MapEvent, Assembly-CSharp
+      Data: 17|Arycs_Fe.ScriptManagement.MapEvent, Assembly-CSharp
     - Name: id
       Entry: 3
       Data: 100
@@ -281,7 +272,7 @@ MonoBehaviour:
       Data: 2
     - Name: entryCondititon
       Entry: 7
-      Data: 19|PositionCondition, Assembly-CSharp
+      Data: 18|PositionCondition, Assembly-CSharp
     - Name: x
       Entry: 3
       Data: 4
@@ -293,7 +284,7 @@ MonoBehaviour:
       Data: 
     - Name: conditions
       Entry: 7
-      Data: 20|System.Collections.Generic.List`1[[Condition, Assembly-CSharp]], mscorlib
+      Data: 19|System.Collections.Generic.List`1[[Condition, Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
       Data: 0
@@ -305,13 +296,13 @@ MonoBehaviour:
       Data: 
     - Name: triggers
       Entry: 7
-      Data: 21|System.Collections.Generic.List`1[[Result, Assembly-CSharp]], mscorlib
+      Data: 20|System.Collections.Generic.List`1[[Result, Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12
       Data: 1
     - Name: 
       Entry: 7
-      Data: 22|PropertyResult, Assembly-CSharp
+      Data: 21|PropertyResult, Assembly-CSharp
     - Name: propertyType
       Entry: 3
       Data: 0

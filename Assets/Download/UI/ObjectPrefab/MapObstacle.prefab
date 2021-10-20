@@ -10,10 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3412479242178658308}
   - component: {fileID: 135087022665760506}
-  - component: {fileID: 2024096553352449713}
-  - component: {fileID: -4988577606831962129}
+  - component: {fileID: 2205975007064716397}
   m_Layer: 0
-  m_Name: MouseCursor
+  m_Name: MapObstacle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69,10 +68,10 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 2094737711
-  m_SortingLayer: 9
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -4750761433519615375, guid: ac258a4279e18aa4f903a65f3839a825,
+  m_Sprite: {fileID: 4388536494985464387, guid: 0eb78735c864704458a765e3455962d1,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -84,26 +83,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &2024096553352449713
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5211811449942444621}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: a5ada197a2b5ba2469a1e4077f617694, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &-4988577606831962129
+--- !u!114 &2205975007064716397
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -112,11 +92,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5211811449942444621}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 344cbc5f5ed6b8b4bb64bb42b606239d, type: 3}
+  m_Script: {fileID: 11500000, guid: 0c5043c7986ff4d46a0411489fcb4f25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Render: {fileID: 135087022665760506}
-  m_PrefabId: 102
-  m_Animator: {fileID: 2024096553352449713}
-  m_CursorSprites:
-  - {fileID: -4750761433519615375, guid: ac258a4279e18aa4f903a65f3839a825, type: 3}
+  m_PrefabId: 104
+  m_Animator: {fileID: 0}
+  m_Swapper: {fileID: 0}

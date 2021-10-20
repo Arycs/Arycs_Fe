@@ -28,4 +28,9 @@ public class UIFormId
     /// 分支选项界面
     /// </summary>
     public const int UI_OptionMenu = 2003;
+
+    /// <summary>
+    /// 地图菜单界面
+    /// </summary>
+    public const int UI_MapMenu = 2004;
 }

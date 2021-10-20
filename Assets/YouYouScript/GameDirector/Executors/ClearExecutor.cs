@@ -75,6 +75,7 @@ namespace Arycs_Fe.ScriptManagement
 
         private bool CheckArgsCorrect(IScenarioContent content, ref ClearArgs args, out string error)
         {
+            //根据类型进行其他操作,
             switch (args.type)
             {
                 case "text":
@@ -90,7 +91,6 @@ namespace Arycs_Fe.ScriptManagement
                     }
 
                     break;
-                //TODO Other
                 default:
                     break;
             }
@@ -106,7 +106,6 @@ namespace Arycs_Fe.ScriptManagement
             {
                 case "text":
                     return ClearTextCmd(gameAction, args, out error);
-                //TODO Other
                 default:
                     error = $"{typeName} Run -> UnEspected error! the type '{args.type}' is not supported";
                     return ActionStatus.Error;
@@ -116,23 +115,18 @@ namespace Arycs_Fe.ScriptManagement
         private ActionStatus ClearTextCmd(IGameAction gameAction, ClearArgs args, out string error)
         {
             error = null;
-            //TODO 判断界面是否打开
+            //判断界面是否打开
             if (args.type == "text")
             {
-                //TODO 如果位置为空，默认全部关闭。
+                //如果位置为空，默认全部关闭。
                 string position = args.arg0;
-                //TODO 否则关闭对应位置的窗口
+                //否则关闭对应位置的窗口
                 if (GameEntry.UI.IsExists(UIFormId.UI_Talk))
                 {
-                    GameEntry.Event.CommonEvent.Dispatch(SysEventId.UITalkClose);
+                    GameEntry.Event.CommonEvent.Dispatch(CommonEventId.UITalkClose);
                 }
                 
             }
-
-            
-            
-            
-            
             return ActionStatus.NextFrame;;
         }
     }

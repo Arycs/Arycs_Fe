@@ -92,6 +92,8 @@ namespace Arycs_Fe.ScriptManagement
                 {
                     CurrentAction.OnMouseRButtonUp(Input.mousePosition);
                 }
+
+                CurrentAction.OnMouseMove(Input.mousePosition);
             }
         }
 

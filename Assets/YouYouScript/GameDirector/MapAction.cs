@@ -127,26 +127,34 @@ namespace Arycs_Fe.ScriptManagement
             //地图结束后的场景名称 可以为null
             // 为null时， 回到上一个场景
             NextScene = info.nextScene;
-
-            //设置鼠标光标
-            if (!string.IsNullOrEmpty(info.mouseCursor.prefab))
+            Map.LoadMapObjectAsset(info.mouseCursor.prefab, (resourceEntity) =>
             {
-                GameEntry.Pool.GameObjectPool.Spawn(PrefabId.MouseCursor,(transform =>
-                {
-                    Map.mouseCursor = transform.GetComponent<MapMouseCursor>();
-                }));
-            }
+                Map.mouseCursorPrefab = resourceEntity.Target as MapMouseCursor;
+            });
+            
+            //设置鼠标光标
+            // if (!string.IsNullOrEmpty(info.mouseCursor.prefab))
+            // {
+            //     GameEntry.Pool.GameObjectPool.Spawn(PrefabId.MouseCursor,(transform =>
+            //     {
+            //         Map.mouseCursorPrefab = transform.GetComponent<MapMouseCursor>();
+            //     }));
+            // }
 
             Map.mouseCursor.UpdatePosition(new Vector3Int(info.mouseCursor.x, info.mouseCursor.y, 0));
 
-            //设置移动范围和攻击范围的图标
-            if (!string.IsNullOrWhiteSpace(info.cursor))
+            Map.LoadMapObjectAsset(info.cursor, resourceEntity =>
             {
-                GameEntry.Pool.GameObjectPool.Spawn(PrefabId.MoveOrAttackCursor,(transform =>
-                {
-                    Map.cursorPrefab = transform.GetComponent<MapCursor>();
-                }));
-            }
+                Map.cursorPrefab = resourceEntity.Target as MapCursor;
+            });
+            //设置移动范围和攻击范围的图标
+            // if (!string.IsNullOrWhiteSpace(info.cursor))
+            // {
+            //     GameEntry.Pool.GameObjectPool.Spawn(PrefabId.MoveOrAttackCursor,(transform =>
+            //     {
+            //         Map.cursorPrefab = transform.GetComponent<MapCursor>();
+            //     }));
+            // }
 
             //读取剧情剧本与地图事件
             if (!LoadScenario(info.scenarioName) || !LoadMapEvent(info))
@@ -430,7 +438,6 @@ namespace Arycs_Fe.ScriptManagement
             {
                 return;
             }
-
             //获取点击的CellData
             Vector3Int cellPosition = Map.mouseCursor.cellPosition;
             CellData cell = Map.GetCellData(cellPosition);
@@ -438,7 +445,6 @@ namespace Arycs_Fe.ScriptManagement
             {
                 return;
             }
-
             switch (MapStatus)
             {
                 case MapStatus.Normal:
@@ -454,6 +460,7 @@ namespace Arycs_Fe.ScriptManagement
                     }
 
                     ShowMapMenu(false);
+                    DisplayMouseCursor(false);
                     break;
                 case MapStatus.MoveCursor:
                     if (SelectedUnit.role.attitudeTowards != AttitudeTowards.Player)
@@ -595,14 +602,18 @@ namespace Arycs_Fe.ScriptManagement
                     showButtons.Remove(MenuTextID.Attack);
                 }
             }
+
+            GameEntry.Event.CommonEvent.AddEventListener(CommonEventId.UIMapMenuOnClick,MapMenu_OnButtonClick);
+            GameEntry.UI.OpenUIForm(UIFormId.UI_MapMenu,showButtons);
         }
 
         /// <summary>
         /// 菜单按钮点击事件
         /// </summary>
-        /// <param name="menuTextID"></param>
-        private void MapMenu_OnButtonClick(MenuTextID menuTextID)
+        /// <param name="userdata"></param>
+        private void MapMenu_OnButtonClick(object userdata)
         {
+            MenuTextID menuTextID =(MenuTextID)((BaseParams) userdata).IntParam1;
             switch (menuTextID)
             {
                 case MenuTextID.Unit:
@@ -1163,7 +1174,7 @@ namespace Arycs_Fe.ScriptManagement
         public void TriggerEvents(MapEventConditionType type, Action onTriggerEnd)
         {
             MapStatus = MapStatus.Event;
-            if (m_EventCoroutine == null)
+            if (m_EventCoroutine != null)
             {
                 error = "MapAction TriggerEvents -> event is running";
                 Status = ActionStatus.Error;
@@ -1427,6 +1438,7 @@ namespace Arycs_Fe.ScriptManagement
         {
             // 播放转换回合的UI动画
             MapStatus = MapStatus.Animation;
+            
             //TODO UI 相关处理
             // UIChangeTurnPanel panel = UIManager.views.OpenView<UIChangeTurnPanel>(UINames.k_UIChangeTurnPanel, false);
             // panel.ChangeTurn(turn, () =>
@@ -1447,6 +1459,8 @@ namespace Arycs_Fe.ScriptManagement
             //         }
             //     });
             // });
+
+            MapStatus = MapStatus.Normal;
         }
         
         /// <summary>

@@ -36,7 +36,7 @@ MonoBehaviour:
   - characterId: 2
     characterName: "\u6742\u5175"
     characterProfile: "\u4EBA\u7269\u5934\u50CF"
-    classId: 2
+    classId: 1
     characterLevel: 1
     characterHp: 10
     characterMp: 10

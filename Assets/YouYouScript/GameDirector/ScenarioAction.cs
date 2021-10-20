@@ -164,11 +164,11 @@ namespace Arycs_Fe.ScriptManagement
 
             if (result == ActionStatus.WaitWriteTextDone)
             {
-                GameEntry.Event.CommonEvent.AddEventListener(SysEventId.UITalkWriteDown, OnTalkState);
+                GameEntry.Event.CommonEvent.AddEventListener(CommonEventId.UITalkWriteDown, OnTalkState);
             }
             else if (result == ActionStatus.WaitMenuOption)
             {
-                GameEntry.Event.CommonEvent.AddEventListener(SysEventId.UIMenuOptionDown, OnMenuState);
+                GameEntry.Event.CommonEvent.AddEventListener(CommonEventId.UIMenuOptionDown, OnMenuState);
             }
 
             return result;
@@ -180,7 +180,7 @@ namespace Arycs_Fe.ScriptManagement
             string optionName = baseParams.StringParam1;
             int optionChoice = baseParams.IntParam1;
             ScenarioBlackboard.Set(optionName, optionChoice);
-            GameEntry.Event.CommonEvent.RemoveEventListener(SysEventId.UIMenuOptionDown, OnMenuState);
+            GameEntry.Event.CommonEvent.RemoveEventListener(CommonEventId.UIMenuOptionDown, OnMenuState);
             status = ActionStatus.Continue;
         }
 
@@ -222,11 +222,11 @@ namespace Arycs_Fe.ScriptManagement
         {
             if (status == ActionStatus.WaitWriteTextDone)
             {
-                GameEntry.Event.CommonEvent.Dispatch(SysEventId.UITalkStateUpdate);
+                GameEntry.Event.CommonEvent.Dispatch(CommonEventId.UITalkStateUpdate);
                 if (isUIWrite)
                 {
                     
-                    GameEntry.Event.CommonEvent.RemoveEventListener(SysEventId.UITalkWriteDown, OnTalkState);
+                    GameEntry.Event.CommonEvent.RemoveEventListener(CommonEventId.UITalkWriteDown, OnTalkState);
                     status = ActionStatus.Continue;
                     // GameEntry.Event.CommonEvent.Dispatch(SysEventId.UITalkClose);
                 }
