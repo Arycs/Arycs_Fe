@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3412479242178658308}
   - component: {fileID: 135087022665760506}
   - component: {fileID: 2024096553352449713}
-  - component: {fileID: -4988577606831962129}
+  - component: {fileID: -3886728277940215099}
   m_Layer: 0
   m_Name: AtkOrMovCursor
   m_TagString: Untagged
@@ -103,7 +103,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &-4988577606831962129
+--- !u!114 &-3886728277940215099
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -112,12 +112,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 5211811449942444621}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 344cbc5f5ed6b8b4bb64bb42b606239d, type: 3}
+  m_Script: {fileID: 11500000, guid: fedad27f26055e94cbebb5a9a04e61af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Render: {fileID: 135087022665760506}
   m_PrefabId: 101
   m_Animator: {fileID: 2024096553352449713}
   m_CursorSprites:
+  - {fileID: -4750761433519615375, guid: ac258a4279e18aa4f903a65f3839a825, type: 3}
   - {fileID: 5576600945782192209, guid: 0eb78735c864704458a765e3455962d1, type: 3}
   - {fileID: -4464854014176822901, guid: 43076e055f65f5243bb5b482cca214a7, type: 3}

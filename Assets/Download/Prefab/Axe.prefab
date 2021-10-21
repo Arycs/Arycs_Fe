@@ -71,7 +71,7 @@ SpriteRenderer:
   m_SortingLayerID: 507389653
   m_SortingLayer: 6
   m_SortingOrder: 0
-  m_Sprite: {fileID: 8932996898803028924, guid: 20995f5f33beb8c4fac144be08cc46a1,
+  m_Sprite: {fileID: -8213782765776912250, guid: 85e6f8bcf3169e74cb7d13994a83dd1b,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -115,7 +115,7 @@ GameObject:
   - component: {fileID: 619233685898233884}
   - component: {fileID: 5224971694474165628}
   m_Layer: 0
-  m_Name: Sword
+  m_Name: Axe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -146,7 +146,7 @@ Animator:
   m_GameObject: {fileID: 5211811449942444621}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 105a3f49864e8e447a9b8f7dfd524ec4, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

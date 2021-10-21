@@ -306,6 +306,7 @@ namespace Arycs_Fe.Maps
                 foreach (MapCursor cursor in m_Cursors)
                 {
                     //TODO 利用对象池回收
+                    GameEntry.Pool.GameObjectPool.Despawn(2,cursor.transform);
                 }
                 m_Cursors.Clear();
             }
@@ -658,6 +659,14 @@ namespace Arycs_Fe.Maps
             return true;
         }
 
+        /// <summary>
+        /// 搜索移动路径
+        /// </summary>
+        /// <param name="cls"></param>
+        /// <param name="nAtk"></param>
+        /// <param name="moveCells"></param>
+        /// <param name="atkCells"></param>
+        /// <returns></returns>
         public bool SearchMoveRange(MapClass cls, bool nAtk, out IEnumerable<CellData> moveCells,
             out IEnumerable<CellData> atkCells)
         {
@@ -946,7 +955,7 @@ namespace Arycs_Fe.Maps
 
             if (!center)
             {
-                pos.y -= halfCellSize.y;
+                //pos.y -= halfCellSize.y;
             }
 
             return pos;

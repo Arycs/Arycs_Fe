@@ -412,7 +412,8 @@ namespace Arycs_Fe.Models
 
         public void ResetMovePoint()
         {
-            throw new System.NotImplementedException();
+            self.movePoint = cls.info.MovePoint;
+            
         }
 
         public void OnMoveEnd(float consume)

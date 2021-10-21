@@ -9,6 +9,7 @@ using Arycs_Fe.ScriptManagement;
 using UnityEngine;
 using UnityEngine.UIElements;
 using YouYou;
+using Object = UnityEngine.Object;
 
 namespace Arycs_Fe.ScriptManagement
 {
@@ -101,7 +102,7 @@ namespace Arycs_Fe.ScriptManagement
         public bool Load(string scriptName)
         {
             //寻找地图
-            Map = GameObject.FindObjectOfType<MapGraph>();
+            Map = Object.FindObjectOfType<MapGraph>();
             if (Map == null)
             {
                 error = "MapAction -> MapGraph was not found";
@@ -188,7 +189,7 @@ namespace Arycs_Fe.ScriptManagement
             }));
 
             MapScenarioAction action = new MapScenarioAction(this);
-            List<Type> executorTypes = GameAction.GetDefaultExecutorTypesForScenarioAction();
+            List<Type> executorTypes = GetDefaultExecutorTypesForScenarioAction();
             action.LoadExecutors(executorTypes.ToArray());
             if (!action.LoadScenario(scenario))
             {
@@ -603,6 +604,7 @@ namespace Arycs_Fe.ScriptManagement
                 }
             }
 
+            Status = ActionStatus.WaitMenuOption;
             GameEntry.Event.CommonEvent.AddEventListener(CommonEventId.UIMapMenuOnClick,MapMenu_OnButtonClick);
             GameEntry.UI.OpenUIForm(UIFormId.UI_MapMenu,showButtons);
         }
@@ -614,6 +616,7 @@ namespace Arycs_Fe.ScriptManagement
         private void MapMenu_OnButtonClick(object userdata)
         {
             MenuTextID menuTextID =(MenuTextID)((BaseParams) userdata).IntParam1;
+            Status = ActionStatus.WaitInput;
             switch (menuTextID)
             {
                 case MenuTextID.Unit:
@@ -653,6 +656,7 @@ namespace Arycs_Fe.ScriptManagement
                     break;
                 // 省略其它case
             }
+            
         }
 
         /// <summary>
