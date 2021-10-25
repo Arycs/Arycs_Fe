@@ -376,7 +376,7 @@ namespace YouYou
         /// <param name="instanceId"></param>
         public void ReleaseInstanceResource(int instanceId)
         {
-            Debug.LogError("释放实力资源instanceId = " + instanceId);
+            Debug.LogError("释放实例资源instanceId = " + instanceId);
             ResourceEntity resourceEntity = null;
             if (m_InstanceResourceDic.TryGetValue(instanceId, out resourceEntity))
             {

@@ -656,7 +656,7 @@ namespace Arycs_Fe.ScriptManagement
                     break;
                 // 省略其它case
             }
-            
+            GameEntry.Event.CommonEvent.RemoveEventListener(CommonEventId.UIMapMenuOnClick,MapMenu_OnButtonClick);
         }
 
         /// <summary>
