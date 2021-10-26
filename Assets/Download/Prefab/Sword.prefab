@@ -183,4 +183,4 @@ MonoBehaviour:
   m_PrefabId: 103
   m_Animator: {fileID: -2927674937010497866}
   m_Swapper: {fileID: 8682525798907045273}
-  m_MoveTimePerCell: 1
+  m_MoveTimePerCell: 0.3
